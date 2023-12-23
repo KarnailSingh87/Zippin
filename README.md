@@ -28,3 +28,5 @@ npm run dev
 Notes:
 - The frontends expect the backend API at NEXT_PUBLIC_API_URL (defaults to http://localhost:4000). See `.env.example` in each app.
 - To run on a single command consider adding a workspace tool (pnpm workspaces or concurrently). I can add that next if you want.
+
+<!-- Last documentation review: 2023-12-23 -->
