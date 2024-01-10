@@ -214,3 +214,5 @@ Notes:
 <!-- Maintenance note: verified layout and documentation on 2024-01-04 -->
 
 <!-- Documentation milestone logged: 2024-01-07 -->
+
+<!-- Docs update: verified installation steps on 2024-01-10 -->
