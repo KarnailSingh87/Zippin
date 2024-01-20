@@ -226,3 +226,5 @@ Notes:
 <!-- Maintenance note: verified layout and documentation on 2024-01-17 -->
 
 <!-- Last documentation review: 2024-01-19 -->
+
+<!-- Docs update: verified installation steps on 2024-01-20 -->
