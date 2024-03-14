@@ -276,3 +276,5 @@ Notes:
 <!-- Last documentation review: 2024-02-27 -->
 
 <!-- Status check: README updated on 2024-03-03 -->
+
+<!-- Docs update: verified installation steps on 2024-03-14 -->
