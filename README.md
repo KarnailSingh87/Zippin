@@ -30,3 +30,5 @@ Notes:
 - To run on a single command consider adding a workspace tool (pnpm workspaces or concurrently). I can add that next if you want.
 
 <!-- Last documentation review: 2023-12-23 -->
+
+<!-- Status check: README updated on 2024-04-11 -->
