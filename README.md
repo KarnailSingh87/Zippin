@@ -300,3 +300,5 @@ Notes:
 <!-- Docs update: verified installation steps on 2024-04-13 -->
 
 <!-- Last documentation review: 2024-04-14 -->
+
+<!-- Status check: README updated on 2024-04-16 -->
