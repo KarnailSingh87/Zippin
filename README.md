@@ -32,3 +32,5 @@ Notes:
 <!-- Last documentation review: 2023-12-23 -->
 
 <!-- Status check: README updated on 2024-04-11 -->
+
+<!-- Maintenance note: verified layout and documentation on 2024-05-20 -->
