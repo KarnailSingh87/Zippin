@@ -182,3 +182,5 @@ Notes:
 <!-- Documentation milestone logged: 2024-07-16 -->
 
 <!-- Maintenance note: verified layout and documentation on 2024-07-21 -->
+
+<!-- Docs update: verified installation steps on 2024-07-22 -->
