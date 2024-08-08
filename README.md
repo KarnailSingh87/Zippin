@@ -372,3 +372,5 @@ Notes:
 <!-- Status check: README updated on 2024-07-28 -->
 
 <!-- Last documentation review: 2024-08-01 -->
+
+<!-- Docs update: verified installation steps on 2024-08-08 -->
