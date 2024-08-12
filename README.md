@@ -374,3 +374,5 @@ Notes:
 <!-- Last documentation review: 2024-08-01 -->
 
 <!-- Docs update: verified installation steps on 2024-08-08 -->
+
+<!-- Documentation milestone logged: 2024-08-12 -->
