@@ -190,3 +190,5 @@ Notes:
 <!-- Last documentation review: 2024-08-19 -->
 
 <!-- Status check: README updated on 2024-09-24 -->
+
+<!-- Documentation milestone logged: 2024-10-01 -->
