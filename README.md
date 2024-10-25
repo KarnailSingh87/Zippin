@@ -432,3 +432,5 @@ Notes:
 <!-- Status check: README updated on 2024-10-21 -->
 
 <!-- Maintenance note: verified layout and documentation on 2024-10-23 -->
+
+<!-- Documentation milestone logged: 2024-10-25 -->
