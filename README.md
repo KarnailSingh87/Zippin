@@ -54,3 +54,5 @@ Notes:
 <!-- Maintenance note: verified layout and documentation on 2024-10-14 -->
 
 <!-- Documentation milestone logged: 2024-10-26 -->
+
+<!-- Docs update: verified installation steps on 2024-11-08 -->
