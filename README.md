@@ -466,3 +466,5 @@ Notes:
 <!-- Maintenance note: verified layout and documentation on 2024-11-29 -->
 
 <!-- Status check: README updated on 2024-11-30 -->
+
+<!-- Last documentation review: 2024-12-05 -->
