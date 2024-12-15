@@ -476,3 +476,5 @@ Notes:
 <!-- Maintenance note: verified layout and documentation on 2024-12-09 -->
 
 <!-- Documentation milestone logged: 2024-12-10 -->
+
+<!-- Documentation milestone logged: 2024-12-15 -->
