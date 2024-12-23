@@ -480,3 +480,5 @@ Notes:
 <!-- Documentation milestone logged: 2024-12-15 -->
 
 <!-- Docs update: verified installation steps on 2024-12-16 -->
+
+<!-- Docs update: verified installation steps on 2024-12-23 -->
