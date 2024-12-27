@@ -484,3 +484,5 @@ Notes:
 <!-- Docs update: verified installation steps on 2024-12-23 -->
 
 <!-- Last documentation review: 2024-12-23 -->
+
+<!-- Last documentation review: 2024-12-27 -->
