@@ -56,3 +56,5 @@ Notes:
 <!-- Documentation milestone logged: 2024-10-26 -->
 
 <!-- Docs update: verified installation steps on 2024-11-08 -->
+
+<!-- Docs update: verified installation steps on 2025-01-08 -->
