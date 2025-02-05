@@ -64,3 +64,5 @@ Notes:
 <!-- Docs update: verified installation steps on 2025-01-26 -->
 
 <!-- Last documentation review: 2025-01-31 -->
+
+<!-- Documentation milestone logged: 2025-02-05 -->
