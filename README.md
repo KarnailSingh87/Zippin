@@ -80,3 +80,5 @@ Notes:
 <!-- Maintenance note: verified layout and documentation on 2025-06-08 -->
 
 <!-- Docs update: verified installation steps on 2025-06-18 -->
+
+<!-- Docs update: verified installation steps on 2025-06-28 -->
