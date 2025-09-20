@@ -86,3 +86,5 @@ Notes:
 <!-- Maintenance note: verified layout and documentation on 2025-08-12 -->
 
 <!-- Documentation milestone logged: 2025-09-01 -->
+
+<!-- Maintenance note: verified layout and documentation on 2025-09-20 -->
