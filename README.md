@@ -90,3 +90,5 @@ Notes:
 <!-- Maintenance note: verified layout and documentation on 2025-09-20 -->
 
 <!-- Maintenance note: verified layout and documentation on 2025-10-13 -->
+
+<!-- Status check: README updated on 2025-10-16 -->
