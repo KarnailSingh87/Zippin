@@ -92,3 +92,5 @@ Notes:
 <!-- Maintenance note: verified layout and documentation on 2025-10-13 -->
 
 <!-- Status check: README updated on 2025-10-16 -->
+
+<!-- Docs update: verified installation steps on 2025-11-13 -->
