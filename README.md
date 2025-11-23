@@ -96,3 +96,5 @@ Notes:
 <!-- Docs update: verified installation steps on 2025-11-13 -->
 
 <!-- Documentation milestone logged: 2025-11-20 -->
+
+<!-- Documentation milestone logged: 2025-11-23 -->
