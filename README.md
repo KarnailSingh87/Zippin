@@ -108,3 +108,5 @@ Notes:
 <!-- Docs update: verified installation steps on 2026-03-06 -->
 
 <!-- Last documentation review: 2026-03-15 -->
+
+<!-- Maintenance note: verified layout and documentation on 2026-03-18 -->
