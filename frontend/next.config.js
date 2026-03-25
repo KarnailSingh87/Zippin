@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['placehold.co', 'res.cloudinary.com', 'via.placeholder.com', 'cdn.grofers.com', 'cdn.blinkit.com'],
+    domains: ['placehold.co', 'res.cloudinary.com', 'via.placeholder.com', 'cdn.grofers.com', 'cdn.blinkit.com', 'images.unsplash.com'],
     unoptimized: true,
   },
   async rewrites() {

@@ -59,11 +59,12 @@ body {
   background: linear-gradient(135deg, #0C831F 0%, #0a9922 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-weight: 600;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 14px;
 }
 .btn-green:hover {
   background: linear-gradient(135deg, #0a6e1a 0%, #088a1d 100%);
@@ -123,4 +124,65 @@ body {
 .backdrop-blur-custom {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+/* Spinner for loading states */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.animate-spin {
+  animation: spin 0.7s linear infinite;
+}
+
+/* Smooth page transition */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Better focus styles */
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(12, 131, 31, 0.15);
+}
+
+/* Image fade-in on load */
+img {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+img[loading="lazy"] {
+  opacity: 0;
+}
+img[loading="lazy"].loaded,
+img[loading="lazy"]:not([src=""]) {
+  opacity: 1;
+}
+
+/* Subtle hover lift for interactive cards */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* Green pulsing dot for live elements */
+@keyframes livePulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0C831F;
+  animation: livePulse 1.5s infinite;
 }

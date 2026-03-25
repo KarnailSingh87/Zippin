@@ -8,10 +8,17 @@ type Category = { _id: string; name: string; slug: string; icon: string; color: 
 type Product = { _id: string; title: string; slug: string; price: number; mrp: number; unit: string; images: any[]; discount: number; category: any; isFeatured: boolean; tags: string[]; rating: number; ratingCount: number };
 
 const BANNER_SLIDES = [
-  { title: 'Fresh Vegetables', subtitle: 'Up to 30% off on farm-fresh veggies', color: 'from-green-600 to-emerald-500', emoji: '🥬' },
-  { title: 'Dairy Essentials', subtitle: 'Milk, curd & more at best prices', color: 'from-amber-500 to-orange-400', emoji: '🥛' },
-  { title: 'Munchies & Snacks', subtitle: 'Buy 2 Get 1 free on select items', color: 'from-pink-500 to-rose-400', emoji: '🍿' },
-  { title: 'Cold Drinks', subtitle: 'Beat the heat with chilled beverages', color: 'from-blue-500 to-cyan-400', emoji: '🥤' },
+  { title: 'Fresh Vegetables', subtitle: 'Up to 30% off on farm-fresh veggies', color: 'from-green-600 to-emerald-500', emoji: '🥬', badge: 'FRESH' },
+  { title: 'Dairy Essentials', subtitle: 'Milk, curd & more — daily needs covered', color: 'from-amber-500 to-orange-400', emoji: '🥛', badge: 'DAILY' },
+  { title: 'Munchies & Snacks', subtitle: 'Buy 2 Get 1 free on select items', color: 'from-pink-500 to-rose-400', emoji: '🍿', badge: 'B2G1' },
+  { title: 'Cold Drinks', subtitle: 'Beat the heat with chilled beverages', color: 'from-blue-500 to-cyan-400', emoji: '🥤', badge: 'SUMMER' },
+];
+
+const PROMISE_ITEMS = [
+  { icon: '⚡', title: '10 Min Delivery', desc: 'Lightning fast' },
+  { icon: '🏷️', title: 'Best Prices', desc: 'Guaranteed savings' },
+  { icon: '🔄', title: 'Easy Returns', desc: 'No questions asked' },
+  { icon: '✅', title: '1000+ Products', desc: 'Everything you need' },
 ];
 
 export default function Home() {
@@ -88,14 +95,14 @@ export default function Home() {
             {BANNER_SLIDES.map((slide, i) => (
               <div key={i} className={`min-w-full bg-gradient-to-r ${slide.color} p-6 md:p-8 flex items-center justify-between`}>
                 <div className="text-white">
-                  <p className="text-xs font-semibold uppercase tracking-wider mb-1 opacity-80">Limited Time Offer</p>
+                  <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wider mb-2 uppercase">{slide.badge}</div>
                   <h2 className="text-xl md:text-3xl font-black mb-1">{slide.title}</h2>
                   <p className="text-sm md:text-base opacity-90">{slide.subtitle}</p>
-                  <button className="mt-3 bg-white text-gray-800 rounded-lg px-4 py-2 text-xs font-bold hover:bg-gray-100 transition-colors">
+                  <button className="mt-3 bg-white text-gray-800 rounded-lg px-4 py-2 text-xs font-bold hover:bg-gray-100 transition-colors shadow-md">
                     Order Now →
                   </button>
                 </div>
-                <span className="text-5xl md:text-7xl">{slide.emoji}</span>
+                <span className="text-5xl md:text-7xl drop-shadow-lg">{slide.emoji}</span>
               </div>
             ))}
           </div>
@@ -109,6 +116,19 @@ export default function Home() {
               />
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Blinkit Promise Badges */}
+      <div className="px-4 mt-4">
+        <div className="grid grid-cols-4 gap-2">
+          {PROMISE_ITEMS.map((item, i) => (
+            <div key={i} className="bg-white rounded-xl p-2.5 text-center border border-gray-100 shadow-sm">
+              <span className="text-lg block mb-0.5">{item.icon}</span>
+              <p className="text-[10px] font-bold text-gray-800 leading-tight">{item.title}</p>
+              <p className="text-[9px] text-gray-400 leading-tight">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -184,16 +204,34 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="mt-10 bg-white border-t border-gray-200 px-4 py-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-1 mb-3">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-center gap-1 mb-4">
             <span className="text-xl font-black text-blinkit-green">blink</span>
             <span className="text-xl font-black text-blinkit-yellow">it</span>
           </div>
-          <p className="text-xs text-gray-400 mb-3">© 2025 Blinkit Clone. Groceries delivered in 10 minutes.</p>
-          <div className="flex items-center justify-center gap-6 text-xs text-gray-500">
-            <span>🏪 1000+ Products</span>
-            <span>⚡ 10 Min Delivery</span>
-            <span>🎉 Best Prices</span>
+          <p className="text-xs text-gray-400 text-center mb-4">© 2025 Blinkit Clone. Groceries delivered in 10 minutes.</p>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="bg-gray-50 rounded-xl p-3">
+              <p className="text-lg font-bold text-blinkit-green">1000+</p>
+              <p className="text-[10px] text-gray-500">Products</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-3">
+              <p className="text-lg font-bold text-blinkit-green">10 min</p>
+              <p className="text-[10px] text-gray-500">Delivery</p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-3">
+              <p className="text-lg font-bold text-blinkit-green">₹499+</p>
+              <p className="text-[10px] text-gray-500">Free Delivery</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-center gap-4 mt-5 text-xs text-gray-400">
+            <a href="#" className="hover:text-blinkit-green transition-colors">About</a>
+            <span>·</span>
+            <a href="#" className="hover:text-blinkit-green transition-colors">Privacy Policy</a>
+            <span>·</span>
+            <a href="#" className="hover:text-blinkit-green transition-colors">Terms</a>
+            <span>·</span>
+            <a href="#" className="hover:text-blinkit-green transition-colors">Contact</a>
           </div>
         </div>
       </footer>
