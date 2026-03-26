@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
+import { useToast } from "../context/ToastContext";
 
 // Map product category/title keywords to emojis for better visual placeholders
 const PRODUCT_EMOJIS = {
@@ -78,6 +79,7 @@ function StarRating({ rating, count }) {
 
 export default function ProductCard({ product }) {
   const { addItem, removeItem, getQty } = useCart();
+  const { showToast } = useToast();
   const qty = getQty(product._id);
   const hasDiscount = product.mrp && product.mrp > product.price;
   const discountPercent = hasDiscount
@@ -164,7 +166,7 @@ export default function ProductCard({ product }) {
           {/* Add / Quantity button */}
           {qty === 0 ? (
             <button
-              onClick={() => addItem(product)}
+              onClick={() => { addItem(product); if (showToast) showToast(`Added to cart — ${product.title}`); }}
               className="border-2 border-blinkit-green text-blinkit-green rounded-lg px-3 py-1 text-xs font-bold hover:bg-blinkit-green hover:text-white transition-colors active:scale-95"
             >
               ADD

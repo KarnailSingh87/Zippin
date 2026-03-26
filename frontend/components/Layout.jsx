@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import CartDrawer from "./CartDrawer";
+import SearchTypeahead from "./SearchTypeahead";
 
 export default function Layout({ children }) {
   const { totalItems, totalPrice, totalSavings, isOpen, setIsOpen } = useCart();
@@ -99,33 +100,12 @@ export default function Layout({ children }) {
           </button>
 
           {/* Search bar - desktop */}
-          <form
-            onSubmit={handleSearch}
-            className="hidden md:flex flex-1 max-w-xl"
-          >
-            <div className="relative w-full">
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-              <input
-                type="text"
-                placeholder='Search "milk, bread, eggs"'
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full py-2.5 pl-10 pr-4 rounded-xl bg-white text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blinkit-yellow"
-              />
-            </div>
-          </form>
+          <div className="hidden md:flex flex-1 max-w-xl">
+            <SearchTypeahead
+              className="w-full"
+              onNavigate={() => setShowMobileSearch(false)}
+            />
+          </div>
 
           {/* Mobile search icon */}
           <button
@@ -291,29 +271,7 @@ export default function Layout({ children }) {
         {/* Mobile search bar */}
         {showMobileSearch && (
           <div className="md:hidden px-4 pb-3 animate-slide-up">
-            <form onSubmit={handleSearch} className="relative">
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-              <input
-                type="text"
-                placeholder='Search "milk, bread, eggs"'
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full py-2.5 pl-10 pr-4 rounded-xl bg-white text-sm text-gray-800 placeholder-gray-400 focus:outline-none"
-                autoFocus
-              />
-            </form>
+            <SearchTypeahead mobile onClose={() => setShowMobileSearch(false)} />
           </div>
         )}
       </header>
