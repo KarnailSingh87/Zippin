@@ -110,3 +110,5 @@ Notes:
 <!-- Last documentation review: 2026-03-15 -->
 
 <!-- Maintenance note: verified layout and documentation on 2026-03-18 -->
+
+<!-- Status check: README updated on 2026-04-14 -->
