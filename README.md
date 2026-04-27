@@ -114,3 +114,5 @@ Notes:
 <!-- Status check: README updated on 2026-04-14 -->
 
 <!-- Status check: README updated on 2026-04-23 -->
+
+<!-- Last documentation review: 2026-04-27 -->
