@@ -118,3 +118,5 @@ Notes:
 <!-- Last documentation review: 2026-04-27 -->
 
 <!-- Documentation milestone logged: 2026-05-09 -->
+
+<!-- Documentation milestone logged: 2026-05-13 -->
