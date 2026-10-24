@@ -4,6 +4,23 @@ import ProductCard from "../components/ProductCard";
 
 const API = "";
 
+const HERO_SLIDES = [
+  {
+    id: "paan",
+    image: "/images/banner-paan.webp",
+    fallback: "/images/banner-hero.jpg",
+    title: "Paan Corner & Refreshments",
+    link: "/category/paan-corner",
+  },
+  {
+    id: "grocery",
+    image: "/images/banner-hero.jpg",
+    fallback: "/images/banner-paan.webp",
+    title: "Instant Groceries in 8-10 Minutes",
+    link: "/category/vegetables-fruits",
+  },
+];
+
 function ShelfCarousel({ title, subtitle, products, slug }) {
   const scrollRef = useRef(null);
 
@@ -23,9 +40,9 @@ function ShelfCarousel({ title, subtitle, products, slug }) {
   return (
     <div className="mt-8 px-4">
       {/* Header */}
-      <div className="flex items-end justify-between mb-3">
+      <div className="flex items-end justify-between mb-3.5">
         <div>
-          <h2 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">
+          <h2 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">
             {title}
           </h2>
           {subtitle && (
@@ -36,21 +53,21 @@ function ShelfCarousel({ title, subtitle, products, slug }) {
           {slug && (
             <Link
               href={`/category/${slug}`}
-              className="text-xs md:text-sm font-bold text-[#0C831F] hover:underline mr-2"
+              className="text-xs md:text-sm font-extrabold text-[#0C831F] hover:underline mr-1"
             >
               see all →
             </Link>
           )}
           <button
             onClick={() => scroll("left")}
-            className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-xs flex items-center justify-center text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
+            className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-2xs flex items-center justify-center text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
             aria-label="Scroll left"
           >
             ←
           </button>
           <button
             onClick={() => scroll("right")}
-            className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-xs flex items-center justify-center text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
+            className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-2xs flex items-center justify-center text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
             aria-label="Scroll right"
           >
             →
@@ -58,13 +75,13 @@ function ShelfCarousel({ title, subtitle, products, slug }) {
         </div>
       </div>
 
-      {/* Horizontal List */}
+      {/* Horizontal Product List */}
       <div
         ref={scrollRef}
         className="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-2"
       >
         {products.map((p) => (
-          <div key={p._id} className="w-[160px] sm:w-[185px] shrink-0">
+          <div key={p._id} className="w-[165px] sm:w-[185px] md:w-[195px] shrink-0">
             <ProductCard product={p} />
           </div>
         ))}
@@ -78,14 +95,15 @@ export default function Home() {
   const [featured, setFeatured] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
     async function load() {
       try {
         const [catRes, featRes, allRes] = await Promise.all([
           fetch(`${API}/api/categories`),
-          fetch(`${API}/api/products?featured=true&limit=20`),
-          fetch(`${API}/api/products?limit=120`),
+          fetch(`${API}/api/products?featured=true&limit=24`),
+          fetch(`${API}/api/products?limit=140`),
         ]);
         if (catRes.ok) setCategories(await catRes.json());
         if (featRes.ok) setFeatured(await featRes.json());
@@ -96,6 +114,14 @@ export default function Home() {
       setLoading(false);
     }
     load();
+  }, []);
+
+  // Auto advance banner slide
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 4500);
+    return () => clearInterval(timer);
   }, []);
 
   // Filter products by slug or keyword
@@ -122,14 +148,14 @@ export default function Home() {
   if (loading) {
     return (
       <div className="px-4 py-6 max-w-7xl mx-auto space-y-6">
-        <div className="h-44 sm:h-56 rounded-2xl shimmer" />
-        <div className="grid grid-cols-3 gap-3">
-          <div className="h-28 rounded-2xl shimmer" />
-          <div className="h-28 rounded-2xl shimmer" />
-          <div className="h-28 rounded-2xl shimmer" />
+        <div className="h-44 sm:h-64 rounded-3xl shimmer" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="h-32 rounded-2xl shimmer" />
+          <div className="h-32 rounded-2xl shimmer" />
+          <div className="h-32 rounded-2xl shimmer" />
         </div>
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
-          {Array.from({ length: 8 }).map((_, i) => (
+          {Array.from({ length: 16 }).map((_, i) => (
             <div key={i} className="h-24 rounded-2xl shimmer" />
           ))}
         </div>
@@ -139,20 +165,43 @@ export default function Home() {
 
   return (
     <div className="pb-16 max-w-7xl mx-auto">
-      {/* 1. Hero Promo Banner: Blinkit Paan Corner / Grocery Special */}
+      {/* 1. Hero Promo Banner Carousel (Paan Corner & Superfast Delivery) */}
       <div className="px-4 pt-4">
-        <Link href="/category/paan-corner" className="block group">
-          <div className="relative overflow-hidden rounded-2xl md:rounded-3xl shadow-sm border border-gray-200/80 bg-white">
-            <img
-              src="/images/banner-paan.webp"
-              alt="Blinkit Paan Corner & Quick Commerce"
-              className="w-full h-auto max-h-[220px] md:max-h-[270px] object-cover transition-transform duration-300 group-hover:scale-[1.01]"
-              onError={(e) => {
-                e.currentTarget.src = "/images/banner-hero.jpg";
-              }}
-            />
+        <div className="relative overflow-hidden rounded-2xl md:rounded-3xl shadow-xs border border-gray-200/80 bg-white">
+          <div
+            className="flex transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+          >
+            {HERO_SLIDES.map((slide) => (
+              <div key={slide.id} className="min-w-full">
+                <Link href={slide.link} className="block group">
+                  <img
+                    src={slide.image}
+                    alt={slide.title}
+                    className="w-full h-auto max-h-[220px] md:max-h-[280px] object-cover transition-transform duration-300 group-hover:scale-[1.01]"
+                    onError={(e) => {
+                      e.currentTarget.src = slide.fallback;
+                    }}
+                  />
+                </Link>
+              </div>
+            ))}
           </div>
-        </Link>
+
+          {/* Dots Indicator */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
+            {HERO_SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveSlide(i)}
+                className={`h-2 rounded-full transition-all ${
+                  i === activeSlide ? "w-6 bg-white shadow-sm" : "w-2 bg-white/60 hover:bg-white/80"
+                }`}
+                aria-label={`Slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* 2. Three Lifestyle Promo Tiles: Pharmacy, Pet Care, Baby Care */}
@@ -195,21 +244,21 @@ export default function Home() {
       <div className="px-4 mt-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">
+            <h2 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">
               Explore by Category
             </h2>
-            <p className="text-xs text-gray-500 font-medium">
-              Everything delivered in 8-10 minutes
+            <p className="text-xs text-gray-500 font-medium mt-0.5">
+              10,000+ items delivered to your doorstep in 8-10 minutes
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-9 gap-2.5 sm:gap-3">
+        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-9 gap-2.5 sm:gap-3.5">
           {categories.map((cat) => (
             <Link
               key={cat._id}
               href={`/category/${cat.slug}`}
-              className="flex flex-col items-center p-2 rounded-2xl bg-white border border-gray-100/90 shadow-2xs hover:shadow-md hover:border-gray-200 transition-all duration-200 group text-center"
+              className="flex flex-col items-center p-2 rounded-2xl bg-white border border-gray-100/90 shadow-2xs hover:shadow-md hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200 group text-center"
             >
               <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center p-1 relative overflow-hidden">
                 {cat.image ? (
@@ -233,64 +282,64 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4. Horizontal Shelf: Dairy, Bread & Eggs */}
+      {/* 4. Shelf: Dairy, Bread & Eggs */}
       <ShelfCarousel
         title="Dairy, Bread & Eggs"
-        subtitle="Fresh milk, butter, cheese, curd & daily essentials"
-        products={dairyProducts.length > 0 ? dairyProducts : allProducts.slice(0, 8)}
+        subtitle="Fresh milk, butter, cheese, curd & daily morning essentials"
+        products={dairyProducts.length > 0 ? dairyProducts : allProducts.slice(0, 10)}
         slug="dairy-breakfast"
       />
 
-      {/* 5. Horizontal Shelf: Snacks & Munchies */}
+      {/* 5. Shelf: Snacks & Munchies */}
       <ShelfCarousel
         title="Snacks & Munchies"
-        subtitle="Crispy chips, namkeen, wafers & party snacks"
-        products={snacksProducts.length > 0 ? snacksProducts : allProducts.slice(8, 16)}
+        subtitle="Crispy chips, namkeen, wafers & movie-night munchies"
+        products={snacksProducts.length > 0 ? snacksProducts : allProducts.slice(10, 20)}
         slug="munchies"
       />
 
-      {/* 6. Horizontal Shelf: Cold Drinks & Juices */}
+      {/* 6. Shelf: Cold Drinks & Juices */}
       <ShelfCarousel
         title="Cold Drinks & Juices"
-        subtitle="Chilled sodas, fruit juices & energy drinks"
-        products={drinksProducts.length > 0 ? drinksProducts : allProducts.slice(16, 24)}
+        subtitle="Chilled sodas, sparkling water, fruit juices & energy boosters"
+        products={drinksProducts.length > 0 ? drinksProducts : allProducts.slice(20, 30)}
         slug="cold-drinks-juices"
       />
 
-      {/* 7. Horizontal Shelf: Farm Fresh Vegetables & Fruits */}
+      {/* 7. Shelf: Farm Fresh Vegetables & Fruits */}
       <ShelfCarousel
         title="Vegetables & Fruits"
-        subtitle="Fresh from the farm with strict quality checks"
-        products={freshProduce.length > 0 ? freshProduce : allProducts.slice(24, 32)}
+        subtitle="Directly from certified farms with strict freshness checks"
+        products={freshProduce.length > 0 ? freshProduce : allProducts.slice(30, 40)}
         slug="vegetables-fruits"
       />
 
-      {/* 8. Horizontal Shelf: Sweet Tooth & Ice Cream */}
+      {/* 8. Shelf: Sweet Tooth & Chocolates */}
       <ShelfCarousel
         title="Sweet Tooth & Chocolates"
-        subtitle="Chocolates, desserts & sweet cravings"
-        products={sweetsProducts.length > 0 ? sweetsProducts : allProducts.slice(32, 40)}
+        subtitle="Cadbury, KitKat, wafer bars & ice cream treats"
+        products={sweetsProducts.length > 0 ? sweetsProducts : allProducts.slice(40, 50)}
         slug="sweet-tooth"
       />
 
-      {/* 9. Horizontal Shelf: Atta, Rice & Dal */}
+      {/* 9. Shelf: Atta, Rice & Dal */}
       <ShelfCarousel
         title="Atta, Rice & Dal"
-        subtitle="Premium grains, staples & cooking essentials"
-        products={staplesProducts.length > 0 ? staplesProducts : allProducts.slice(0, 8)}
+        subtitle="Premium grains, lentils, pulses & daily kitchen staples"
+        products={staplesProducts.length > 0 ? staplesProducts : allProducts.slice(0, 10)}
         slug="atta-rice-dal"
       />
 
-      {/* 10. Featured Deals Grid */}
+      {/* 10. Lowest Prices & Best Deals Section */}
       {featured.length > 0 && (
-        <div className="mt-10 px-4">
+        <div className="mt-12 px-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">
+              <h2 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">
                 ⚡ Lowest Prices & Best Deals
               </h2>
-              <p className="text-xs text-gray-500 font-medium">
-                Specially curated discounts for maximum savings
+              <p className="text-xs text-gray-500 font-medium mt-0.5">
+                Specially curated discounts and daily savings on top brands
               </p>
             </div>
           </div>
