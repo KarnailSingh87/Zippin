@@ -12,19 +12,16 @@ export default function App({ Component, pageProps }) {
       <CartProvider>
         <ToastProvider>
           <Head>
-            <title>Blinkit - Grocery delivery in 10 minutes</title>
+            <title>Blinkit - Everything delivered in 8-10 minutes</title>
             <meta
               name="description"
-              content="Get groceries, snacks, and essentials delivered to your door in 10 minutes. Browse categories, get great deals and free delivery on orders above ₹499."
+              content="India's last minute app. Buy milk, bread, butter, fresh fruits & vegetables, snacks, and daily groceries online with superfast 10-minute delivery."
             />
             <meta
               name="viewport"
               content="width=device-width, initial-scale=1, maximum-scale=1"
             />
-            <link
-              rel="icon"
-              href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>"
-            />
+            <link rel="icon" href="/images/logo.png" />
           </Head>
           <Layout>
             <Component {...pageProps} />

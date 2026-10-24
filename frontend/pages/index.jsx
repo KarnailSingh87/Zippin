@@ -4,100 +4,133 @@ import ProductCard from "../components/ProductCard";
 
 const API = "";
 
-const BANNER_SLIDES = [
-  {
-    title: "Fresh Vegetables",
-    subtitle: "Up to 30% off on farm-fresh veggies",
-    color: "from-green-600 to-emerald-500",
-    emoji: "🥬",
-    badge: "FRESH",
-  },
-  {
-    title: "Dairy Essentials",
-    subtitle: "Milk, curd & more — daily needs covered",
-    color: "from-amber-500 to-orange-400",
-    emoji: "🥛",
-    badge: "DAILY",
-  },
-  {
-    title: "Munchies & Snacks",
-    subtitle: "Buy 2 Get 1 free on select items",
-    color: "from-pink-500 to-rose-400",
-    emoji: "🍿",
-    badge: "B2G1",
-  },
-  {
-    title: "Cold Drinks",
-    subtitle: "Beat the heat with chilled beverages",
-    color: "from-blue-500 to-cyan-400",
-    emoji: "🥤",
-    badge: "SUMMER",
-  },
-];
+function ShelfCarousel({ title, subtitle, products, slug }) {
+  const scrollRef = useRef(null);
 
-const PROMISE_ITEMS = [
-  { icon: "⚡", title: "10 Min Delivery", desc: "Lightning fast" },
-  { icon: "🏷️", title: "Best Prices", desc: "Guaranteed savings" },
-  { icon: "🔄", title: "Easy Returns", desc: "No questions asked" },
-  { icon: "✅", title: "1000+ Products", desc: "Everything you need" },
-];
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollAmount = clientWidth * 0.75;
+      scrollRef.current.scrollTo({
+        left: direction === "left" ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  if (!products || products.length === 0) return null;
+
+  return (
+    <div className="mt-8 px-4">
+      {/* Header */}
+      <div className="flex items-end justify-between mb-3">
+        <div>
+          <h2 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="text-xs text-gray-500 font-medium mt-0.5">{subtitle}</p>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {slug && (
+            <Link
+              href={`/category/${slug}`}
+              className="text-xs md:text-sm font-bold text-[#0C831F] hover:underline mr-2"
+            >
+              see all →
+            </Link>
+          )}
+          <button
+            onClick={() => scroll("left")}
+            className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-xs flex items-center justify-center text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
+            aria-label="Scroll left"
+          >
+            ←
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-xs flex items-center justify-center text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
+            aria-label="Scroll right"
+          >
+            →
+          </button>
+        </div>
+      </div>
+
+      {/* Horizontal List */}
+      <div
+        ref={scrollRef}
+        className="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-2"
+      >
+        {products.map((p) => (
+          <div key={p._id} className="w-[160px] sm:w-[185px] shrink-0">
+            <ProductCard product={p} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
   const [featured, setFeatured] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
-  const scrollRef = useRef(null);
 
   useEffect(() => {
     async function load() {
       try {
         const [catRes, featRes, allRes] = await Promise.all([
           fetch(`${API}/api/categories`),
-          fetch(`${API}/api/products?featured=true&limit=12`),
-          fetch(`${API}/api/products?limit=50`),
+          fetch(`${API}/api/products?featured=true&limit=20`),
+          fetch(`${API}/api/products?limit=120`),
         ]);
         if (catRes.ok) setCategories(await catRes.json());
         if (featRes.ok) setFeatured(await featRes.json());
         if (allRes.ok) setAllProducts(await allRes.json());
       } catch (e) {
-        console.error("Failed to load data", e);
+        console.error("Failed to load Blinkit store data", e);
       }
       setLoading(false);
     }
     load();
   }, []);
 
-  // Auto-slide banner
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((s) => (s + 1) % BANNER_SLIDES.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
+  // Filter products by slug or keyword
+  const getProductsByCatSlug = (slugKeywords) => {
+    return allProducts.filter((p) => {
+      const catSlug = p.category?.slug || "";
+      const tags = p.tags || [];
+      const title = (p.title || "").toLowerCase();
+      return (
+        slugKeywords.some((k) => catSlug.includes(k)) ||
+        slugKeywords.some((k) => tags.includes(k)) ||
+        slugKeywords.some((k) => title.includes(k))
+      );
+    });
+  };
 
-  // Group products by category
-  const productsByCategory = {};
-  allProducts.forEach((p) => {
-    const catName = p.category?.name || "Other";
-    if (!productsByCategory[catName]) productsByCategory[catName] = [];
-    productsByCategory[catName].push(p);
-  });
+  const dairyProducts = getProductsByCatSlug(["dairy", "breakfast", "milk", "bread", "egg", "butter", "curd"]);
+  const snacksProducts = getProductsByCatSlug(["munchies", "chips", "snack", "kurkure", "lays", "bhujia"]);
+  const drinksProducts = getProductsByCatSlug(["cold-drinks", "juice", "soda", "coca", "pepsi", "sprite", "thums"]);
+  const freshProduce = getProductsByCatSlug(["vegetables", "fruits", "veg", "onion", "tomato", "potato", "carrot"]);
+  const sweetsProducts = getProductsByCatSlug(["sweet", "ice-cream", "chocolate", "silk", "kitkat"]);
+  const staplesProducts = getProductsByCatSlug(["atta", "rice", "dal", "pulses", "oil"]);
 
   if (loading) {
     return (
-      <div className="px-4 py-6">
-        {/* Shimmer loading */}
-        <div className="h-40 rounded-2xl shimmer mb-6" />
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-3 mb-6">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-20 rounded-xl shimmer" />
-          ))}
+      <div className="px-4 py-6 max-w-7xl mx-auto space-y-6">
+        <div className="h-44 sm:h-56 rounded-2xl shimmer" />
+        <div className="grid grid-cols-3 gap-3">
+          <div className="h-28 rounded-2xl shimmer" />
+          <div className="h-28 rounded-2xl shimmer" />
+          <div className="h-28 rounded-2xl shimmer" />
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="h-60 rounded-xl shimmer" />
+        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="h-24 rounded-2xl shimmer" />
           ))}
         </div>
       </div>
@@ -105,98 +138,94 @@ export default function Home() {
   }
 
   return (
-    <div className="pb-20 md:pb-6">
-      {/* Hero Banner Carousel */}
+    <div className="pb-16 max-w-7xl mx-auto">
+      {/* 1. Hero Promo Banner: Blinkit Paan Corner / Grocery Special */}
       <div className="px-4 pt-4">
-        <div className="relative overflow-hidden rounded-2xl">
-          <div
-            className="flex transition-transform duration-500 ease-out"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {BANNER_SLIDES.map((slide, i) => (
-              <div
-                key={i}
-                className={`min-w-full bg-gradient-to-r ${slide.color} p-6 md:p-8 flex items-center justify-between`}
-              >
-                <div className="text-white">
-                  <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wider mb-2 uppercase">
-                    {slide.badge}
-                  </div>
-                  <h2 className="text-xl md:text-3xl font-black mb-1">
-                    {slide.title}
-                  </h2>
-                  <p className="text-sm md:text-base opacity-90">
-                    {slide.subtitle}
-                  </p>
-                  <button className="mt-3 bg-white text-gray-800 rounded-lg px-4 py-2 text-xs font-bold hover:bg-gray-100 transition-colors shadow-md">
-                    Order Now →
-                  </button>
-                </div>
-                <span className="text-5xl md:text-7xl drop-shadow-lg">
-                  {slide.emoji}
-                </span>
-              </div>
-            ))}
+        <Link href="/category/paan-corner" className="block group">
+          <div className="relative overflow-hidden rounded-2xl md:rounded-3xl shadow-sm border border-gray-200/80 bg-white">
+            <img
+              src="/images/banner-paan.webp"
+              alt="Blinkit Paan Corner & Quick Commerce"
+              className="w-full h-auto max-h-[220px] md:max-h-[270px] object-cover transition-transform duration-300 group-hover:scale-[1.01]"
+              onError={(e) => {
+                e.currentTarget.src = "/images/banner-hero.jpg";
+              }}
+            />
           </div>
-          {/* Dots */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-            {BANNER_SLIDES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentSlide(i)}
-                className={`w-2 h-2 rounded-full transition-all ${i === currentSlide ? "bg-white w-5" : "bg-white/50"}`}
-              />
-            ))}
-          </div>
-        </div>
+        </Link>
       </div>
 
-      {/* Blinkit Promise Badges */}
-      <div className="px-4 mt-4">
-        <div className="grid grid-cols-4 gap-2">
-          {PROMISE_ITEMS.map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-xl p-2.5 text-center border border-gray-100 shadow-sm"
-            >
-              <span className="text-lg block mb-0.5">{item.icon}</span>
-              <p className="text-[10px] font-bold text-gray-800 leading-tight">
-                {item.title}
-              </p>
-              <p className="text-[9px] text-gray-400 leading-tight">
-                {item.desc}
-              </p>
-            </div>
-          ))}
-        </div>
+      {/* 2. Three Lifestyle Promo Tiles: Pharmacy, Pet Care, Baby Care */}
+      <div className="px-4 mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+        <Link
+          href="/category/pharma-wellness"
+          className="rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 group border border-gray-200/80 bg-white"
+        >
+          <img
+            src="/images/pharmacy-promo.avif"
+            alt="Pharmacy in 10 mins"
+            className="w-full h-auto object-cover group-hover:scale-102 transition-transform"
+          />
+        </Link>
+
+        <Link
+          href="/category/pet-care"
+          className="rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 group border border-gray-200/80 bg-white"
+        >
+          <img
+            src="/images/petcare-promo.avif"
+            alt="Pet Care Store"
+            className="w-full h-auto object-cover group-hover:scale-102 transition-transform"
+          />
+        </Link>
+
+        <Link
+          href="/category/baby-care"
+          className="rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 group border border-gray-200/80 bg-white"
+        >
+          <img
+            src="/images/babycare-promo.avif"
+            alt="Baby Care Essentials"
+            className="w-full h-auto object-cover group-hover:scale-102 transition-transform"
+          />
+        </Link>
       </div>
 
-      {/* Categories Grid */}
-      <div className="px-4 mt-6">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-bold text-gray-800">Shop by Category</h2>
-          <Link
-            href="/search"
-            className="text-xs text-blinkit-green font-semibold hover:underline"
-          >
-            See all →
-          </Link>
+      {/* 3. Category Matrix: The Iconic Blinkit Category Tiles */}
+      <div className="px-4 mt-8">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">
+              Explore by Category
+            </h2>
+            <p className="text-xs text-gray-500 font-medium">
+              Everything delivered in 8-10 minutes
+            </p>
+          </div>
         </div>
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2.5">
-          {categories.slice(0, 16).map((cat, i) => (
+
+        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-9 gap-2.5 sm:gap-3">
+          {categories.map((cat) => (
             <Link
               key={cat._id}
               href={`/category/${cat.slug}`}
-              className="category-card flex flex-col items-center justify-center rounded-xl p-3 text-center"
-              style={{
-                backgroundColor: cat.color || "#f0f0f0",
-                animationDelay: `${i * 50}ms`,
-              }}
+              className="flex flex-col items-center p-2 rounded-2xl bg-white border border-gray-100/90 shadow-2xs hover:shadow-md hover:border-gray-200 transition-all duration-200 group text-center"
             >
-              <span className="text-2xl md:text-3xl mb-1">
-                {cat.icon || "📦"}
-              </span>
-              <span className="text-[10px] md:text-xs font-semibold text-gray-700 leading-tight line-clamp-2">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center p-1 relative overflow-hidden">
+                {cat.image ? (
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-200"
+                    loading="lazy"
+                  />
+                ) : (
+                  <span className="text-2xl group-hover:scale-110 transition-transform">
+                    {cat.icon || "🛒"}
+                  </span>
+                )}
+              </div>
+              <span className="text-[11px] sm:text-xs font-bold text-gray-800 leading-tight mt-1 line-clamp-2">
                 {cat.name}
               </span>
             </Link>
@@ -204,107 +233,74 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Featured / Deals */}
+      {/* 4. Horizontal Shelf: Dairy, Bread & Eggs */}
+      <ShelfCarousel
+        title="Dairy, Bread & Eggs"
+        subtitle="Fresh milk, butter, cheese, curd & daily essentials"
+        products={dairyProducts.length > 0 ? dairyProducts : allProducts.slice(0, 8)}
+        slug="dairy-breakfast"
+      />
+
+      {/* 5. Horizontal Shelf: Snacks & Munchies */}
+      <ShelfCarousel
+        title="Snacks & Munchies"
+        subtitle="Crispy chips, namkeen, wafers & party snacks"
+        products={snacksProducts.length > 0 ? snacksProducts : allProducts.slice(8, 16)}
+        slug="munchies"
+      />
+
+      {/* 6. Horizontal Shelf: Cold Drinks & Juices */}
+      <ShelfCarousel
+        title="Cold Drinks & Juices"
+        subtitle="Chilled sodas, fruit juices & energy drinks"
+        products={drinksProducts.length > 0 ? drinksProducts : allProducts.slice(16, 24)}
+        slug="cold-drinks-juices"
+      />
+
+      {/* 7. Horizontal Shelf: Farm Fresh Vegetables & Fruits */}
+      <ShelfCarousel
+        title="Vegetables & Fruits"
+        subtitle="Fresh from the farm with strict quality checks"
+        products={freshProduce.length > 0 ? freshProduce : allProducts.slice(24, 32)}
+        slug="vegetables-fruits"
+      />
+
+      {/* 8. Horizontal Shelf: Sweet Tooth & Ice Cream */}
+      <ShelfCarousel
+        title="Sweet Tooth & Chocolates"
+        subtitle="Chocolates, desserts & sweet cravings"
+        products={sweetsProducts.length > 0 ? sweetsProducts : allProducts.slice(32, 40)}
+        slug="sweet-tooth"
+      />
+
+      {/* 9. Horizontal Shelf: Atta, Rice & Dal */}
+      <ShelfCarousel
+        title="Atta, Rice & Dal"
+        subtitle="Premium grains, staples & cooking essentials"
+        products={staplesProducts.length > 0 ? staplesProducts : allProducts.slice(0, 8)}
+        slug="atta-rice-dal"
+      />
+
+      {/* 10. Featured Deals Grid */}
       {featured.length > 0 && (
-        <div className="mt-6">
-          <div className="px-4 flex items-center justify-between mb-3">
+        <div className="mt-10 px-4">
+          <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg font-bold text-gray-800">
-                ⚡ Deals of the Day
+              <h2 className="text-lg md:text-xl font-black text-gray-900 tracking-tight">
+                ⚡ Lowest Prices & Best Deals
               </h2>
-              <p className="text-xs text-gray-500">
-                Handpicked deals just for you
+              <p className="text-xs text-gray-500 font-medium">
+                Specially curated discounts for maximum savings
               </p>
             </div>
           </div>
-          <div className="px-4 overflow-x-auto no-scrollbar" ref={scrollRef}>
-            <div className="flex gap-3 pb-2" style={{ width: "max-content" }}>
-              {featured.map((p) => (
-                <div key={p._id} className="w-36 sm:w-40 shrink-0">
-                  <ProductCard product={p} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Products by Category */}
-      {Object.entries(productsByCategory).map(([catName, products]) => (
-        <div key={catName} className="mt-6">
-          <div className="px-4 flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold text-gray-800">{catName}</h2>
-            <button className="text-xs text-blinkit-green font-semibold hover:underline">
-              see all →
-            </button>
-          </div>
-          <div className="px-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-            {products.slice(0, 6).map((p) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {featured.slice(0, 12).map((p) => (
               <ProductCard key={p._id} product={p} />
             ))}
           </div>
         </div>
-      ))}
-
-      {/* Empty state */}
-      {allProducts.length === 0 && !loading && (
-        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-          <span className="text-6xl mb-4">🛒</span>
-          <h2 className="text-xl font-bold text-gray-600 mb-2">
-            No products yet
-          </h2>
-          <p className="text-sm text-gray-400 mb-4">
-            Make sure the backend is running and seeded
-          </p>
-          <p className="text-xs text-gray-300">
-            Run: curl -X POST http://localhost:4000/api/internal/seed
-          </p>
-        </div>
       )}
-
-      {/* Footer */}
-      <footer className="mt-10 bg-white border-t border-gray-200 px-4 py-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-center gap-1 mb-4">
-            <span className="text-xl font-black text-blinkit-green">blink</span>
-            <span className="text-xl font-black text-blinkit-yellow">it</span>
-          </div>
-          <p className="text-xs text-gray-400 text-center mb-4">
-            © 2025 Blinkit Clone. Groceries delivered in 10 minutes.
-          </p>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="bg-gray-50 rounded-xl p-3">
-              <p className="text-lg font-bold text-blinkit-green">1000+</p>
-              <p className="text-[10px] text-gray-500">Products</p>
-            </div>
-            <div className="bg-gray-50 rounded-xl p-3">
-              <p className="text-lg font-bold text-blinkit-green">10 min</p>
-              <p className="text-[10px] text-gray-500">Delivery</p>
-            </div>
-            <div className="bg-gray-50 rounded-xl p-3">
-              <p className="text-lg font-bold text-blinkit-green">₹499+</p>
-              <p className="text-[10px] text-gray-500">Free Delivery</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-center gap-4 mt-5 text-xs text-gray-400">
-            <a href="#" className="hover:text-blinkit-green transition-colors">
-              About
-            </a>
-            <span>·</span>
-            <a href="#" className="hover:text-blinkit-green transition-colors">
-              Privacy Policy
-            </a>
-            <span>·</span>
-            <a href="#" className="hover:text-blinkit-green transition-colors">
-              Terms
-            </a>
-            <span>·</span>
-            <a href="#" className="hover:text-blinkit-green transition-colors">
-              Contact
-            </a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
