@@ -8,6 +8,8 @@ export default function App({ Component, pageProps }) {
       <Head>
         <title>Blinkit Admin Panel</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <AdminLayout>
         <Component {...pageProps} />

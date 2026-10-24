@@ -40,7 +40,7 @@ export default function CheckoutPage() {
     }
   }, [authLoading, user, router]);
 
-  const deliveryFee = totalPrice >= 499 ? 0 : 30;
+  const deliveryFee = totalPrice >= 199 ? 0 : 25;
   const grandTotal = totalPrice + deliveryFee;
 
   async function handlePlaceOrder() {

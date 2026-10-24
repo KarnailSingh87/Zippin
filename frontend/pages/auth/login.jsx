@@ -31,14 +31,11 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-card p-6 sm:p-8">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="flex items-center justify-center gap-1 mb-3">
-              <span className="text-3xl font-black text-blinkit-green">
-                blink
-              </span>
-              <span className="text-3xl font-black text-blinkit-yellow">
-                it
-              </span>
-            </div>
+            <img
+              src="/images/blinkit-logo.svg"
+              alt="Blinkit"
+              className="h-10 mx-auto mb-3 object-contain"
+            />
             <h1 className="text-xl font-bold text-gray-800">Welcome back</h1>
             <p className="text-sm text-gray-500 mt-1">Login to your account</p>
           </div>
