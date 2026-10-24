@@ -21,7 +21,10 @@ export default function App({ Component, pageProps }) {
               name="viewport"
               content="width=device-width, initial-scale=1, maximum-scale=1"
             />
-            <link rel="icon" href="/images/logo.png" />
+            <meta name="theme-color" content="#FFE141" />
+            <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+            <link rel="shortcut icon" href="/favicon.ico" />
+            <link rel="apple-touch-icon" href="/images/blinkit-app-icon.svg" />
           </Head>
           <Layout>
             <Component {...pageProps} />

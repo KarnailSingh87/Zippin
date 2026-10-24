@@ -41,21 +41,12 @@ export default function Layout({ children }) {
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3 md:gap-6">
           {/* Left: Official Blinkit Logo & Location */}
           <div className="flex items-center gap-3 shrink-0">
-            <Link href="/" className="flex items-center gap-2 group">
+            <Link href="/" className="flex items-center group shrink-0">
               <img
-                src="/images/logo.png"
+                src="/images/blinkit-logo.svg"
                 alt="Blinkit"
-                className="h-8 md:h-9 w-auto object-contain transition-transform group-hover:scale-105"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                className="h-8 md:h-10 w-auto object-contain transition-transform group-hover:scale-105"
               />
-              <div className="flex items-baseline select-none">
-                <span className="text-2xl md:text-3xl font-black tracking-tight text-[#1F1F1F]">
-                  blink
-                </span>
-                <span className="text-2xl md:text-3xl font-black tracking-tight text-[#0C831F]">
-                  it
-                </span>
-              </div>
             </Link>
 
             {/* Vertical Divider */}
