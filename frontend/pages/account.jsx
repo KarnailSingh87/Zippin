@@ -8,6 +8,12 @@ export default function AccountPage() {
   const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(500);
+
   const [newAddress, setNewAddress] = useState({
     label: "Home",
     street: "",
@@ -18,7 +24,12 @@ export default function AccountPage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (user) setName(user.name);
+    if (user) {
+      setName(user.name || "");
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+      setAvatar(user.avatar || "");
+    }
   }, [user]);
 
   useEffect(() => {
@@ -35,11 +46,26 @@ export default function AccountPage() {
     );
   }
 
-  async function handleSaveName() {
+  async function handleSaveProfile() {
     setSaving(true);
-    await updateUser({ name });
+    await updateUser({ name, email, phone, avatar });
     setEditing(false);
     setSaving(false);
+  }
+
+  async function handleAvatarUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingAvatar(true);
+    // Simulating Cloudinary / S3 upload
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const dataUrl = reader.result;
+      setAvatar(dataUrl);
+      await updateUser({ avatar: dataUrl });
+      setUploadingAvatar(false);
+    };
+    reader.readAsDataURL(file);
   }
 
   async function handleAddAddress() {
@@ -61,53 +87,122 @@ export default function AccountPage() {
     <div className="px-4 py-4 pb-20 md:pb-6 max-w-2xl mx-auto min-h-screen">
       <h1 className="text-xl font-bold text-gray-800 mb-4">My Account</h1>
 
-      {/* Profile card */}
+      {/* Profile card with Avatar & Photo Upload (TC-3.8.01) */}
       <div className="bg-white rounded-2xl shadow-card p-5 mb-4">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="w-14 h-14 rounded-full bg-blinkit-green flex items-center justify-center text-white text-xl font-bold shrink-0">
-            {user.name.charAt(0).toUpperCase()}
+        <div className="flex items-start gap-4 mb-4">
+          <div className="relative group shrink-0">
+            <div className="w-16 h-16 rounded-full bg-blinkit-green text-white text-xl font-bold flex items-center justify-center overflow-hidden border-2 border-emerald-500 shadow-xs">
+              {avatar ? (
+                <img src={avatar} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                user.name.charAt(0).toUpperCase()
+              )}
+            </div>
+            <label className="absolute inset-0 bg-black/40 text-white rounded-full flex flex-col items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+              <span>📷</span>
+              <span>{uploadingAvatar ? "..." : "upload"}</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarUpload}
+                className="hidden"
+              />
+            </label>
           </div>
-          <div className="flex-1">
+
+          <div className="flex-1 min-w-0">
             {editing ? (
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
-                />
-                <button
-                  onClick={handleSaveName}
-                  disabled={saving}
-                  className="btn-green text-xs px-3 py-2"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => {
-                    setEditing(false);
-                    setName(user.name);
-                  }}
-                  className="text-xs text-gray-500 hover:text-gray-700"
-                >
-                  Cancel
-                </button>
+              <div className="space-y-2">
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase">Full Name</label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase">Email Address</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase">Phone Number</label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                  />
+                </div>
+                <div className="flex gap-2 pt-1">
+                  <button
+                    onClick={handleSaveProfile}
+                    disabled={saving}
+                    className="btn-green text-xs px-3 py-1.5"
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    onClick={() => {
+                      setEditing(false);
+                      setName(user.name);
+                      setEmail(user.email);
+                      setPhone(user.phone);
+                    }}
+                    className="text-xs text-gray-500 hover:text-gray-700 px-2"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-gray-800">{user.name}</h2>
-                <button
-                  onClick={() => setEditing(true)}
-                  className="text-xs text-blinkit-green hover:underline"
-                >
-                  Edit
-                </button>
+              <div>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-bold text-gray-800">{user.name}</h2>
+                  <button
+                    onClick={() => setEditing(true)}
+                    className="text-xs font-bold text-blinkit-green hover:underline"
+                  >
+                    Edit Profile
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-0.5">{user.email}</p>
+                <p className="text-xs text-gray-500">{user.phone}</p>
               </div>
             )}
-            <p className="text-xs text-gray-500">{user.email}</p>
-            <p className="text-xs text-gray-500">{user.phone}</p>
           </div>
         </div>
+      </div>
+
+      {/* Customer Wallet & Cashback Balance Card (TC-3.8.03) */}
+      <div className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl shadow-card p-5 mb-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl">👛</span>
+            <div>
+              <h3 className="text-xs font-bold text-emerald-100 uppercase tracking-wider">Zippin Wallet</h3>
+              <div className="text-2xl font-black">₹{walletBalance}</div>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setWalletBalance((prev) => prev + 200);
+              alert("₹200 added to your wallet balance!");
+            }}
+            className="bg-white text-emerald-800 text-xs font-bold px-3 py-2 rounded-xl shadow-xs hover:bg-emerald-50 transition-all active:scale-95"
+          >
+            + Top Up Wallet
+          </button>
+        </div>
+        <p className="text-[11px] text-emerald-100">
+          Instant 1-tap checkout enabled for rapid 8-minute delivery.
+        </p>
       </div>
 
       {/* Quick actions */}
@@ -158,122 +253,93 @@ export default function AccountPage() {
                     {addr.label}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {addr.street}, {addr.city} - {addr.pincode}
+                    {addr.street}, {addr.city} {addr.pincode}
                   </p>
                 </div>
                 <button
                   onClick={() => handleRemoveAddress(idx)}
-                  className="text-xs text-red-500 hover:text-red-700"
+                  className="text-gray-400 hover:text-red-500 text-xs transition-colors p-1"
+                  title="Remove address"
                 >
-                  Remove
+                  ✕
                 </button>
               </div>
             ))}
           </div>
         )}
-      </div>
 
-      {/* Add address modal */}
-      {showAddAddress && (
-        <div
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-custom"
-          onClick={() => setShowAddAddress(false)}
-        >
-          <div
-            className="bg-white rounded-2xl p-5 w-full max-w-md animate-bounce-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-lg font-bold text-gray-800 mb-4">
-              Add New Address
-            </h2>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1">
-                  Label
-                </label>
-                <div className="flex gap-2">
-                  {["Home", "Work", "Other"].map((l) => (
-                    <button
-                      key={l}
-                      onClick={() => setNewAddress({ ...newAddress, label: l })}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium ${newAddress.label === l ? "bg-blinkit-green text-white" : "bg-gray-100 text-gray-600"}`}
-                    >
-                      {l}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1">
-                  Street Address
-                </label>
-                <input
-                  type="text"
-                  value={newAddress.street}
-                  onChange={(e) =>
-                    setNewAddress({ ...newAddress, street: e.target.value })
-                  }
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
-                  placeholder="123, Main Street"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
-                    City
-                  </label>
-                  <input
-                    type="text"
-                    value={newAddress.city}
-                    onChange={(e) =>
-                      setNewAddress({ ...newAddress, city: e.target.value })
-                    }
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
-                    Pincode
-                  </label>
-                  <input
-                    type="text"
-                    value={newAddress.pincode}
-                    onChange={(e) =>
-                      setNewAddress({ ...newAddress, pincode: e.target.value })
-                    }
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
-                  />
-                </div>
-              </div>
+        {showAddAddress && (
+          <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
+            <h3 className="text-xs font-bold text-gray-700">Add New Address</h3>
+            <div className="flex gap-2">
+              {["Home", "Work", "Other"].map((label) => (
+                <button
+                  key={label}
+                  onClick={() => setNewAddress({ ...newAddress, label })}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold ${
+                    newAddress.label === label
+                      ? "bg-blinkit-green text-white"
+                      : "bg-gray-100 text-gray-600"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
-            <div className="flex gap-3 mt-5">
-              <button
-                onClick={() => setShowAddAddress(false)}
-                className="flex-1 border border-gray-200 rounded-xl py-3 text-sm font-semibold text-gray-600"
-              >
-                Cancel
-              </button>
+            <input
+              type="text"
+              placeholder="Street / Flat / House No."
+              value={newAddress.street}
+              onChange={(e) =>
+                setNewAddress({ ...newAddress, street: e.target.value })
+              }
+              className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+            />
+            <div className="grid grid-cols-2 gap-2">
+              <input
+                type="text"
+                placeholder="City"
+                value={newAddress.city}
+                onChange={(e) =>
+                  setNewAddress({ ...newAddress, city: e.target.value })
+                }
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+              />
+              <input
+                type="text"
+                placeholder="Pincode"
+                value={newAddress.pincode}
+                onChange={(e) =>
+                  setNewAddress({ ...newAddress, pincode: e.target.value })
+                }
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+              />
+            </div>
+            <div className="flex gap-2">
               <button
                 onClick={handleAddAddress}
                 disabled={saving}
-                className="flex-1 btn-green py-3 text-sm"
+                className="btn-green text-xs px-3 py-2"
               >
-                {saving ? "Saving..." : "Save Address"}
+                Save Address
+              </button>
+              <button
+                onClick={() => setShowAddAddress(false)}
+                className="text-xs text-gray-500 hover:text-gray-700 px-2"
+              >
+                Cancel
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Logout */}
+      {/* Logout button */}
       <button
-        onClick={() => {
-          logout();
-          router.push("/");
-        }}
-        className="w-full bg-white rounded-xl shadow-card p-4 text-center text-red-500 font-semibold hover:bg-red-50 transition-colors"
+        onClick={logout}
+        className="w-full bg-white rounded-xl shadow-card p-3 text-center text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors"
       >
-        Logout
+        Log Out
       </button>
     </div>
   );

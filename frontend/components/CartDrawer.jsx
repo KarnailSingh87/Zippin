@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
@@ -17,12 +17,34 @@ export default function CartDrawer() {
   const { user } = useAuth();
   const router = useRouter();
 
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponDiscount, setCouponDiscount] = useState(0);
+
+  function handleApplyCoupon() {
+    const code = couponCode.trim().toUpperCase();
+    if (!code) return;
+    if (code === "WELCOME50" || code === "ZIPPIN50" || code === "SAVE20") {
+      const discount = code === "SAVE20" ? Math.round(totalPrice * 0.2) : 50;
+      setAppliedCoupon(code);
+      setCouponDiscount(discount);
+    } else {
+      alert("Invalid promo/coupon code");
+    }
+  }
+
+  function handleRemoveCoupon() {
+    setAppliedCoupon(null);
+    setCouponDiscount(0);
+    setCouponCode("");
+  }
+
   if (!isOpen) return null;
 
   const FREE_DELIVERY_THRESHOLD = 199;
   const deliveryFee = totalPrice >= FREE_DELIVERY_THRESHOLD || totalPrice === 0 ? 0 : 25;
   const handlingCharge = 0;
-  const grandTotal = totalPrice + deliveryFee + handlingCharge;
+  const grandTotal = Math.max(0, totalPrice - couponDiscount) + deliveryFee + handlingCharge;
   const amountNeededForFreeDelivery = Math.max(0, FREE_DELIVERY_THRESHOLD - totalPrice);
   const freeDeliveryProgress = Math.min(100, Math.round((totalPrice / FREE_DELIVERY_THRESHOLD) * 100));
 
@@ -190,6 +212,45 @@ export default function CartDrawer() {
                     </div>
                   );
                 })}
+              </div>
+
+              {/* Coupons & Promo Codes */}
+              <div className="bg-white rounded-2xl p-3 border border-gray-100 shadow-xs">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+                    <span>🏷️</span> Apply Coupon / Promo Code
+                  </span>
+                  {appliedCoupon && (
+                    <button
+                      onClick={handleRemoveCoupon}
+                      className="text-[11px] font-bold text-red-600 hover:text-red-700 cursor-pointer"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                {appliedCoupon ? (
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 flex items-center justify-between text-xs">
+                    <span className="font-bold text-emerald-800">Coupon &quot;{appliedCoupon}&quot; Applied!</span>
+                    <span className="font-black text-[#0C831F]">-₹{couponDiscount}</span>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Enter promo code (e.g. WELCOME50)"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                      className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5 text-xs font-medium uppercase outline-none focus:border-[#0C831F]"
+                    />
+                    <button
+                      onClick={handleApplyCoupon}
+                      className="bg-[#0C831F] hover:bg-[#0a701b] text-white text-xs font-bold px-3 py-1.5 rounded-xl transition-all"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Bill Details */}

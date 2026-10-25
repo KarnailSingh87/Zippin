@@ -127,7 +127,14 @@ export default function ProductModal({ product, onClose }) {
               </div>
             </div>
 
-            {qty === 0 ? (
+            {product.stock === 0 ? (
+              <button
+                disabled
+                className="flex-1 bg-gray-100 border border-gray-300 text-gray-400 py-3 px-6 rounded-xl font-bold text-sm uppercase cursor-not-allowed text-center"
+              >
+                out of stock
+              </button>
+            ) : qty === 0 ? (
               <button
                 onClick={() => {
                   addItem(product);

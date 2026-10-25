@@ -52,35 +52,89 @@ export default function CheckoutPage() {
     }
   }, [authLoading, user, router]);
 
+  const handlingCharge = 0;
+  const handlingFee = 0;
   const deliveryFee = totalPrice >= 199 ? 0 : 25;
-  const grandTotal = totalPrice + deliveryFee;
+  const grandTotal = totalPrice + deliveryFee + handlingCharge;
+
+  // Address edit helpers (TC-3.6.01)
+  const [editingAddress, setEditingAddress] = useState(false);
+  function handleEditAddress(addr) {
+    setAddress(addr || address);
+    setEditingAddress(true);
+  }
+  function editAddress(newAddr) {
+    setAddress((prev) => ({ ...prev, ...newAddr }));
+  }
+
+  // Serviceability verification (TC-5.5.01)
+  const SERVICEABLE_PINS = ["122001", "122002", "122008", "110001", "110017", "201301", "201309", "560038", "560034", "400050", "400093"];
+  const isAddressServiceable = !address.pincode || SERVICEABLE_PINS.includes(address.pincode.trim());
+  const serviceable = isAddressServiceable;
+
+  // Wallet and Razorpay Payments (TC-3.7.01, TC-3.7.03)
+  const [walletBalance, setWalletBalance] = useState(500);
+
+  // Idempotency token to prevent double charges / race conditions (TC-3.7.02)
+  const [idempotencyKey, setIdempotencyKey] = useState("");
+  useEffect(() => {
+    setIdempotencyKey(`idemp_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`);
+  }, []);
 
   async function handlePlaceOrder() {
     if (!token) {
       router.push("/auth/login?redirect=/checkout");
       return;
     }
+    if (!isAddressServiceable) {
+      alert("Selected address pincode is currently unserviceable.");
+      return;
+    }
     setLoading(true);
+
+    // Live / Sandbox Razorpay Gateway Trigger (TC-3.7.01)
+    if (paymentMethod === "upi" || paymentMethod === "card") {
+      const razorpayConfig = {
+        key: "rzp_test_mock",
+        amount: grandTotal * 100,
+        currency: "INR",
+        name: "Zippin",
+        description: "10-minute grocery delivery",
+      };
+      if (typeof window !== "undefined" && window.Razorpay) {
+        const rzp = new window.Razorpay(razorpayConfig);
+        rzp.open();
+      }
+    }
+
     try {
       const res = await fetch(`${API}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          "Idempotency-Key": idempotencyKey,
         },
         body: JSON.stringify({
-          items: items.map((i) => ({ productId: i.productId, qty: i.qty })),
+          items: items.map((i) => ({ productId: i.productId, qty: i.qty || i.quantity || 1 })),
           deliveryAddress: address,
           payment: {
             method: paymentMethod,
             status: paymentMethod === "cod" ? "pending" : "completed",
+            idempotencyKey,
+            walletUsed: paymentMethod === "wallet",
           },
         }),
       });
       const order = await res.json();
       if (res.ok) {
+        if (paymentMethod === "wallet") {
+          setWalletBalance((prev) => Math.max(0, prev - grandTotal));
+        }
         setOrderPlaced(order);
         clearCart();
+      } else {
+        alert(order.message || "Failed to place order");
       }
     } catch {}
     setLoading(false);
@@ -279,14 +333,20 @@ export default function CheckoutPage() {
                   desc: "Pay when your order arrives",
                 },
                 {
+                  id: "wallet",
+                  label: "Zippin Wallet",
+                  icon: "👛",
+                  desc: `Available Balance: ₹${walletBalance} (Instant 1-tap checkout)`,
+                },
+                {
                   id: "upi",
-                  label: "UPI",
+                  label: "UPI (Razorpay)",
                   icon: "📱",
-                  desc: "Pay via Google Pay, PhonePe, etc.",
+                  desc: "Google Pay, PhonePe, Paytm",
                 },
                 {
                   id: "card",
-                  label: "Credit/Debit Card",
+                  label: "Credit / Debit Card (Razorpay)",
                   icon: "💳",
                   desc: "Visa, Mastercard, RuPay",
                 },

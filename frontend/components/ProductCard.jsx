@@ -84,9 +84,16 @@ export default function ProductCard({ product }) {
               )}
             </div>
 
-            {/* ADD / Quantity Counter Button */}
+            {/* ADD / Quantity Counter Button or Out of Stock Badge */}
             <div onClick={(e) => e.stopPropagation()}>
-              {qty === 0 ? (
+              {product.stock === 0 || isOutOfStock ? (
+                <button
+                  disabled
+                  className="border border-gray-300 text-gray-400 bg-gray-100 font-bold text-[11px] uppercase px-2.5 py-1.5 rounded-lg cursor-not-allowed"
+                >
+                  out of stock
+                </button>
+              ) : qty === 0 ? (
                 <button
                   onClick={() => {
                     addItem(product);
