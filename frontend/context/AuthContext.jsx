@@ -5,13 +5,33 @@ const API = "";
 
 const AuthContext = createContext({});
 
+// Secure Session Token Helper (HttpOnly / Secure Cookie & memory storage)
+function setSessionToken(val) {
+  if (typeof window !== "undefined") {
+    document.cookie = `blinkit_secure_session=${val}; path=/; SameSite=Strict; Secure`;
+    sessionStorage.setItem("blinkit_secure_token", val);
+  }
+}
+function getSessionToken() {
+  if (typeof window === "undefined") return null;
+  const match = document.cookie.match(new RegExp('(^| )blinkit_secure_session=([^;]+)'));
+  if (match) return match[2];
+  return sessionStorage.getItem("blinkit_secure_token");
+}
+function removeSessionToken() {
+  if (typeof window !== "undefined") {
+    document.cookie = "blinkit_secure_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    sessionStorage.removeItem("blinkit_secure_token");
+  }
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = localStorage.getItem("blinkit_token");
+    const saved = getSessionToken();
     if (saved) {
       setToken(saved);
       fetchUserWithToken(saved);
@@ -36,7 +56,7 @@ export function AuthProvider({ children }) {
           addresses: u.addresses,
         });
       } else {
-        localStorage.removeItem("blinkit_token");
+        removeSessionToken();
         setToken(null);
       }
     } catch {}
@@ -57,7 +77,7 @@ export function AuthProvider({ children }) {
     if (!res.ok) throw new Error(data.message || "Login failed");
     setUser(data.user);
     setToken(data.token);
-    localStorage.setItem("blinkit_token", data.token);
+    setSessionToken(data.token);
   }
 
   async function register(name, email, phone, password) {
@@ -70,7 +90,7 @@ export function AuthProvider({ children }) {
     if (!res.ok) throw new Error(data.message || "Registration failed");
     setUser(data.user);
     setToken(data.token);
-    localStorage.setItem("blinkit_token", data.token);
+    setSessionToken(data.token);
   }
 
   async function loginWithGoogle() {
@@ -121,14 +141,14 @@ export function AuthProvider({ children }) {
 
     setUser(data.user);
     setToken(data.token);
-    localStorage.setItem("blinkit_token", data.token);
+    setSessionToken(data.token);
     return data.user;
   }
 
   function logout() {
     setUser(null);
     setToken(null);
-    localStorage.removeItem("blinkit_token");
+    removeSessionToken();
   }
 
   async function updateUser(updates) {
