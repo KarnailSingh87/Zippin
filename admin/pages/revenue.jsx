@@ -88,7 +88,7 @@ export default function RevenueAnalytics() {
             </span>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Real-time Gross Merchandise Value (GMV), payment gateway reconciliation, and dark store ledger.
+            Real-time Gross Merchandise Value (GMV), payment gateway reconciliation, and store facility ledger.
           </p>
         </div>
 
@@ -194,7 +194,7 @@ export default function RevenueAnalytics() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-base font-extrabold text-gray-900 dark:text-white">7-Day Revenue Velocity</h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Daily sales volume across 6 dark stores</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Daily sales volume for Hamirpur store facility</p>
           </div>
           <div className="text-xs font-bold text-[#0C831F] dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-200/60 dark:border-emerald-800/60">
             Peak: Saturday (₹1,208)
@@ -230,7 +230,7 @@ export default function RevenueAnalytics() {
         </div>
       </div>
 
-      {/* Two Columns: Payment Gateways & Dark Store Hub Breakdown */}
+      {/* Two Columns: Payment Gateways & Store Performance Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Payment Methods */}
         <div className="bg-white dark:bg-[#121212] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4 transition-colors duration-300">
@@ -287,16 +287,16 @@ export default function RevenueAnalytics() {
           </div>
         </div>
 
-        {/* Dark Store Hubs Performance */}
+        {/* Store Performance */}
         <div className="bg-white dark:bg-[#121212] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4 transition-colors duration-300">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-gray-900 dark:text-white">Dark Store Revenue Leaders</h2>
-            <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase">6 Active Hubs</span>
+            <h2 className="text-base font-extrabold text-gray-900 dark:text-white">Store Revenue Performance</h2>
+            <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase">Single Branch</span>
           </div>
 
           <div className="space-y-2.5 text-xs">
             {storeBreakdown.length === 0 ? (
-              <div className="text-center py-6 text-gray-500 dark:text-gray-400 font-medium">Loading fulfillment centers...</div>
+              <div className="text-center py-6 text-gray-500 dark:text-gray-400 font-medium">Loading store fulfillment data...</div>
             ) : (
               storeBreakdown.map((s, idx) => (
                 <div

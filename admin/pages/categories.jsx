@@ -192,7 +192,7 @@ export default function CategoriesAdmin() {
               Operational
             </div>
             <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-1">
-              Synced with Dark Stores
+              Synced with Hamirpur Store
             </div>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-400 flex items-center justify-center text-white text-xl shadow-md shadow-purple-500/20">

@@ -417,7 +417,7 @@ export default function ProductsAdmin() {
         <div>
           <h1 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Catalog Management</h1>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-            Manage live pricing, inventory allocations, and availability across dark stores
+            Manage live pricing, inventory allocations, and availability in Hamirpur Store
           </p>
         </div>
         <div className="flex items-center gap-2.5">
@@ -987,7 +987,7 @@ export default function ProductsAdmin() {
                   {editId ? "Edit Catalog Item" : "Create New Catalog Item"}
                 </h3>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                  Real-time synchronization across dark store shelves and user cart
+                  Real-time synchronization across Hamirpur store shelves and user cart
                 </p>
               </div>
               <button
@@ -1099,17 +1099,17 @@ export default function ProductsAdmin() {
                   />
                 </div>
 
-                {/* Primary Dark Store Assignment */}
+                {/* Store Facility Assignment */}
                 <div>
                   <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
-                    Primary Dark Store
+                    Store Facility
                   </label>
                   <select
                     value={form.storeId}
                     onChange={(e) => setForm({ ...form, storeId: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   >
-                    <option value="" className="dark:bg-[#121212]">All Dark Stores (Global Stock)</option>
+                    <option value="" className="dark:bg-[#121212]">Hamirpur Store (Exclusive)</option>
                     {stores.map((s) => (
                       <option key={s._id} value={s._id} className="dark:bg-[#121212]">
                         {s.name} ({s.city})

@@ -105,7 +105,7 @@ export default function Dashboard() {
       ["Total Completed Orders", stats.orders],
       ["Live Catalog SKUs", stats.products],
       ["Active Categories", stats.categories],
-      ["Dark Store Hubs", stats.stores],
+      ["Store Facility", "Hamirpur Hub"],
       ["Active Fleet Riders", `${stats.activePartners}/${stats.partners}`],
       ["Export Date", new Date().toLocaleString("en-IN")],
     ];
@@ -194,10 +194,10 @@ export default function Dashboard() {
       shadow: "shadow-purple-500/20",
     },
     {
-      title: "Dark Store Hubs",
-      value: `${stats.stores} Hub`,
-      change: "99.2% SLA",
-      subtitle: "Hamirpur District Hub",
+      title: "Store Facility",
+      value: "Hamirpur Hub",
+      change: "Operational",
+      subtitle: "Main Bazaar, Gandhi Chowk",
       link: "/stores",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -466,22 +466,22 @@ export default function Dashboard() {
           </p>
         </Link>
 
-        {/* Dark Stores Card */}
+        {/* Store Facility Card */}
         <Link
           href="/stores"
           className="bg-white dark:bg-[#121212] hover:border-indigo-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Dark Stores</p>
-              <p className="text-lg font-black text-gray-900 dark:text-white mt-1">{stats.stores} Hubs</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Store Facility</p>
+              <p className="text-lg font-black text-gray-900 dark:text-white mt-1">Hamirpur Branch</p>
             </div>
             <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center font-bold text-lg">
               🏬
             </div>
           </div>
           <p className="text-[11px] text-indigo-600 dark:text-indigo-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Warehouses</span>
+            <span>Store Branch</span>
             <span>→</span>
           </p>
         </Link>
@@ -537,7 +537,7 @@ export default function Dashboard() {
               </h3>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Real-time fulfillment stream across active dark stores</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Real-time fulfillment stream from Hamirpur Store</p>
           </div>
 
           <div className="flex items-center gap-3">
@@ -581,7 +581,7 @@ export default function Dashboard() {
                 <tr className="text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2">
                   <th className="pb-3">Order ID</th>
                   <th className="pb-3">Customer</th>
-                  <th className="pb-3">Dark Store Hub</th>
+                  <th className="pb-3">Fulfillment Store</th>
                   <th className="pb-3">Fulfillment Crew</th>
                   <th className="pb-3">Total Amount</th>
                   <th className="pb-3">Status</th>
@@ -611,7 +611,7 @@ export default function Dashboard() {
                       </td>
                       <td className="py-3">
                         <span className="font-medium text-gray-700 dark:text-gray-300 truncate block max-w-[150px]">
-                          {storeName.replace("Zippin Dark Store #", "Hub #")}
+                          {storeName.replace("Zippin Dark Store #", "Store #").replace("Zippin Store #", "Store #")}
                         </span>
                       </td>
                       <td className="py-3">
@@ -662,18 +662,18 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Active Dark Store Hubs Network Overview */}
+      {/* Active Store Facility Overview */}
       {stores.length > 0 && (
         <div className="bg-white dark:bg-[#121212] rounded-2xl shadow-sm border border-gray-200/80 dark:border-gray-800 p-5 transition-colors duration-300">
           <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800 mb-4">
             <div>
               <h3 className="font-black text-gray-900 dark:text-white text-sm tracking-tight">
-                Active Fulfillment Network
+                Hamirpur Store Facility Details
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Instant delivery dispatch hubs</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Exclusive fulfillment store branch for Hamirpur District</p>
             </div>
             <Link href="/stores" className="text-xs font-bold text-[#0C831F] dark:text-emerald-400 hover:underline">
-              View All 6 Hubs →
+              Manage Store Facility →
             </Link>
           </div>
 

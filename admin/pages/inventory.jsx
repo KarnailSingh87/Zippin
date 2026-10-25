@@ -112,10 +112,10 @@ export default function InventoryAdmin() {
             </div>
             <div>
               <h1 className="text-xl font-black text-gray-900 dark:text-white font-outfit">
-                Dark Store Inventory & SKUs
+                Store Inventory & SKUs
               </h1>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Real-time micro-warehouse stock counts, restock thresholds & rapid shelf adjustment
+                Real-time Hamirpur store stock counts, restock thresholds & rapid shelf adjustment
               </p>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function InventoryAdmin() {
         {/* Store Selector */}
         <div className="flex items-center gap-2 bg-gray-50 dark:bg-[#1a1f2c] p-2 rounded-2xl border border-gray-200 dark:border-gray-700">
           <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider pl-2 whitespace-nowrap">
-            Hub:
+            Store:
           </label>
           <select
             value={selectedStore}
@@ -255,7 +255,7 @@ export default function InventoryAdmin() {
                 {filteredInventory.length === 0 ? (
                   <tr>
                     <td colSpan="6" className="text-center py-12 text-gray-500 dark:text-gray-400 font-medium">
-                      No inventory records found for this dark store.
+                      No inventory records found for this store facility.
                     </td>
                   </tr>
                 ) : (

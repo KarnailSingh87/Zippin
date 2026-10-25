@@ -208,7 +208,7 @@ export default function DeliveryRidersAdmin() {
                 Delivery Fleet & Riders
               </h1>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Manage 10-minute quick-commerce delivery riders, transit status & dark store allocation
+                Manage 10-minute quick-commerce delivery riders, transit status & store allocation
               </p>
             </div>
           </div>
@@ -304,7 +304,7 @@ export default function DeliveryRidersAdmin() {
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
             <h2 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">
-              Live City Fleet Telematics & GPS Map (NCR Dark Stores)
+              Live Fleet Telematics & GPS Map (Hamirpur Store Catchment)
             </h2>
           </div>
           <span className="text-[11px] text-gray-500 dark:text-gray-400 font-medium">Auto-refreshing every 5s • GPS coordinates active</span>
@@ -313,12 +313,12 @@ export default function DeliveryRidersAdmin() {
           <div className="absolute inset-0 bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:16px_16px] opacity-70"></div>
           
           <div className="absolute top-1/3 left-1/4 flex flex-col items-center">
-            <div className="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-500/20 flex items-center justify-center text-[8px] text-white font-bold">🏪</div>
-            <span className="text-[9px] font-bold text-blue-300 mt-1">Sector 29 Hub</span>
+            <div className="w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20 flex items-center justify-center text-[8px] text-white font-bold">🏪</div>
+            <span className="text-[9px] font-bold text-emerald-300 mt-1">Hamirpur Store #501</span>
           </div>
           <div className="absolute bottom-1/3 right-1/3 flex flex-col items-center">
-            <div className="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-500/20 flex items-center justify-center text-[8px] text-white font-bold">🏪</div>
-            <span className="text-[9px] font-bold text-blue-300 mt-1">Cyber City Hub</span>
+            <div className="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-500/20 flex items-center justify-center text-[8px] text-white font-bold">📍</div>
+            <span className="text-[9px] font-bold text-blue-300 mt-1">Gandhi Chowk Hub</span>
           </div>
 
           {riders.slice(0, 8).map((r, i) => {
@@ -408,7 +408,7 @@ export default function DeliveryRidersAdmin() {
                 <th className="py-3.5 px-5">Rider Partner</th>
                 <th className="py-3.5 px-5">Contact Details</th>
                 <th className="py-3.5 px-5">City Hub</th>
-                <th className="py-3.5 px-5">Assigned Dark Store</th>
+                <th className="py-3.5 px-5">Assigned Store Branch</th>
                 <th className="py-3.5 px-5">Vehicle Specs</th>
                 <th className="py-3.5 px-5">Delivery Stats</th>
                 <th className="py-3.5 px-5">Fleet Status</th>
@@ -537,7 +537,7 @@ export default function DeliveryRidersAdmin() {
                   {editId ? "Edit Delivery Rider" : "Onboard Delivery Rider"}
                 </h2>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                  Rider credential verification and dark store assignment
+                  Rider credential verification and store assignment
                 </p>
               </div>
               <button
@@ -653,14 +653,14 @@ export default function DeliveryRidersAdmin() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
-                    Assigned Dark Store
+                    Assigned Store Branch
                   </label>
                   <select
                     value={form.currentStore}
                     onChange={(e) => setForm({ ...form, currentStore: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   >
-                    <option value="">Unassigned (Global Pool)</option>
+                    <option value="">Hamirpur Store (Exclusive)</option>
                     {stores.map((s) => (
                       <option key={s._id} value={s._id}>
                         {s.name} ({s.city})

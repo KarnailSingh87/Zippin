@@ -39,7 +39,7 @@ export default function AISearch({ isOpen, onClose }) {
         { type: "action", label: "Store Pickers & Packers (6 In-Store Pickers)", path: "/pickers", badge: "SLA Velocity", icon: "📦" },
         { type: "action", label: "Manage Homepage Banners & Posters", path: "/hero-management", badge: "Hero Editor", icon: "🖼️" },
         { type: "action", label: "Live Customer Orders & Fulfillment", path: "/orders", badge: "Orders", icon: "📋" },
-        { type: "action", label: "Dark Store Fulfillment Hubs", path: "/stores", badge: "Hubs", icon: "🏬" },
+        { type: "action", label: "Hamirpur Store Facility & Ops", path: "/stores", badge: "Store", icon: "🏬" },
         { type: "action", label: "Revenue & Settlements Analytics", path: "/revenue", badge: "Finance", icon: "💰" },
       ]);
       setSelectedIndex(0);
@@ -56,7 +56,7 @@ export default function AISearch({ isOpen, onClose }) {
         matched.push({
           type: "action",
           label: "View Delivery Riders & Fleet Management",
-          sub: "10 registered delivery riders across NCR dark stores",
+          sub: "10 registered delivery riders at Hamirpur Store",
           path: "/riders",
           badge: "Fleet Page",
           icon: "🛵",
@@ -165,7 +165,7 @@ export default function AISearch({ isOpen, onClose }) {
                 label: s.name,
                 sub: s.address || s.city,
                 path: `/stores`,
-                badge: "Dark Store",
+                badge: "Store Facility",
                 icon: "🏬",
               });
             });
@@ -221,7 +221,7 @@ export default function AISearch({ isOpen, onClose }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search products, orders, categories, dark stores..."
+            placeholder="Search products, orders, categories, store inventory..."
             className="w-full bg-transparent text-sm md:text-base font-medium text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none"
           />
           {loading && (

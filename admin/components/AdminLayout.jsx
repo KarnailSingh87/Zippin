@@ -59,9 +59,9 @@ const NAV_GROUPS = [
       },
       {
         href: "/stores",
-        label: "Dark Stores",
-        badge: "6 Hubs",
-        badgeColor: "bg-purple-50 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200/80 dark:border-transparent",
+        label: "Store Facility",
+        badge: "Hamirpur",
+        badgeColor: "bg-emerald-50 dark:bg-emerald-500/20 text-[#0C831F] dark:text-emerald-300 border border-emerald-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -279,7 +279,7 @@ export default function AdminLayout({ children }) {
                   ADMIN
                 </span>
               </div>
-              <div className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">10-Minute Dark Store Ops</div>
+              <div className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Hamirpur Store Operations</div>
             </div>
           </Link>
           <button
@@ -391,7 +391,7 @@ export default function AdminLayout({ children }) {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0C831F] dark:bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0C831F] dark:bg-emerald-400"></span>
               </span>
-              <span>Hubs Live</span>
+              <span>Store Live</span>
               <span className="text-emerald-400 dark:text-emerald-500">•</span>
               <span className="font-mono text-emerald-700 dark:text-emerald-400">{currentTime || "11:42 AM"}</span>
             </div>

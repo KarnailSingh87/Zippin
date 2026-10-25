@@ -224,7 +224,7 @@ export default function StorePickersAdmin() {
                 Store Pickers & Packers
               </h1>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Manage dark store in-house picking staff, assembly bag packing speed & shift fulfillment SLAs
+                Manage in-house store picking staff, assembly bag packing speed & shift fulfillment SLAs
               </p>
             </div>
           </div>
@@ -359,7 +359,7 @@ export default function StorePickersAdmin() {
               onChange={(e) => setFilterStore(e.target.value)}
               className="text-xs bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
             >
-              <option value="">All Dark Stores</option>
+              <option value="">Hamirpur Store</option>
               {stores.map((s) => (
                 <option key={s._id} value={s._id}>
                   {s.name}
@@ -391,7 +391,7 @@ export default function StorePickersAdmin() {
               <tr>
                 <th className="py-3.5 px-5">Picker Associate</th>
                 <th className="py-3.5 px-5">Contact Details</th>
-                <th className="py-3.5 px-5">Assigned Dark Store</th>
+                <th className="py-3.5 px-5">Assigned Store</th>
                 <th className="py-3.5 px-5">Work Shift</th>
                 <th className="py-3.5 px-5">Pick Velocity SLA</th>
                 <th className="py-3.5 px-5">Bags Packed</th>
@@ -521,7 +521,7 @@ export default function StorePickersAdmin() {
                   {editId ? "Edit Store Picker" : "Onboard Store Picker & Packer"}
                 </h2>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                  Dark store terminal credentials & shift assignment
+                  In-store terminal credentials & shift assignment
                 </p>
               </div>
               <button
@@ -638,14 +638,14 @@ export default function StorePickersAdmin() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
-                    Assigned Dark Store
+                    Assigned Store Facility
                   </label>
                   <select
                     value={form.currentStore}
                     onChange={(e) => setForm({ ...form, currentStore: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   >
-                    <option value="">Unassigned</option>
+                    <option value="">Hamirpur Store (Exclusive)</option>
                     {stores.map((s) => (
                       <option key={s._id} value={s._id}>
                         {s.name} ({s.city})

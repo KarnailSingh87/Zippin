@@ -187,7 +187,7 @@ export default function OrdersAdmin() {
       });
       if (res.ok) {
         const updated = await res.json();
-        showToast("Dark Store hub assigned successfully!");
+        showToast("Store facility assigned successfully!");
         setOrders((prev) =>
           prev.map((o) => (o._id === orderId ? { ...o, store: updated.store } : o))
         );
@@ -544,17 +544,17 @@ export default function OrdersAdmin() {
                   Dispatch & Fulfillment Assignment
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {/* Dark Store */}
+                  {/* Store Facility */}
                   <div className="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
                     <label className="text-[10px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider block mb-1">
-                      🏬 Dark Store Hub
+                      🏬 Store Facility
                     </label>
                     <select
                       value={selectedOrder.store?._id || selectedOrder.store || ""}
                       onChange={(e) => handleAssignStore(selectedOrder._id, e.target.value)}
                       className="w-full p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                     >
-                      <option value="">Select Dark Store</option>
+                      <option value="">Select Store Facility</option>
                       {stores.map((s) => (
                         <option key={s._id} value={s._id}>
                           {s.name} ({s.code || s.city})
