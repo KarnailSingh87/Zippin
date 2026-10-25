@@ -40,6 +40,13 @@ const DeliverySchema = new mongoose.Schema({
   pickedUpAt: { type: Date, default: null },
   deliveredAt: { type: Date, default: null },
   deliveryNotes: { type: String, default: "" },
+  otp: { type: String, default: "" },
+  proofPhoto: { type: String, default: "" },
+  podUrl: { type: String, default: "" },
+  location: {
+    lat: { type: Number, default: 28.4595 },
+    lng: { type: Number, default: 77.0266 },
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

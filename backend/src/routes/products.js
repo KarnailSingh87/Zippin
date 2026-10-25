@@ -22,6 +22,9 @@ router.get("/", async (req, res) => {
     }
 
     if (category) {
+      if (typeof category !== "string") {
+        return res.status(400).json({ message: "Invalid category parameter data type" });
+      }
       // Check if it's a valid ObjectId
       const isValidId = /^[0-9a-fA-F]{24}$/.test(category);
       if (isValidId) {
@@ -79,15 +82,41 @@ router.get("/", async (req, res) => {
     const sortField = req.query.sortBy || "sortOrder";
     const sortOrder = req.query.order === "desc" ? -1 : 1;
 
-    const products = await Product.find(filter)
+    let products = await Product.find(filter)
       .populate("category", "name slug")
       .populate("storeId", "name code city area")
       .sort({ [sortField]: sortOrder, createdAt: -1 })
       .limit(limit);
+
+    // Fuzzy typo-tolerance fallback if q returned 0 results
+    if (products.length === 0 && q && q.length > 3) {
+      const reducedQ = q.slice(0, -1).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const fallbackFilter = { ...filter };
+      fallbackFilter.$or = [{ title: new RegExp(reducedQ, "i") }, { tags: new RegExp(reducedQ, "i") }];
+      products = await Product.find(fallbackFilter)
+        .populate("category", "name slug")
+        .populate("storeId", "name code city area")
+        .sort({ [sortField]: sortOrder, createdAt: -1 })
+        .limit(limit);
+    }
+
     res.json(products);
   } catch (err) {
     console.error("Products query error:", err);
     res.status(500).json({ error: err.message, products: [] });
+  }
+});
+
+// Buy Again smart recommendations
+router.get("/buy-again", async (req, res) => {
+  try {
+    const popularStaples = await Product.find({ isAvailable: true })
+      .populate("category", "name slug")
+      .sort({ stock: -1, createdAt: -1 })
+      .limit(10);
+    res.json(popularStaples);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch buy-again products" });
   }
 });
 

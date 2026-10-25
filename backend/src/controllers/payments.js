@@ -29,6 +29,14 @@ export async function getPayment(req, res) {
       .populate("customer", "name email phone firstName lastName")
       .populate("order");
     if (!payment) return res.status(404).json({ message: "Payment not found" });
+
+    const isAdmin = req.user?.roles?.includes("admin") || req.user?.role === "admin";
+    const paymentCustId = (payment.customer?._id || payment.customer)?.toString();
+    const isOwner = paymentCustId === req.user?.sub?.toString();
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ message: "Forbidden: Access denied to other customer payments" });
+    }
+
     res.json(payment);
   } catch (err) {
     console.error("Get payment error:", err);
@@ -42,6 +50,14 @@ export async function getPaymentByOrder(req, res) {
     const payment = await Payment.findOne({ order: req.params.orderId })
       .populate("customer", "name email phone");
     if (!payment) return res.status(404).json({ message: "Payment not found for this order" });
+
+    const isAdmin = req.user?.roles?.includes("admin") || req.user?.role === "admin";
+    const paymentCustId = (payment.customer?._id || payment.customer)?.toString();
+    const isOwner = paymentCustId === req.user?.sub?.toString();
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ message: "Forbidden: Access denied to other customer payments" });
+    }
+
     res.json(payment);
   } catch (err) {
     console.error("Get order payment error:", err);
