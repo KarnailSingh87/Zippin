@@ -354,12 +354,12 @@ export default function Layout({ children }) {
                 Useful Links
               </h5>
               <ul className="space-y-2 text-xs text-gray-600 font-medium">
-                <li><a href="#" className="hover:text-[#0C831F]">About Us</a></li>
-                <li><a href="#" className="hover:text-[#0C831F]">Careers</a></li>
-                <li><a href="#" className="hover:text-[#0C831F]">Zippin Blog</a></li>
-                <li><a href="#" className="hover:text-[#0C831F]">Press & Media</a></li>
-                <li><a href="#" className="hover:text-[#0C831F]">Lead</a></li>
-                <li><a href="#" className="hover:text-[#0C831F]">Customer Support</a></li>
+                <li><Link href="/about" className="hover:text-[#0C831F]">About Us</Link></li>
+                <li><Link href="/careers" className="hover:text-[#0C831F]">Careers</Link></li>
+                <li><Link href="/blog" className="hover:text-[#0C831F]">Zippin Blog</Link></li>
+                <li><Link href="/press" className="hover:text-[#0C831F]">Press & Media</Link></li>
+                <li><Link href="/lead" className="hover:text-[#0C831F]">Lead</Link></li>
+                <li><Link href="/support" className="hover:text-[#0C831F]">Customer Support</Link></li>
               </ul>
             </div>
 
@@ -368,10 +368,10 @@ export default function Layout({ children }) {
                 Partner with us
               </h5>
               <ul className="space-y-2 text-xs text-gray-600 font-medium">
-                <li><a href="#" className="hover:text-[#0C831F]">Franchise Opportunities</a></li>
-                <li><a href="#" className="hover:text-[#0C831F]">Seller Central</a></li>
-                <li><a href="#" className="hover:text-[#0C831F]">Warehouse Partner</a></li>
-                <li><a href="#" className="hover:text-[#0C831F]">Deliver with Zippin</a></li>
+                <li><Link href="/partner/franchise" className="hover:text-[#0C831F]">Franchise Opportunities</Link></li>
+                <li><Link href="/partner/seller" className="hover:text-[#0C831F]">Seller Central</Link></li>
+                <li><Link href="/partner/warehouse" className="hover:text-[#0C831F]">Warehouse Partner</Link></li>
+                <li><Link href="/partner/delivery" className="hover:text-[#0C831F]">Deliver with Zippin</Link></li>
               </ul>
             </div>
 
@@ -383,8 +383,8 @@ export default function Layout({ children }) {
                 Experience lightning-fast grocery delivery on your mobile phone.
               </p>
               <div className="space-y-2.5">
-                <a
-                  href="#"
+                <Link
+                  href="/download"
                   className="flex items-center gap-3 bg-black hover:bg-neutral-900 border border-neutral-800 text-white px-3.5 py-2.5 rounded-xl cursor-pointer transition-all hover:scale-[1.02] shadow-sm"
                   aria-label="Download on the App Store"
                 >
@@ -395,9 +395,9 @@ export default function Layout({ children }) {
                     <div className="text-[10px] uppercase tracking-wide opacity-80 font-normal">Download on the</div>
                     <div className="text-sm font-semibold tracking-tight">App Store</div>
                   </div>
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  href="/download"
                   className="flex items-center gap-3 bg-black hover:bg-neutral-900 border border-neutral-800 text-white px-3.5 py-2.5 rounded-xl cursor-pointer transition-all hover:scale-[1.02] shadow-sm"
                   aria-label="Get it on Google Play"
                 >
@@ -411,7 +411,7 @@ export default function Layout({ children }) {
                     <div className="text-[9px] uppercase tracking-wider opacity-80 font-medium">Get it on</div>
                     <div className="text-sm font-semibold tracking-tight">Google Play</div>
                   </div>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
