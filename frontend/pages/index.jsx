@@ -74,7 +74,7 @@ function ShelfCarousel({ title, subtitle, products, slug }) {
         className="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-2"
       >
         {products.map((p) => (
-          <div key={p._id} className="w-[165px] sm:w-[185px] md:w-[195px] shrink-0">
+          <div key={p._id} className="w-[165px] sm:w-[185px] md:w-[195px] shrink-0 flex flex-col">
             <ProductCard product={p} />
           </div>
         ))}

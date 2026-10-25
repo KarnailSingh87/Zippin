@@ -32,7 +32,7 @@ export const BALANCED_CATALOG = {
     {
       title: "Center Fresh Spearmint Chewing Gum Stick",
       price: 50,
-      mrp: 50,
+      mrp: 55,
       unit: "5 sticks pack",
       tags: ["paan-corner", "gum", "center-fresh", "spearmint", "mints"],
       rating: 4.9,

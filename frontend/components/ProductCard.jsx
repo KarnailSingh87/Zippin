@@ -133,19 +133,21 @@ export default function ProductCard({ product }) {
       <div
         ref={scope}
         onClick={() => setShowModal(true)}
-        className="bg-white rounded-2xl border border-gray-200/80 p-3 hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-all duration-200 flex flex-col justify-between group relative cursor-pointer overflow-visible select-none"
+        className="bg-white rounded-2xl border border-gray-200/80 p-3 hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-all duration-200 flex flex-col justify-between group relative cursor-pointer overflow-visible select-none h-full"
       >
         {/* Top row: Discount & Delivery Time */}
-        <div className="flex items-center justify-between gap-1 mb-1">
+        <div className="flex items-center justify-between gap-1 mb-1 min-h-[22px]">
           {discountPercent > 0 ? (
             <span className="bg-[#256FEF] text-white text-[10px] font-black px-1.5 py-0.5 rounded-md tracking-tight uppercase shadow-xs">
               {discountPercent}% OFF
             </span>
           ) : (
-            <span />
+            <span className="invisible text-[10px] py-0.5 px-1.5 select-none" aria-hidden="true">
+              0% OFF
+            </span>
           )}
 
-          <div className="flex items-center gap-1 bg-gray-100/90 text-gray-600 px-1.5 py-0.5 rounded-md text-[10px] font-bold">
+          <div className="flex items-center gap-1 bg-gray-100/90 text-gray-600 px-1.5 py-0.5 rounded-md text-[10px] font-bold shrink-0">
             <svg className="w-2.5 h-2.5 text-[#0C831F]" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
             </svg>
@@ -198,19 +200,23 @@ export default function ProductCard({ product }) {
             {product.title}
           </h3>
 
-          <div className="text-[11px] font-medium text-gray-500 mt-1 mb-2">
+          <div className="text-[11px] font-medium text-gray-500 mt-1 mb-2 line-clamp-1 min-h-[16px]">
             {product.unit || "1 unit"}
           </div>
 
           {/* Pricing & Motion Add Button */}
           <div className="mt-auto pt-2 flex items-center justify-between gap-1.5 border-t border-gray-100">
-            <div>
+            <div className="min-h-[34px] flex flex-col justify-center">
               <div className="text-sm sm:text-base font-black text-gray-900 leading-none">
                 ₹{product.price}
               </div>
-              {hasDiscount && (
+              {hasDiscount ? (
                 <div className="text-[11px] text-gray-400 line-through leading-none mt-1">
                   ₹{product.mrp}
+                </div>
+              ) : (
+                <div className="text-[11px] leading-none mt-1 invisible select-none" aria-hidden="true">
+                  ₹{product.price}
                 </div>
               )}
             </div>
