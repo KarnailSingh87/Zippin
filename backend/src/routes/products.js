@@ -62,8 +62,27 @@ router.patch("/:id/stock", authenticate, requireAdmin, async (req, res) => {
     { stock: Number(stock) },
     { new: true }
   );
-  if (!p) return res.status(404).json({ message: "Not found" });
-  res.json(p);
+// bulk operations
+router.post("/bulk", authenticate, requireAdmin, async (req, res) => {
+  const { action, ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ message: "No product IDs provided" });
+  }
+
+  if (action === "activate") {
+    await Product.updateMany({ _id: { $in: ids } }, { isAvailable: true });
+    return res.json({ message: `Activated ${ids.length} products` });
+  } else if (action === "deactivate") {
+    await Product.updateMany({ _id: { $in: ids } }, { isAvailable: false });
+    return res.json({ message: `Deactivated ${ids.length} products` });
+  } else if (action === "delete") {
+    await Product.deleteMany({ _id: { $in: ids } });
+    return res.json({ message: `Deleted ${ids.length} products` });
+  } else if (action === "feature") {
+    await Product.updateMany({ _id: { $in: ids } }, { isFeatured: true });
+    return res.json({ message: `Featured ${ids.length} products` });
+  }
+  res.status(400).json({ message: "Invalid action" });
 });
 
 // get by slug
