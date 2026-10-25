@@ -10,6 +10,8 @@ import payments from "./payments.js";
 import inventory from "./inventory.js";
 import deliveries from "./deliveries.js";
 import internal from "./internal.js";
+import banners from "./banners.js";
+import analytics from "./analytics.js";
 
 const router = Router();
 router.use("/auth", auth);
@@ -23,5 +25,7 @@ router.use("/payments", payments);
 router.use("/inventory", inventory);
 router.use("/deliveries", deliveries);
 router.use("/internal", internal);
+router.use("/banners", banners);
+router.use("/analytics", analytics);
 
 export default router;

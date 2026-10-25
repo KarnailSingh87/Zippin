@@ -1,22 +1,16 @@
 import { useEffect, useState } from "react";
+import OrderInvoiceModal from "../components/OrderInvoiceModal";
 
 const API = "";
 
-const STATUSES = [
-  "placed",
-  "confirmed",
-  "picking",
-  "out_for_delivery",
-  "delivered",
-  "cancelled",
-];
-const STATUS_COLORS = {
-  placed: "bg-blue-100 text-blue-700",
-  confirmed: "bg-purple-100 text-purple-700",
-  picking: "bg-yellow-100 text-yellow-700",
-  out_for_delivery: "bg-orange-100 text-orange-700",
-  delivered: "bg-green-100 text-green-700",
-  cancelled: "bg-red-100 text-red-700",
+const STATUS_CONFIG = {
+  all: { label: "All Orders", color: "bg-gray-100 text-gray-700" },
+  placed: { label: "Order Placed", color: "bg-blue-100 text-blue-800 border-blue-200" },
+  confirmed: { label: "Confirmed", color: "bg-purple-100 text-purple-800 border-purple-200" },
+  picking: { label: "Picking / Packing", color: "bg-amber-100 text-amber-800 border-amber-200" },
+  out_for_delivery: { label: "Out for Delivery", color: "bg-orange-100 text-orange-800 border-orange-200" },
+  delivered: { label: "Delivered", color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
+  cancelled: { label: "Cancelled", color: "bg-rose-100 text-rose-800 border-rose-200" },
 };
 
 export default function OrdersAdmin() {
@@ -24,20 +18,25 @@ export default function OrdersAdmin() {
   const [stores, setStores] = useState([]);
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [invoiceOrder, setInvoiceOrder] = useState(null);
+  const [toastMessage, setToastMessage] = useState("");
 
   const token =
     typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
 
-  async function load() {
-    try {
-      const url = filter
-        ? `${API}/api/orders/all?status=${filter}`
-        : `${API}/api/orders/all`;
+  function showToast(msg) {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(""), 3500);
+  }
 
+  async function loadData() {
+    try {
+      setLoading(true);
       const [ordRes, storeRes, partnerRes] = await Promise.all([
-        fetch(url, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API}/api/orders/all`, { headers: { Authorization: `Bearer ${token}` } }),
         fetch(`${API}/api/stores`),
         fetch(`${API}/api/delivery-partners`),
       ]);
@@ -45,29 +44,60 @@ export default function OrdersAdmin() {
       if (ordRes.ok) setOrders(await ordRes.json());
       if (storeRes.ok) setStores(await storeRes.json());
       if (partnerRes.ok) setPartners(await partnerRes.json());
-    } catch {}
+    } catch (e) {
+      console.error("Error loading orders", e);
+    }
     setLoading(false);
   }
 
   useEffect(() => {
-    load();
-  }, [filter]);
+    loadData();
+  }, []);
 
   async function updateStatus(orderId, newStatus) {
-    await fetch(`${API}/api/orders/${orderId}/status`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        status: newStatus,
-        note: `Status updated to ${newStatus}`,
-      }),
-    });
-    load();
-    if (selectedOrder?._id === orderId) {
-      setSelectedOrder((prev) => ({ ...prev, status: newStatus }));
+    try {
+      const res = await fetch(`${API}/api/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status: newStatus,
+          note: `Status updated to ${newStatus} by Admin`,
+        }),
+      });
+
+      if (res.ok) {
+        showToast(`Order status updated to ${newStatus.toUpperCase()}`);
+        setOrders((prev) =>
+          prev.map((o) => (o._id === orderId ? { ...o, status: newStatus } : o))
+        );
+        if (selectedOrder?._id === orderId) {
+          setSelectedOrder((prev) => ({ ...prev, status: newStatus }));
+        }
+      }
+    } catch (err) {
+      console.error("Failed to update status", err);
+    }
+  }
+
+  async function handleAssignPartner(orderId, partnerId) {
+    try {
+      const res = await fetch(`${API}/api/orders/${orderId}/assign-partner`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ partnerId }),
+      });
+      if (res.ok) {
+        showToast("Rider partner assigned successfully!");
+        loadData();
+      }
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -82,346 +112,397 @@ export default function OrdersAdmin() {
         body: JSON.stringify({ storeId }),
       });
       if (res.ok) {
-        const updated = await res.json();
-        if (selectedOrder?._id === orderId) setSelectedOrder(updated);
-        load();
+        showToast("Dark Store hub assigned successfully!");
+        loadData();
       }
-    } catch {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  async function handleAssignPartner(orderId, partnerId) {
-    try {
-      const res = await fetch(`${API}/api/orders/${orderId}/assign-partner`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ partnerId }),
-      });
-      if (res.ok) {
-        const updated = await res.json();
-        if (selectedOrder?._id === orderId) setSelectedOrder(updated);
-        load();
-      }
-    } catch {}
-  }
+  // Filtered orders
+  const filteredOrders = orders.filter((order) => {
+    const matchesTab = activeTab === "all" || order.status === activeTab;
+    const q = searchQuery.toLowerCase();
+    const matchesSearch =
+      !searchQuery ||
+      order.orderNumber?.toLowerCase().includes(q) ||
+      order.customerName?.toLowerCase().includes(q) ||
+      order.customerPhone?.includes(q) ||
+      order.deliveryAddress?.addressLine?.toLowerCase().includes(q);
+    return matchesTab && matchesSearch;
+  });
 
-  if (loading)
-    return <div className="h-64 bg-white rounded-xl animate-pulse" />;
+  // Tab counts
+  const tabCounts = {
+    all: orders.length,
+    placed: orders.filter((o) => o.status === "placed").length,
+    confirmed: orders.filter((o) => o.status === "confirmed").length,
+    picking: orders.filter((o) => o.status === "picking").length,
+    out_for_delivery: orders.filter((o) => o.status === "out_for_delivery").length,
+    delivered: orders.filter((o) => o.status === "delivered").length,
+    cancelled: orders.filter((o) => o.status === "cancelled").length,
+  };
 
   return (
-    <div>
-      {/* Filter tabs */}
-      <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
-        <button
-          onClick={() => setFilter("")}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${!filter ? "bg-admin-green text-white" : "bg-white text-gray-600 border"}`}
-        >
-          All ({orders.length})
-        </button>
-        {STATUSES.map((s) => (
-          <button
-            key={s}
-            onClick={() => setFilter(s)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors capitalize ${filter === s ? "bg-admin-green text-white" : "bg-white text-gray-600 border"}`}
-          >
-            {s.replace(/_/g, " ")}
-          </button>
-        ))}
-      </div>
-
-      {orders.length === 0 ? (
-        <div className="bg-white rounded-xl p-8 text-center text-gray-400 text-sm">
-          No orders found
-        </div>
-      ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-gray-50 text-xs text-gray-500 uppercase">
-                  <th className="px-4 py-3 text-left font-medium">Order</th>
-                  <th className="px-4 py-3 text-left font-medium">Customer</th>
-                  <th className="px-4 py-3 text-left font-medium">Dark Store</th>
-                  <th className="px-4 py-3 text-left font-medium">Delivery Partner</th>
-                  <th className="px-4 py-3 text-left font-medium">Total</th>
-                  <th className="px-4 py-3 text-left font-medium">Payment</th>
-                  <th className="px-4 py-3 text-left font-medium">Status</th>
-                  <th className="px-4 py-3 text-left font-medium">Date</th>
-                  <th className="px-4 py-3 text-left font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {orders.map((order) => (
-                  <tr key={order._id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 font-mono text-xs text-gray-600 font-bold">
-                      #{order._id.slice(-6).toUpperCase()}
-                    </td>
-                    <td className="px-4 py-3">
-                      <p className="text-sm font-medium text-gray-800">
-                        {order.user?.name || "N/A"}
-                      </p>
-                      <p className="text-[10px] text-gray-400">
-                        {order.user?.phone || order.user?.email}
-                      </p>
-                    </td>
-                    <td className="px-4 py-3 text-xs text-gray-700">
-                      {order.store?.name ? (
-                        <div>
-                          <p className="font-semibold text-gray-800 truncate max-w-[140px]">
-                            {order.store.name}
-                          </p>
-                          <p className="text-[10px] text-gray-400">
-                            {order.store.city}
-                          </p>
-                        </div>
-                      ) : (
-                        <span className="text-gray-400 italic">Auto-hub</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-xs">
-                      {order.partner?.name ? (
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-sm">🛵</span>
-                          <div>
-                            <p className="font-semibold text-gray-800">
-                              {order.partner.name}
-                            </p>
-                            <p className="text-[10px] text-gray-400 font-mono">
-                              {order.partner.phone}
-                            </p>
-                          </div>
-                        </div>
-                      ) : (
-                        <span className="text-amber-600 font-medium text-xs bg-amber-50 px-2 py-0.5 rounded">
-                          Unassigned
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 font-bold text-gray-900">₹{order.total}</td>
-                    <td className="px-4 py-3 text-xs text-gray-600">
-                      <span className="capitalize font-medium">
-                        {order.payment?.method || "cod"}
-                      </span>
-                      <p
-                        className={`text-[10px] font-semibold ${
-                          order.payment?.status === "completed"
-                            ? "text-green-600"
-                            : "text-amber-600"
-                        }`}
-                      >
-                        {order.payment?.status || "pending"}
-                      </p>
-                    </td>
-                    <td className="px-4 py-3">
-                      <select
-                        value={order.status}
-                        onChange={(e) =>
-                          updateStatus(order._id, e.target.value)
-                        }
-                        className={`text-[10px] font-bold px-2 py-1 rounded-md border-0 cursor-pointer ${STATUS_COLORS[order.status] || "bg-gray-100"}`}
-                      >
-                        {STATUSES.map((s) => (
-                          <option key={s} value={s}>
-                            {s.replace(/_/g, " ").toUpperCase()}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="px-4 py-3 text-xs text-gray-500">
-                      {new Date(order.createdAt).toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </td>
-                    <td className="px-4 py-3">
-                      <button
-                        onClick={() => setSelectedOrder(order)}
-                        className="text-xs text-blue-600 hover:underline font-semibold"
-                      >
-                        View & Assign
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+    <div className="space-y-6">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#0C831F] text-white px-4 py-2.5 rounded-2xl shadow-xl text-xs font-bold animate-bounce">
+          <span>✓</span>
+          <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Order detail modal */}
-      {selectedOrder && (
-        <div
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedOrder(null)}
-        >
-          <div
-            className="bg-white rounded-2xl p-6 w-full max-w-lg max-h-[85vh] overflow-y-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
+      {/* Invoice Modal */}
+      <OrderInvoiceModal
+        order={invoiceOrder}
+        isOpen={Boolean(invoiceOrder)}
+        onClose={() => setInvoiceOrder(null)}
+      />
+
+      {/* Top Header & Metrics */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">
+              Customer Orders & Dispatch
+            </h1>
+            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase">
+              Live Feed
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">
+            Real-time quick-commerce fulfillment pipeline across 6 dark stores in Gurugram & Delhi NCR.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={loadData}
+            className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition-colors"
           >
-            <div className="flex items-center justify-between mb-4 pb-2 border-b">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Status Filter Tabs */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        {Object.entries(STATUS_CONFIG).map(([key, config]) => {
+          const isActive = activeTab === key;
+          const count = tabCounts[key] || 0;
+          return (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                isActive
+                  ? "bg-[#0C831F] text-white shadow-sm shadow-[#0C831F]/30"
+                  : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200/80"
+              }`}
+            >
+              <span>{config.label}</span>
+              <span
+                className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
+                  isActive ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Search Input Bar */}
+      <div className="flex items-center gap-3 bg-white p-3 rounded-2xl border border-gray-200/80 shadow-xs">
+        <svg className="w-4 h-4 text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Filter by Order ID (e.g. ORD-9821), Customer name, phone number, address..."
+          className="w-full text-xs md:text-sm bg-transparent focus:outline-none text-gray-800 placeholder-gray-400"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery("")}
+            className="text-xs text-gray-400 hover:text-gray-600 font-bold px-2 py-1"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+
+      {/* Orders Table */}
+      <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs overflow-hidden">
+        {loading ? (
+          <div className="p-12 text-center text-gray-400 text-sm">
+            <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+            Loading orders pipeline...
+          </div>
+        ) : filteredOrders.length === 0 ? (
+          <div className="p-12 text-center text-gray-400 text-sm">
+            No orders found matching the selected filter.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="bg-gray-50/80 text-gray-500 font-bold border-b border-gray-200/80 uppercase tracking-wider text-[10px]">
+                  <th className="py-3 px-4">Order ID & Date</th>
+                  <th className="py-3 px-4">Customer & Phone</th>
+                  <th className="py-3 px-4">Items / Total</th>
+                  <th className="py-3 px-4">Fulfillment Hub</th>
+                  <th className="py-3 px-4">Status Pipeline</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {filteredOrders.map((ord) => {
+                  const statusConf = STATUS_CONFIG[ord.status] || STATUS_CONFIG.placed;
+                  return (
+                    <tr key={ord._id} className="hover:bg-gray-50/70 transition-colors">
+                      {/* ID & Date */}
+                      <td className="py-3.5 px-4 font-mono font-bold text-gray-900">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[#0C831F] font-black">{ord.orderNumber}</span>
+                        </div>
+                        <div className="text-[10px] text-gray-400 font-sans mt-0.5">
+                          {new Date(ord.createdAt || Date.now()).toLocaleTimeString("en-IN", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            day: "numeric",
+                            month: "short",
+                          })}
+                        </div>
+                      </td>
+
+                      {/* Customer */}
+                      <td className="py-3.5 px-4">
+                        <div className="font-extrabold text-gray-800">{ord.customerName || "Customer"}</div>
+                        <div className="text-[11px] text-gray-500">{ord.customerPhone || "+91 98765 43210"}</div>
+                        <div className="text-[10px] text-gray-400 truncate max-w-[180px]">
+                          {ord.deliveryAddress?.addressLine}
+                        </div>
+                      </td>
+
+                      {/* Items & Total */}
+                      <td className="py-3.5 px-4">
+                        <div className="font-black text-gray-900 text-sm">₹{ord.total}</div>
+                        <div className="text-[11px] text-gray-500">
+                          {(ord.items || []).length} items •{" "}
+                          <span className="uppercase text-[10px] font-bold text-gray-400">
+                            {ord.paymentMethod || "UPI"}
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Hub & Rider */}
+                      <td className="py-3.5 px-4">
+                        <div className="font-semibold text-gray-800">
+                          {ord.store?.name || "Sector 43 Hub"}
+                        </div>
+                        <div className="text-[10px] text-emerald-600 font-bold mt-0.5">
+                          🛵 {ord.partner?.name || "Assigning Rider..."}
+                        </div>
+                      </td>
+
+                      {/* Status Dropdown */}
+                      <td className="py-3.5 px-4">
+                        <select
+                          value={ord.status}
+                          onChange={(e) => updateStatus(ord._id, e.target.value)}
+                          className={`text-[11px] font-bold px-2.5 py-1.5 rounded-xl border focus:outline-none cursor-pointer ${statusConf.color}`}
+                        >
+                          <option value="placed">Placed</option>
+                          <option value="confirmed">Confirmed</option>
+                          <option value="picking">Picking / Packing</option>
+                          <option value="out_for_delivery">Out for Delivery</option>
+                          <option value="delivered">Delivered</option>
+                          <option value="cancelled">Cancelled</option>
+                        </select>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="py-3.5 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          {/* Invoice Button */}
+                          <button
+                            onClick={() => setInvoiceOrder(ord)}
+                            title="Generate & Print Tax Invoice"
+                            className="p-1.5 text-gray-500 hover:text-[#0C831F] hover:bg-emerald-50 rounded-lg border border-gray-200 transition-colors"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            </svg>
+                          </button>
+
+                          {/* Details Button */}
+                          <button
+                            onClick={() => setSelectedOrder(ord)}
+                            className="px-2.5 py-1.5 text-xs font-bold text-gray-700 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                          >
+                            Details
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Order Detail Drawer Modal */}
+      {selectedOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-gray-50/50">
               <div>
-                <h2 className="text-lg font-bold text-gray-800">
-                  Order #{selectedOrder._id.slice(-6).toUpperCase()}
-                </h2>
-                <p className="text-xs text-gray-400">
-                  {new Date(selectedOrder.createdAt).toLocaleString("en-IN")}
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-black text-base text-gray-900">
+                    {selectedOrder.orderNumber}
+                  </span>
+                  <span
+                    className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
+                      (STATUS_CONFIG[selectedOrder.status] || STATUS_CONFIG.placed).color
+                    }`}
+                  >
+                    {selectedOrder.status?.toUpperCase()}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Ordered on {new Date(selectedOrder.createdAt).toLocaleString("en-IN")}
                 </p>
               </div>
-              <button
-                onClick={() => setSelectedOrder(null)}
-                className="text-gray-400 hover:text-gray-600 text-lg"
-              >
-                ✕
-              </button>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setInvoiceOrder(selectedOrder);
+                    setSelectedOrder(null);
+                  }}
+                  className="px-3 py-1.5 bg-emerald-50 text-[#0C831F] border border-emerald-200 font-bold text-xs rounded-xl hover:bg-emerald-100"
+                >
+                  Print Invoice
+                </button>
+                <button
+                  onClick={() => setSelectedOrder(null)}
+                  className="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
 
-            <div className="space-y-4 text-sm">
-              {/* Customer & Address */}
-              <div className="bg-gray-50 rounded-xl p-3.5 space-y-1.5 text-xs">
-                <p className="text-gray-800 font-semibold">
-                  Customer: {selectedOrder.user?.name || "N/A"}{" "}
-                  <span className="font-normal text-gray-500">
-                    ({selectedOrder.user?.phone || selectedOrder.user?.email})
-                  </span>
+            {/* Modal Content */}
+            <div className="flex-1 overflow-y-auto p-5 space-y-5 text-xs">
+              {/* Customer info */}
+              <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                  Customer & Delivery
                 </p>
-                {selectedOrder.deliveryAddress && (
-                  <p className="text-gray-600">
-                    📍 {selectedOrder.deliveryAddress.street},{" "}
-                    {selectedOrder.deliveryAddress.city} - {selectedOrder.deliveryAddress.pincode}
-                  </p>
-                )}
-                <div className="flex items-center gap-2 pt-1">
-                  <span className="text-gray-500">Order Status:</span>
-                  <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                      STATUS_COLORS[selectedOrder.status]
-                    }`}
-                  >
-                    {selectedOrder.status?.replace(/_/g, " ").toUpperCase()}
-                  </span>
-                </div>
-              </div>
-
-              {/* ER Fulfillment: Dark Store & Delivery Partner Assignment */}
-              <div className="border border-blue-100 bg-blue-50/40 rounded-xl p-3.5 space-y-3">
-                <p className="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center gap-1.5">
-                  <span>🏬</span> Hyperlocal Fulfillment & Dispatch
+                <p className="font-extrabold text-sm text-gray-900">{selectedOrder.customerName}</p>
+                <p className="text-gray-600 font-semibold">{selectedOrder.customerPhone}</p>
+                <p className="text-gray-500 mt-1">
+                  {selectedOrder.deliveryAddress?.addressLine}, {selectedOrder.deliveryAddress?.city} -{" "}
+                  {selectedOrder.deliveryAddress?.pincode}
                 </p>
-
-                {/* Dark Store */}
-                <div>
-                  <label className="block text-[11px] font-semibold text-gray-600 mb-1">
-                    Fulfillment Dark Store:
-                  </label>
-                  <select
-                    value={selectedOrder.store?._id || selectedOrder.store || ""}
-                    onChange={(e) =>
-                      handleAssignStore(selectedOrder._id, e.target.value)
-                    }
-                    className="w-full text-xs border rounded-lg px-2.5 py-1.5 bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-admin-green"
-                  >
-                    <option value="">Select Dark Store</option>
-                    {stores.map((s) => (
-                      <option key={s._id} value={s._id}>
-                        {s.name} ({s.city} - {s.area})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Delivery Partner */}
-                <div>
-                  <label className="block text-[11px] font-semibold text-gray-600 mb-1">
-                    Assigned Delivery Partner:
-                  </label>
-                  <select
-                    value={selectedOrder.partner?._id || selectedOrder.partner || ""}
-                    onChange={(e) =>
-                      handleAssignPartner(selectedOrder._id, e.target.value)
-                    }
-                    className="w-full text-xs border rounded-lg px-2.5 py-1.5 bg-white text-gray-800 focus:outline-none focus:ring-1 focus:ring-admin-green"
-                  >
-                    <option value="">Select Delivery Partner</option>
-                    {partners.map((p) => (
-                      <option key={p._id} value={p._id}>
-                        {p.name || p.firstName} ({p.phone}) — {p.status.toUpperCase()}
-                      </option>
-                    ))}
-                  </select>
-                </div>
               </div>
 
-              {/* Payment Details */}
-              <div className="bg-gray-50 rounded-xl p-3.5 space-y-1 text-xs">
-                <p className="font-semibold text-gray-700">Payment Breakdown</p>
-                <div className="flex justify-between text-gray-600">
-                  <span>Method</span>
-                  <span className="font-medium uppercase">
-                    {selectedOrder.payment?.method || "COD"}
-                  </span>
-                </div>
-                <div className="flex justify-between text-gray-600">
-                  <span>Status</span>
-                  <span
-                    className={`font-semibold capitalize ${
-                      selectedOrder.payment?.status === "completed"
-                        ? "text-green-600"
-                        : "text-amber-600"
-                    }`}
-                  >
-                    {selectedOrder.payment?.status || "pending"}
-                  </span>
-                </div>
-                {selectedOrder.payment?.transactionId && (
-                  <div className="flex justify-between text-gray-600">
-                    <span>Transaction Ref</span>
-                    <span className="font-mono text-[10px]">
-                      {selectedOrder.payment.transactionId}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Items */}
+              {/* Order items with Genuine Blinkit Photos */}
               <div>
-                <h3 className="font-semibold text-xs text-gray-700 mb-2">
-                  Items ({selectedOrder.items?.length})
-                </h3>
-                <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
-                  {selectedOrder.items?.map((item, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs">
-                      <span className="text-gray-500 font-mono">{item.qty}×</span>
-                      <span className="flex-1 text-gray-800">{item.name}</span>
-                      <span className="font-semibold">
-                        ₹{item.price * item.qty}
-                      </span>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                  Ordered Items ({selectedOrder.items?.length || 0})
+                </p>
+                <div className="divide-y divide-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
+                  {(selectedOrder.items || []).map((it, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 bg-white">
+                      <div className="flex items-center gap-3">
+                        {it.image && (
+                          <img
+                            src={it.image}
+                            alt=""
+                            className="w-10 h-10 rounded-lg object-contain bg-white border border-gray-100 p-0.5"
+                          />
+                        )}
+                        <div>
+                          <p className="font-extrabold text-gray-900">{it.title || it.name}</p>
+                          <p className="text-gray-400 text-[11px]">{it.unit} • Qty: {it.quantity || it.qty || 1}</p>
+                        </div>
+                      </div>
+                      <div className="font-black text-gray-900">₹{it.total || it.price}</div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Total */}
-              <div className="border-t pt-3 space-y-1 text-xs">
-                <div className="flex justify-between text-gray-500">
-                  <span>Subtotal</span>
-                  <span>₹{selectedOrder.subtotal}</span>
+              {/* Store & Rider Assignments */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                    Fulfillment Dark Store
+                  </label>
+                  <select
+                    value={selectedOrder.store?._id || selectedOrder.store || ""}
+                    onChange={(e) => handleAssignStore(selectedOrder._id, e.target.value)}
+                    className="w-full p-2 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                  >
+                    <option value="">Select Dark Store</option>
+                    {stores.map((s) => (
+                      <option key={s._id} value={s._id}>
+                        {s.name} ({s.code || s.city})
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <div className="flex justify-between text-gray-500">
-                  <span>Delivery</span>
-                  <span>
-                    {selectedOrder.deliveryFee === 0
-                      ? "FREE"
-                      : `₹${selectedOrder.deliveryFee}`}
-                  </span>
+
+                <div>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                    Assigned Delivery Rider
+                  </label>
+                  <select
+                    value={selectedOrder.partner?._id || selectedOrder.partner || ""}
+                    onChange={(e) => handleAssignPartner(selectedOrder._id, e.target.value)}
+                    className="w-full p-2 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                  >
+                    <option value="">Assign Rider</option>
+                    {partners.map((p) => (
+                      <option key={p._id} value={p._id}>
+                        {p.name} ({p.vehicleNumber || p.phone})
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <div className="flex justify-between font-bold text-sm text-gray-900 pt-1">
-                  <span>Total</span>
-                  <span>₹{selectedOrder.total}</span>
+              </div>
+
+              {/* Financial summary */}
+              <div className="bg-emerald-50/60 rounded-2xl p-4 border border-emerald-100 space-y-1.5">
+                <div className="flex justify-between text-gray-600">
+                  <span>Subtotal:</span>
+                  <span className="font-semibold text-gray-800">₹{selectedOrder.subtotal || selectedOrder.total - 33}</span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Delivery Charge:</span>
+                  <span className="font-semibold text-gray-800">₹{selectedOrder.deliveryFee || 25}</span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Taxes (5%):</span>
+                  <span className="font-semibold text-gray-800">₹{selectedOrder.tax || 8}</span>
+                </div>
+                <div className="border-t border-emerald-200/80 pt-1.5 flex justify-between text-sm font-black text-gray-900">
+                  <span>Total Amount:</span>
+                  <span className="text-[#0C831F]">₹{selectedOrder.total}</span>
                 </div>
               </div>
             </div>
