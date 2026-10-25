@@ -373,24 +373,24 @@ export default function ProductsAdmin() {
       {/* Top Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-black text-gray-900 tracking-tight">Catalog Management</h1>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <h1 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Catalog Management</h1>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
             Manage live pricing, inventory allocations, and availability across dark stores
           </p>
         </div>
         <div className="flex items-center gap-2.5">
           <button
             onClick={exportCSV}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl text-xs font-semibold transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl text-xs font-semibold transition-all shadow-sm cursor-pointer"
           >
-            <svg className="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             <span>Export CSV</span>
           </button>
           <button
             onClick={openNew}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#0C831F] hover:bg-[#0a731b] text-white rounded-xl text-xs font-bold transition-all shadow-sm shadow-emerald-900/20 active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#0C831F] hover:bg-[#0a731b] text-white rounded-xl text-xs font-bold transition-all shadow-sm shadow-emerald-900/20 active:scale-95 cursor-pointer"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
@@ -402,59 +402,59 @@ export default function ProductsAdmin() {
 
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Total SKUs</div>
-            <div className="text-xl font-black text-gray-900 mt-1">{stats.total}</div>
+            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Total SKUs</div>
+            <div className="text-xl font-black text-gray-900 dark:text-white mt-1">{stats.total}</div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm">
+          <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm">
             📦
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Active for Sale</div>
-            <div className="text-xl font-black text-emerald-600 mt-1">{stats.active}</div>
+            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Active for Sale</div>
+            <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1">{stats.active}</div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm">
             ✓
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Low Stock (≤10)</div>
-            <div className="text-xl font-black text-amber-500 mt-1">{stats.lowStock}</div>
+            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Low Stock (≤10)</div>
+            <div className="text-xl font-black text-amber-500 dark:text-amber-400 mt-1">{stats.lowStock}</div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm">
+          <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm">
             ⚠️
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Out of Stock</div>
-            <div className="text-xl font-black text-rose-500 mt-1">{stats.outOfStock}</div>
+            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Out of Stock</div>
+            <div className="text-xl font-black text-rose-500 dark:text-rose-400 mt-1">{stats.outOfStock}</div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-sm">
+          <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-sm">
             ✕
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between col-span-2 md:col-span-1">
+        <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between col-span-2 md:col-span-1 transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Featured</div>
-            <div className="text-xl font-black text-purple-600 mt-1">{stats.featured}</div>
+            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Featured</div>
+            <div className="text-xl font-black text-purple-600 dark:text-purple-400 mt-1">{stats.featured}</div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-sm">
+          <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-sm">
             ⭐
           </div>
         </div>
       </div>
 
       {/* Filter and Control Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-[0_2px_8px_rgba(0,0,0,0.03)] space-y-3">
+      <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_2px_8px_rgba(0,0,0,0.03)] space-y-3 transition-colors">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
           {/* Search Input */}
           <div className="md:col-span-4 relative">
@@ -474,7 +474,7 @@ export default function ProductsAdmin() {
                 setSearch(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200/80 rounded-xl text-xs focus:outline-none focus:bg-white focus:border-[#0C831F] focus:ring-1 focus:ring-[#0C831F] transition-all"
+              className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:bg-white dark:focus:bg-gray-900 focus:border-[#0C831F] transition-all"
             />
           </div>
 
@@ -486,7 +486,7 @@ export default function ProductsAdmin() {
                 setSelectedCategory(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-200/80 rounded-xl text-xs text-gray-700 focus:outline-none focus:bg-white focus:border-[#0C831F]"
+              className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700 rounded-xl text-xs text-gray-700 dark:text-gray-200 focus:outline-none focus:bg-white dark:focus:bg-gray-900 focus:border-[#0C831F]"
             >
               <option value="all">All Categories ({categories.length})</option>
               {categories.map((c) => (
@@ -505,7 +505,7 @@ export default function ProductsAdmin() {
                 setStockFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-200/80 rounded-xl text-xs text-gray-700 focus:outline-none focus:bg-white focus:border-[#0C831F]"
+              className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700 rounded-xl text-xs text-gray-700 dark:text-gray-200 focus:outline-none focus:bg-white dark:focus:bg-gray-900 focus:border-[#0C831F]"
             >
               <option value="all">All Stock Status</option>
               <option value="in_stock">In Stock (&gt;10)</option>
@@ -522,7 +522,7 @@ export default function ProductsAdmin() {
                 setStatusFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-200/80 rounded-xl text-xs text-gray-700 focus:outline-none focus:bg-white focus:border-[#0C831F]"
+              className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700 rounded-xl text-xs text-gray-700 dark:text-gray-200 focus:outline-none focus:bg-white dark:focus:bg-gray-900 focus:border-[#0C831F]"
             >
               <option value="all">All Availability</option>
               <option value="active">Active Only</option>
@@ -535,8 +535,10 @@ export default function ProductsAdmin() {
           <div className="md:col-span-1 flex items-center gap-1 justify-end">
             <button
               onClick={() => setViewMode("table")}
-              className={`p-2 rounded-lg border text-xs ${
-                viewMode === "table" ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
+              className={`p-2 rounded-lg border text-xs cursor-pointer ${
+                viewMode === "table"
+                  ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white"
+                  : "bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
               }`}
               title="Table View"
             >
@@ -546,8 +548,10 @@ export default function ProductsAdmin() {
             </button>
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-2 rounded-lg border text-xs ${
-                viewMode === "grid" ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50"
+              className={`p-2 rounded-lg border text-xs cursor-pointer ${
+                viewMode === "grid"
+                  ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white"
+                  : "bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
               }`}
               title="Grid View"
             >
@@ -625,11 +629,11 @@ export default function ProductsAdmin() {
         </div>
       ) : viewMode === "table" ? (
         /* TABLE VIEW */
-        <div className="bg-white rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-gray-100 overflow-hidden">
+        <div className="bg-white dark:bg-[#121212] rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-gray-100 dark:border-gray-800 overflow-hidden transition-colors">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="bg-gray-50/80 border-b border-gray-100 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                <tr className="bg-gray-50/80 dark:bg-[#0c1017] border-b border-gray-100 dark:border-gray-800 text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   <th className="p-3.5 w-10 text-center">
                     <input
                       type="checkbox"
@@ -649,7 +653,7 @@ export default function ProductsAdmin() {
                   <th className="p-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {paginatedProducts.map((p) => {
                   const isSelected = selectedIds.includes(p._id);
                   const isLow = (p.stock || 0) <= 10 && (p.stock || 0) > 0;
@@ -658,8 +662,8 @@ export default function ProductsAdmin() {
                   return (
                     <tr
                       key={p._id}
-                      className={`hover:bg-gray-50/80 transition-colors ${
-                        isSelected ? "bg-emerald-50/30" : ""
+                      className={`hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-colors ${
+                        isSelected ? "bg-emerald-50/30 dark:bg-emerald-950/20" : ""
                       }`}
                     >
                       {/* Checkbox */}
@@ -675,7 +679,7 @@ export default function ProductsAdmin() {
                       {/* Product Thumbnail & Details */}
                       <td className="p-3.5">
                         <div className="flex items-center gap-3">
-                          <div className="w-11 h-11 rounded-xl bg-gray-50 border border-gray-100 overflow-hidden flex items-center justify-center shrink-0 p-1">
+                          <div className="w-11 h-11 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 overflow-hidden flex items-center justify-center shrink-0 p-1">
                             {p.images?.[0]?.url ? (
                               <img
                                 src={p.images[0].url}
@@ -693,17 +697,17 @@ export default function ProductsAdmin() {
                           </div>
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5">
-                              <span className="font-bold text-gray-900 truncate max-w-[200px] sm:max-w-xs text-xs">
+                              <span className="font-bold text-gray-900 dark:text-white truncate max-w-[200px] sm:max-w-xs text-xs">
                                 {p.title}
                               </span>
                               {p.isFeatured && (
-                                <span className="text-[10px] bg-purple-100 text-purple-700 font-bold px-1.5 py-0.2 rounded">
+                                <span className="text-[10px] bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 font-bold px-1.5 py-0.2 rounded">
                                   ⭐ Featured
                                 </span>
                               )}
                             </div>
                             <div className="flex items-center gap-2 text-[11px] text-gray-400 mt-0.5">
-                              <span className="font-mono text-[10px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-600">
+                              <span className="font-mono text-[10px] bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-gray-600 dark:text-gray-300">
                                 SKU-{p._id.slice(-4).toUpperCase()}
                               </span>
                               <span>•</span>
@@ -715,18 +719,18 @@ export default function ProductsAdmin() {
 
                       {/* Category */}
                       <td className="p-3.5">
-                        <span className="inline-block px-2.5 py-1 rounded-lg bg-gray-100 font-semibold text-gray-700 text-[11px]">
+                        <span className="inline-block px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 font-semibold text-gray-700 dark:text-gray-300 text-[11px]">
                           {p.category?.name || "General"}
                         </span>
                       </td>
 
                       {/* Price & MRP */}
                       <td className="p-3.5">
-                        <div className="font-bold text-gray-900 text-xs">₹{p.price}</div>
+                        <div className="font-bold text-gray-900 dark:text-white text-xs">₹{p.price}</div>
                         {p.mrp > p.price && (
                           <div className="flex items-center gap-1.5 text-[10px]">
                             <span className="line-through text-gray-400">₹{p.mrp}</span>
-                            <span className="text-emerald-600 font-bold">
+                            <span className="text-emerald-600 dark:text-emerald-400 font-bold">
                               {Math.round(((p.mrp - p.price) / p.mrp) * 100)}% OFF
                             </span>
                           </div>
@@ -816,14 +820,14 @@ export default function ProductsAdmin() {
           {paginatedProducts.map((p) => (
             <div
               key={p._id}
-              className="bg-white rounded-2xl border border-gray-100 p-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+              className="bg-white dark:bg-[#121212] rounded-2xl border border-gray-100 dark:border-gray-800 p-3 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="aspect-square bg-gray-50 rounded-xl overflow-hidden mb-2 relative flex items-center justify-center p-2">
+                <div className="aspect-square bg-gray-50 dark:bg-[#1a1f2c] rounded-xl overflow-hidden mb-2 relative flex items-center justify-center p-2">
                   {p.images?.[0]?.url ? (
                     <img src={p.images[0].url} alt={p.title} className="w-full h-full object-contain" />
                   ) : (
-                    <span className="text-xl font-bold text-gray-300">{p.title.charAt(0)}</span>
+                    <span className="text-xl font-bold text-gray-300 dark:text-gray-600">{p.title.charAt(0)}</span>
                   )}
                   {p.isFeatured && (
                     <span className="absolute top-2 left-2 text-[9px] bg-purple-600 text-white font-bold px-1.5 py-0.5 rounded shadow">
@@ -838,31 +842,31 @@ export default function ProductsAdmin() {
                     {p.isAvailable ? "Active" : "Inactive"}
                   </span>
                 </div>
-                <div className="text-[10px] text-gray-400 font-semibold uppercase">
+                <div className="text-[10px] text-gray-400 dark:text-gray-500 font-semibold uppercase">
                   {p.category?.name || "General"}
                 </div>
-                <h4 className="font-bold text-xs text-gray-900 truncate mt-0.5">{p.title}</h4>
-                <p className="text-[11px] text-gray-500">{p.unit}</p>
+                <h4 className="font-bold text-xs text-gray-900 dark:text-white truncate mt-0.5">{p.title}</h4>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">{p.unit}</p>
               </div>
 
-              <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between">
+              <div className="mt-3 pt-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
                 <div>
-                  <div className="font-black text-gray-900 text-xs">₹{p.price}</div>
+                  <div className="font-black text-gray-900 dark:text-emerald-400 text-xs">₹{p.price}</div>
                   {p.mrp > p.price && (
-                    <div className="text-[10px] text-gray-400 line-through">₹{p.mrp}</div>
+                    <div className="text-[10px] text-gray-400 dark:text-gray-500 line-through">₹{p.mrp}</div>
                   )}
                 </div>
                 <div className="flex gap-1">
                   <button
                     onClick={() => openEdit(p)}
-                    className="p-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700"
+                    className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-colors"
                     title="Edit"
                   >
                     ✏️
                   </button>
                   <button
                     onClick={() => handleDelete(p._id, p.title)}
-                    className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600"
+                    className="p-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 transition-colors"
                     title="Delete"
                   >
                     🗑️
@@ -875,7 +879,7 @@ export default function ProductsAdmin() {
       )}
 
       {/* Pagination Footer */}
-      <div className="bg-white rounded-2xl p-4 border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+      <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500 dark:text-gray-400 shadow-sm">
         <div className="flex items-center gap-2">
           <span>Show:</span>
           <select
@@ -884,14 +888,14 @@ export default function ProductsAdmin() {
               setPageSize(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="px-2.5 py-1 bg-gray-50 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 focus:outline-none"
+            className="px-2.5 py-1 bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-200 focus:outline-none"
           >
             <option value="10">10 per page</option>
             <option value="25">25 per page</option>
             <option value="50">50 per page</option>
             <option value="100">100 per page</option>
           </select>
-          <span className="text-gray-400">
+          <span className="text-gray-400 dark:text-gray-500">
             Showing {(currentPage - 1) * pageSize + 1} -{" "}
             {Math.min(currentPage * pageSize, filteredProducts.length)} of {filteredProducts.length} items
           </span>
@@ -902,17 +906,17 @@ export default function ProductsAdmin() {
           <button
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
-            className="px-3 py-1.5 border rounded-lg text-xs font-semibold disabled:opacity-30 hover:bg-gray-50 transition-colors"
+            className="px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-300 disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
             Previous
           </button>
-          <span className="px-3 py-1.5 bg-[#0C831F] text-white rounded-lg font-bold text-xs">
+          <span className="px-3 py-1.5 bg-[#0C831F] text-white rounded-lg font-bold text-xs shadow-sm">
             {currentPage} of {totalPages}
           </span>
           <button
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
-            className="px-3 py-1.5 border rounded-lg text-xs font-semibold disabled:opacity-30 hover:bg-gray-50 transition-colors"
+            className="px-3 py-1.5 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-300 disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
             Next
           </button>
@@ -921,20 +925,20 @@ export default function ProductsAdmin() {
 
       {/* Comprehensive Add / Edit Product Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-6">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
+          <div className="bg-white dark:bg-[#121212] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-100 dark:border-gray-800 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800 mb-6">
               <div>
-                <h3 className="text-lg font-black text-gray-900">
+                <h3 className="text-lg font-black text-gray-900 dark:text-white font-outfit">
                   {editId ? "Edit Catalog Item" : "Create New Catalog Item"}
                 </h3>
-                <p className="text-xs text-gray-500 mt-0.5">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                   Real-time synchronization across dark store shelves and user cart
                 </p>
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm"
+                className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 flex items-center justify-center font-bold text-sm transition-colors"
               >
                 ✕
               </button>
@@ -944,7 +948,7 @@ export default function ProductsAdmin() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Title */}
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Product Title *
                   </label>
                   <input
@@ -953,24 +957,24 @@ export default function ProductsAdmin() {
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
                     placeholder="e.g. Amul Taaza Fresh Toned Milk"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
 
                 {/* Category */}
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Category *
                   </label>
                   <select
                     value={form.category}
                     onChange={(e) => setForm({ ...form, category: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                     required
                   >
-                    <option value="">Select Category</option>
+                    <option value="" className="dark:bg-[#121212]">Select Category</option>
                     {categories.map((c) => (
-                      <option key={c._id} value={c._id}>
+                      <option key={c._id} value={c._id} className="dark:bg-[#121212]">
                         {c.name}
                       </option>
                     ))}
@@ -979,7 +983,7 @@ export default function ProductsAdmin() {
 
                 {/* Pack Unit */}
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Unit / Size *
                   </label>
                   <input
@@ -988,13 +992,13 @@ export default function ProductsAdmin() {
                     value={form.unit}
                     onChange={(e) => setForm({ ...form, unit: e.target.value })}
                     placeholder="e.g. 500 ml, 1 kg, Pack of 4"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
 
                 {/* Price */}
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Selling Price (₹) *
                   </label>
                   <input
@@ -1005,13 +1009,13 @@ export default function ProductsAdmin() {
                     value={form.price}
                     onChange={(e) => setForm({ ...form, price: e.target.value })}
                     placeholder="e.g. 27"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
 
                 {/* MRP */}
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     MRP (₹)
                   </label>
                   <input
@@ -1021,13 +1025,13 @@ export default function ProductsAdmin() {
                     value={form.mrp}
                     onChange={(e) => setForm({ ...form, mrp: e.target.value })}
                     placeholder="e.g. 30"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
 
                 {/* Stock Quantity */}
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Available Stock Units *
                   </label>
                   <input
@@ -1037,23 +1041,23 @@ export default function ProductsAdmin() {
                     value={form.stock}
                     onChange={(e) => setForm({ ...form, stock: e.target.value })}
                     placeholder="e.g. 85"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
 
                 {/* Primary Dark Store Assignment */}
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Primary Dark Store
                   </label>
                   <select
                     value={form.storeId}
                     onChange={(e) => setForm({ ...form, storeId: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   >
-                    <option value="">All Dark Stores (Global Stock)</option>
+                    <option value="" className="dark:bg-[#121212]">All Dark Stores (Global Stock)</option>
                     {stores.map((s) => (
-                      <option key={s._id} value={s._id}>
+                      <option key={s._id} value={s._id} className="dark:bg-[#121212]">
                         {s.name} ({s.city})
                       </option>
                     ))}
@@ -1062,7 +1066,7 @@ export default function ProductsAdmin() {
 
                 {/* Image URL with Preview */}
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Image URL
                   </label>
                   <div className="flex gap-2">
@@ -1071,10 +1075,10 @@ export default function ProductsAdmin() {
                       value={form.imageUrl}
                       onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
                       placeholder="https://images.unsplash.com/... or /images/category-dairy.avif"
-                      className="flex-1 px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                      className="flex-1 px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                     />
                     {form.imageUrl && (
-                      <div className="w-10 h-10 rounded-xl border border-gray-200 overflow-hidden shrink-0 bg-gray-50 p-0.5">
+                      <div className="w-10 h-10 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shrink-0 bg-gray-50 dark:bg-[#1a1f2c] p-0.5">
                         <img
                           src={form.imageUrl}
                           alt="preview"
@@ -1088,7 +1092,7 @@ export default function ProductsAdmin() {
 
                 {/* Tags */}
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Tags (Comma-separated)
                   </label>
                   <input
@@ -1096,13 +1100,13 @@ export default function ProductsAdmin() {
                     value={form.tags}
                     onChange={(e) => setForm({ ...form, tags: e.target.value })}
                     placeholder="e.g. dairy, milk, breakfast, pure"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
 
                 {/* Description */}
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Product Description
                   </label>
                   <textarea
@@ -1110,28 +1114,28 @@ export default function ProductsAdmin() {
                     value={form.description}
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
                     placeholder="Detailed ingredients, freshness guarantee, manufacturer details..."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
 
                 {/* Toggles */}
-                <div className="sm:col-span-2 flex items-center justify-between p-3.5 bg-gray-50 rounded-2xl border border-gray-100">
-                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-800">
+                <div className="sm:col-span-2 flex items-center justify-between p-3.5 bg-gray-50 dark:bg-[#1a1f2c] rounded-2xl border border-gray-100 dark:border-gray-800">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-gray-800 dark:text-gray-200">
                     <input
                       type="checkbox"
                       checked={form.isAvailable}
                       onChange={(e) => setForm({ ...form, isAvailable: e.target.checked })}
-                      className="rounded text-[#0C831F] focus:ring-[#0C831F] w-4 h-4"
+                      className="rounded text-[#0C831F] focus:ring-[#0C831F] w-4 h-4 bg-white dark:bg-[#121212] border-gray-300 dark:border-gray-700"
                     />
                     <span>Available for Sale (Online)</span>
                   </label>
 
-                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-purple-700">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-purple-700 dark:text-purple-400">
                     <input
                       type="checkbox"
                       checked={form.isFeatured}
                       onChange={(e) => setForm({ ...form, isFeatured: e.target.checked })}
-                      className="rounded text-purple-600 focus:ring-purple-500 w-4 h-4"
+                      className="rounded text-purple-600 focus:ring-purple-500 w-4 h-4 bg-white dark:bg-[#121212] border-gray-300 dark:border-gray-700"
                     />
                     <span>⭐ Feature on Homepage</span>
                   </label>
@@ -1139,11 +1143,11 @@ export default function ProductsAdmin() {
               </div>
 
               {/* Submit Buttons */}
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
+              <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2.5 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
                   Cancel
                 </button>

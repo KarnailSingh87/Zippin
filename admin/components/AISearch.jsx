@@ -161,13 +161,13 @@ export default function AISearch({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 md:pt-24 px-4 bg-gray-900/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 md:pt-24 px-4 bg-black/70 backdrop-blur-md animate-fade-in" onClick={onClose}>
       <div
-        className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transform transition-all"
+        className="w-full max-w-2xl bg-white dark:bg-[#121212] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transform transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3.5 border-b border-gray-100 bg-gray-50/50">
+        <div className="flex items-center px-4 py-3.5 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#0c1017]">
           <svg className="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
@@ -178,7 +178,7 @@ export default function AISearch({ isOpen, onClose }) {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search products, orders, categories, dark stores..."
-            className="w-full bg-transparent text-sm md:text-base font-medium text-gray-800 placeholder-gray-400 focus:outline-none"
+            className="w-full bg-transparent text-sm md:text-base font-medium text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none"
           />
           {loading && (
             <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mr-2"></div>
@@ -186,21 +186,21 @@ export default function AISearch({ isOpen, onClose }) {
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="text-xs text-gray-400 hover:text-gray-600 px-1.5 py-0.5 rounded mr-2"
+              className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 px-1.5 py-0.5 rounded mr-2"
             >
               Clear
             </button>
           )}
-          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[11px] font-semibold text-gray-400 bg-gray-100 border border-gray-200 rounded">
+          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[11px] font-semibold text-gray-400 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded">
             ESC
           </kbd>
         </div>
 
         {/* Results List */}
-        <div className="max-h-[60vh] overflow-y-auto p-2 divide-y divide-gray-50">
+        <div className="max-h-[60vh] overflow-y-auto p-2 divide-y divide-gray-50 dark:divide-gray-800/60">
           {results.length === 0 && query && !loading && (
             <div className="py-8 text-center text-gray-400 text-sm">
-              No results found for <span className="font-semibold text-gray-600">"{query}"</span>
+              No results found for <span className="font-semibold text-gray-600 dark:text-gray-300">"{query}"</span>
             </div>
           )}
 
@@ -212,7 +212,9 @@ export default function AISearch({ isOpen, onClose }) {
                 onClick={() => handleSelect(item)}
                 onMouseEnter={() => setSelectedIndex(index)}
                 className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-colors ${
-                  isSelected ? "bg-emerald-50/80 text-emerald-900" : "hover:bg-gray-50 text-gray-700"
+                  isSelected
+                    ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200"
+                    : "hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300"
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
@@ -220,14 +222,14 @@ export default function AISearch({ isOpen, onClose }) {
                     <img
                       src={item.image}
                       alt={item.label}
-                      className="w-8 h-8 rounded-lg object-contain bg-white border border-gray-100 flex-shrink-0 p-0.5"
+                      className="w-8 h-8 rounded-lg object-contain bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex-shrink-0 p-0.5"
                     />
                   ) : (
                     <span className="text-xl flex-shrink-0 w-8 text-center">{item.icon || "🔍"}</span>
                   )}
                   <div className="min-w-0">
-                    <p className="text-xs md:text-sm font-semibold truncate text-gray-800">{item.label}</p>
-                    {item.sub && <p className="text-[11px] text-gray-400 truncate">{item.sub}</p>}
+                    <p className="text-xs md:text-sm font-semibold truncate text-gray-800 dark:text-gray-100">{item.label}</p>
+                    {item.sub && <p className="text-[11px] text-gray-400 dark:text-gray-500 truncate">{item.sub}</p>}
                   </div>
                 </div>
 
@@ -235,17 +237,17 @@ export default function AISearch({ isOpen, onClose }) {
                   <span
                     className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                       item.type === "product"
-                        ? "bg-amber-100 text-amber-800"
+                        ? "bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300"
                         : item.type === "order"
-                        ? "bg-blue-100 text-blue-800"
+                        ? "bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300"
                         : item.type === "action"
-                        ? "bg-emerald-100 text-emerald-800"
-                        : "bg-purple-100 text-purple-800"
+                        ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300"
+                        : "bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300"
                     }`}
                   >
                     {item.badge}
                   </span>
-                  <svg className="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
@@ -255,13 +257,13 @@ export default function AISearch({ isOpen, onClose }) {
         </div>
 
         {/* Footer shortcuts */}
-        <div className="bg-gray-50 px-4 py-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
+        <div className="bg-gray-50/70 dark:bg-[#0c1017] px-4 py-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500">
           <div className="flex items-center gap-3">
             <span>↑↓ to navigate</span>
             <span>↵ to select</span>
             <span>esc to close</span>
           </div>
-          <span className="text-[#0C831F] font-bold">Zippin Omnisearch</span>
+          <span className="text-[#0C831F] dark:text-emerald-400 font-bold">Zippin Omnisearch</span>
         </div>
       </div>
     </div>

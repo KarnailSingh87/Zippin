@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import ThemeToggle from "../components/ThemeToggle";
 
 const API = "";
 
@@ -33,79 +34,93 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-admin-sidebar to-gray-900 px-4">
-      <div className="w-full max-w-sm">
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <div className="text-center mb-6">
-            <div className="flex items-center justify-center mb-3">
+    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] dark:bg-[#000000] px-4 relative overflow-hidden transition-colors duration-200">
+      {/* Decorative ambient background glows */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Top right theme toggle */}
+      <div className="absolute top-6 right-6 z-20">
+        <ThemeToggle />
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
+        <div className="bg-white/80 dark:bg-[#0c1017]/85 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 sm:p-10 border border-gray-100 dark:border-gray-800">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center mb-4">
               <img
                 src="/images/zippin_logo_blinkit_colours.png"
                 alt="Zippin"
                 className="h-10 object-contain"
               />
             </div>
-            <p className="text-xs bg-gray-100 inline-block px-3 py-1 rounded-full font-bold text-gray-600">
-              ADMIN PANEL
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Operational Control Center
+            </div>
+            <h2 className="text-2xl font-black text-gray-900 dark:text-white font-outfit mt-3">
+              Admin Gateway
+            </h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Sign in to manage catalog, orders, dark stores & fleet SLA
             </p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-2 mb-4 text-sm text-red-700">
-              {error}
+            <div className="bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 rounded-2xl px-4 py-3 mb-6 text-xs text-rose-700 dark:text-rose-400 font-semibold flex items-center gap-2">
+              <span>⚠️</span> {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">
-                Email
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">
+                Admin Email Address
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@zippin.com"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-admin-green"
+                className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-[#161c27] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                 required
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-600 mb-1">
-                Password
+              <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">
+                Security Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-admin-green"
+                placeholder="••••••••••••"
+                className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-[#161c27] text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                 required
               />
             </div>
+
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-admin-green text-white py-3 rounded-xl font-bold text-sm hover:bg-admin-green-dark transition-colors disabled:opacity-50"
+              className="w-full mt-2 bg-gradient-to-r from-[#0C831F] to-emerald-600 hover:from-[#0a731b] hover:to-emerald-500 text-white py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-900/30 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
             >
-              {loading ? "Logging in..." : "Login to Admin"}
+              {loading ? "Authenticating..." : "Enter Admin Dashboard"}
             </button>
           </form>
 
-          <div className="mt-4 bg-gray-50 rounded-xl p-3 text-xs text-gray-500">
-            <p className="font-semibold text-gray-600 mb-1">Default Admin:</p>
-            <p>
-              Email:{" "}
-              <span className="font-mono text-admin-green">
-                admin@zippin.com
-              </span>
+          <div className="mt-6 bg-gray-50 dark:bg-[#161c27] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 text-xs">
+            <p className="font-bold text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1.5">
+              <span>🔑</span> Default Credentials:
             </p>
-            <p>
-              Password:{" "}
-              <span className="font-mono text-admin-green">admin123</span>
-            </p>
-            <p className="mt-1 text-[10px]">
-              Seed first: POST /api/internal/seed-admin
-            </p>
+            <div className="space-y-0.5 text-gray-500 dark:text-gray-400 font-mono text-[11px]">
+              <p>
+                Email: <span className="text-emerald-600 dark:text-emerald-400 font-bold">admin@zippin.com</span>
+              </p>
+              <p>
+                Password: <span className="text-emerald-600 dark:text-emerald-400 font-bold">admin123</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>

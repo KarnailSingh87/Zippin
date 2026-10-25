@@ -58,8 +58,8 @@ export default function HeroManagement() {
       if (res.ok) {
         setBanners(await res.json());
       }
-    } catch (e) {
-      console.error("Failed to load banners", e);
+    } catch (err) {
+      console.error(err);
     }
     setLoading(false);
   }
@@ -69,19 +69,19 @@ export default function HeroManagement() {
   }, []);
 
   function handleOpenCreate() {
+    setCurrentBanner(null);
     setFormData({
       title: "",
       subtitle: "",
-      badge: "Fastest 10 Mins",
+      badge: "10 Mins Delivery",
       image: "/images/banner-hero.jpg",
       fallback: "/images/banner-paan.webp",
       link: "/category/vegetables-fruits",
       categorySlug: "vegetables-fruits",
       type: "hero",
-      order: banners.length + 1,
+      order: (banners.length || 0) + 1,
       isActive: true,
     });
-    setCurrentBanner(null);
     setIsEditing(true);
   }
 
@@ -90,10 +90,10 @@ export default function HeroManagement() {
     setFormData({
       title: banner.title || "",
       subtitle: banner.subtitle || "",
-      badge: banner.badge || "10 Mins Delivery",
+      badge: banner.badge || "",
       image: banner.image || "",
-      fallback: banner.fallback || "/images/banner-hero.jpg",
-      link: banner.link || "/category/vegetables-fruits",
+      fallback: banner.fallback || "",
+      link: banner.link || `/category/${banner.categorySlug || "vegetables-fruits"}`,
       categorySlug: banner.categorySlug || "vegetables-fruits",
       type: banner.type || "hero",
       order: banner.order || 1,
@@ -108,7 +108,7 @@ export default function HeroManagement() {
       const url = currentBanner
         ? `${API}/api/banners/${currentBanner._id}`
         : `${API}/api/banners`;
-      const method = currentBanner ? "PATCH" : "POST";
+      const method = currentBanner ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method,
@@ -120,12 +120,12 @@ export default function HeroManagement() {
       });
 
       if (res.ok) {
-        showToast(currentBanner ? "Banner updated successfully!" : "New banner published!");
+        showToast(currentBanner ? "Banner updated successfully" : "Banner published successfully");
         setIsEditing(false);
         loadBanners();
       } else {
         const err = await res.json();
-        alert(err.error || "Failed to save banner");
+        alert(err.message || "Failed to save banner");
       }
     } catch (err) {
       console.error(err);
@@ -188,17 +188,17 @@ export default function HeroManagement() {
       )}
 
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs transition-colors duration-300">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">
+            <h1 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
               Homepage Hero & Promotional Banners
             </h1>
-            <span className="px-2 py-0.5 rounded-full bg-pink-100 text-pink-800 text-[10px] font-black uppercase">
+            <span className="px-2 py-0.5 rounded-full bg-pink-100 dark:bg-pink-950/60 text-pink-800 dark:text-pink-300 text-[10px] font-black uppercase">
               Hero Editor
             </span>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             Manage top carousel banners and lifestyle promo posters with instant live redirects to product categories.
           </p>
         </div>
@@ -206,7 +206,7 @@ export default function HeroManagement() {
         <div className="flex items-center gap-2.5">
           <button
             onClick={handleOpenCreate}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#0C831F] hover:bg-[#096618] text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+            className="flex items-center gap-1.5 px-4 py-2 bg-[#0C831F] hover:bg-[#096618] text-white text-xs font-bold rounded-xl shadow-sm transition-all cursor-pointer"
           >
             <span>+</span>
             <span>Add New Banner</span>
@@ -218,30 +218,30 @@ export default function HeroManagement() {
       <div className="flex items-center gap-2">
         <button
           onClick={() => setActiveFilter("all")}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeFilter === "all"
               ? "bg-[#0C831F] text-white shadow-xs"
-              : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200/80"
+              : "bg-white dark:bg-[#121212] text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200/80 dark:border-gray-800"
           }`}
         >
           All Banners ({banners.length})
         </button>
         <button
           onClick={() => setActiveFilter("hero")}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeFilter === "hero"
               ? "bg-[#0C831F] text-white shadow-xs"
-              : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200/80"
+              : "bg-white dark:bg-[#121212] text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200/80 dark:border-gray-800"
           }`}
         >
           Hero Slides ({banners.filter((b) => b.type === "hero").length})
         </button>
         <button
           onClick={() => setActiveFilter("promo_tile")}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeFilter === "promo_tile"
               ? "bg-[#0C831F] text-white shadow-xs"
-              : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200/80"
+              : "bg-white dark:bg-[#121212] text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200/80 dark:border-gray-800"
           }`}
         >
           Lifestyle Promo Posters ({banners.filter((b) => b.type === "promo_tile").length})
@@ -256,22 +256,22 @@ export default function HeroManagement() {
             Loading banner assets...
           </div>
         ) : filteredBanners.length === 0 ? (
-          <div className="col-span-full p-12 text-center text-gray-400 text-sm bg-white rounded-2xl border border-gray-200">
+          <div className="col-span-full p-12 text-center text-gray-400 text-sm bg-white dark:bg-[#121212] rounded-2xl border border-gray-200 dark:border-gray-800">
             No banners found in this category.
           </div>
         ) : (
           filteredBanners.map((banner) => (
             <div
               key={banner._id}
-              className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden flex flex-col justify-between ${
+              className={`bg-white dark:bg-[#121212] rounded-2xl border transition-all duration-200 overflow-hidden flex flex-col justify-between ${
                 banner.isActive
-                  ? "border-gray-200/80 shadow-xs hover:shadow-md"
-                  : "border-gray-200 opacity-60 bg-gray-50/50"
+                  ? "border-gray-200/80 dark:border-gray-800 shadow-xs hover:shadow-md"
+                  : "border-gray-200 dark:border-gray-800 opacity-60 bg-gray-50/50 dark:bg-gray-900/40"
               }`}
             >
               <div>
                 {/* Banner Thumbnail Preview */}
-                <div className="relative aspect-[16/9] w-full bg-gray-100 overflow-hidden border-b border-gray-100">
+                <div className="relative aspect-[16/9] w-full bg-gray-100 dark:bg-gray-900 overflow-hidden border-b border-gray-100 dark:border-gray-800">
                   <img
                     src={banner.image}
                     alt={banner.title}
@@ -294,7 +294,7 @@ export default function HeroManagement() {
                     <button
                       onClick={() => handleToggleActive(banner)}
                       title={banner.isActive ? "Deactivate" : "Activate"}
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase shadow-xs transition-colors ${
+                      className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase shadow-xs transition-colors cursor-pointer ${
                         banner.isActive
                           ? "bg-emerald-500 text-white"
                           : "bg-gray-400 text-white"
@@ -307,12 +307,12 @@ export default function HeroManagement() {
 
                 {/* Banner Meta Info */}
                 <div className="p-4 space-y-2">
-                  <h3 className="font-black text-sm text-gray-900 leading-snug">{banner.title}</h3>
+                  <h3 className="font-black text-sm text-gray-900 dark:text-white leading-snug">{banner.title}</h3>
                   {banner.subtitle && (
-                    <p className="text-xs text-gray-500 line-clamp-1">{banner.subtitle}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{banner.subtitle}</p>
                   )}
-                  <div className="flex items-center gap-2 pt-1 text-[11px] text-gray-500">
-                    <span className="font-bold text-[#0C831F] flex items-center gap-1">
+                  <div className="flex items-center gap-2 pt-1 text-[11px] text-gray-500 dark:text-gray-400">
+                    <span className="font-bold text-[#0C831F] dark:text-emerald-400 flex items-center gap-1">
                       <span>🔗</span>
                       <span>{banner.link}</span>
                     </span>
@@ -323,12 +323,12 @@ export default function HeroManagement() {
               </div>
 
               {/* Action Buttons */}
-              <div className="p-3 px-4 bg-gray-50/70 border-t border-gray-100 flex items-center justify-between text-xs">
+              <div className="p-3 px-4 bg-gray-50/70 dark:bg-[#0c1017] border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-xs">
                 <a
                   href={`http://localhost:3000${banner.link}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-gray-500 hover:text-gray-900 font-bold flex items-center gap-1"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-bold flex items-center gap-1"
                 >
                   <span>Test Link</span>
                   <span>↗</span>
@@ -337,13 +337,13 @@ export default function HeroManagement() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleOpenEdit(banner)}
-                    className="px-2.5 py-1 text-xs font-bold text-gray-700 hover:text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+                    className="px-2.5 py-1 text-xs font-bold text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDeleteBanner(banner._id)}
-                    className="p-1 text-gray-400 hover:text-rose-600 rounded-lg"
+                    className="p-1 text-gray-400 hover:text-rose-600 rounded-lg cursor-pointer"
                     title="Delete Banner"
                   >
                     🗑️
@@ -357,16 +357,19 @@ export default function HeroManagement() {
 
       {/* Add / Edit Banner Modal */}
       {isEditing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => setIsEditing(false)}>
+          <div
+            className="bg-white dark:bg-[#121212] rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 max-w-xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-fade-in"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-gray-50">
-              <h2 className="font-black text-base text-gray-900">
+            <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-[#0c1017]">
+              <h2 className="font-black text-base text-gray-900 dark:text-white">
                 {currentBanner ? "Edit Promotional Banner" : "Create New Promotional Banner"}
               </h2>
               <button
                 onClick={() => setIsEditing(false)}
-                className="text-gray-400 hover:text-gray-600 text-sm font-bold p-1"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
@@ -383,7 +386,7 @@ export default function HeroManagement() {
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                   >
                     <option value="hero">Top Hero Carousel Slide</option>
                     <option value="promo_tile">Lifestyle Promo Poster Tile</option>
@@ -398,7 +401,7 @@ export default function HeroManagement() {
                     type="number"
                     value={formData.order}
                     onChange={(e) => setFormData({ ...formData, order: Number(e.target.value) })}
-                    className="w-full p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                   />
                 </div>
               </div>
@@ -415,7 +418,7 @@ export default function HeroManagement() {
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     placeholder="e.g. Instant Groceries in 8-10 Minutes"
-                    className="w-full p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                   />
                 </div>
 
@@ -428,7 +431,7 @@ export default function HeroManagement() {
                     value={formData.badge}
                     onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
                     placeholder="e.g. 10 Mins"
-                    className="w-full p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                   />
                 </div>
               </div>
@@ -443,7 +446,7 @@ export default function HeroManagement() {
                   value={formData.subtitle}
                   onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
                   placeholder="e.g. Farm fresh vegetables, fruits & daily dairy essentials"
-                  className="w-full p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                 />
               </div>
 
@@ -461,7 +464,7 @@ export default function HeroManagement() {
                       link: `/category/${e.target.value}`,
                     })
                   }
-                  className="w-full p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                 >
                   {DEFAULT_CATEGORIES.map((c) => (
                     <option key={c.slug} value={c.slug}>
@@ -482,11 +485,11 @@ export default function HeroManagement() {
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                   placeholder="e.g. /images/banner-paan.webp or CDN image URL"
-                  className="w-full p-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                  className="w-full p-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                 />
                 {/* Live Preview */}
                 {formData.image && (
-                  <div className="mt-2.5 rounded-xl overflow-hidden border border-gray-200 bg-gray-50 aspect-[16/7] relative">
+                  <div className="mt-2.5 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 aspect-[16/7] relative">
                     <img
                       src={formData.image}
                       alt="Preview"
@@ -509,25 +512,25 @@ export default function HeroManagement() {
                   id="activeToggle"
                   checked={formData.isActive}
                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                  className="w-4 h-4 rounded text-[#0C831F] focus:ring-emerald-500"
+                  className="w-4 h-4 rounded text-[#0C831F] focus:ring-emerald-500 cursor-pointer"
                 />
-                <label htmlFor="activeToggle" className="font-bold text-gray-700 cursor-pointer">
+                <label htmlFor="activeToggle" className="font-bold text-gray-700 dark:text-gray-300 cursor-pointer">
                   Activate banner immediately on storefront
                 </label>
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl"
+                  className="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#0C831F] hover:bg-[#096618] text-white font-bold rounded-xl shadow-sm"
+                  className="px-5 py-2 bg-[#0C831F] hover:bg-[#096618] text-white font-bold rounded-xl shadow-sm cursor-pointer"
                 >
                   {currentBanner ? "Update Banner" : "Publish Banner"}
                 </button>

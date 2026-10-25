@@ -4,20 +4,20 @@ const API = "";
 
 const STATUS_CONFIG = {
   available: {
-    bg: "bg-green-100",
-    text: "text-green-700",
-    dot: "bg-green-500",
+    bg: "bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40",
+    text: "text-emerald-700 dark:text-emerald-400",
+    dot: "bg-emerald-500",
     label: "Available",
   },
   busy: {
-    bg: "bg-amber-100",
-    text: "text-amber-800",
+    bg: "bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40",
+    text: "text-amber-700 dark:text-amber-400",
     dot: "bg-amber-500",
     label: "On Delivery",
   },
   offline: {
-    bg: "bg-gray-100",
-    text: "text-gray-600",
+    bg: "bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
+    text: "text-gray-600 dark:text-gray-400",
     dot: "bg-gray-400",
     label: "Offline",
   },
@@ -29,8 +29,10 @@ export default function DeliveryPartnersAdmin() {
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState("");
   const [filterCity, setFilterCity] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -115,11 +117,13 @@ export default function DeliveryPartnersAdmin() {
     } catch {}
   }
 
-  async function handleSave() {
+  async function handleSave(e) {
+    if (e) e.preventDefault();
     if (!form.firstName || !form.phone || !form.city) {
       alert("First Name, Phone, and City are required.");
       return;
     }
+    setSaving(true);
 
     const url = editId
       ? `${API}/api/delivery-partners/${editId}`
@@ -145,11 +149,13 @@ export default function DeliveryPartnersAdmin() {
       }
     } catch {
       alert("Network error");
+    } finally {
+      setSaving(false);
     }
   }
 
-  async function handleDelete(id) {
-    if (!confirm("Are you sure you want to remove this delivery partner?")) return;
+  async function handleDelete(id, name) {
+    if (!confirm(`Are you sure you want to remove delivery partner "${name}"?`)) return;
     try {
       const res = await fetch(`${API}/api/delivery-partners/${id}`, {
         method: "DELETE",
@@ -161,108 +167,234 @@ export default function DeliveryPartnersAdmin() {
 
   const cities = Array.from(new Set(partners.map((p) => p.city).filter(Boolean)));
 
+  const filteredPartners = partners.filter((p) => {
+    const fullName = p.name || `${p.firstName || ""} ${p.lastName || ""}`;
+    return (
+      fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.phone?.includes(searchQuery) ||
+      (p.vehicleNumber && p.vehicleNumber.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  });
+
+  const availableCount = partners.filter((p) => p.status === "available").length;
+  const busyCount = partners.filter((p) => p.status === "busy").length;
+
   if (loading) {
-    return <div className="h-64 bg-white rounded-xl animate-pulse" />;
+    return (
+      <div className="space-y-6 animate-pulse">
+        <div className="h-20 bg-white dark:bg-[#121212] rounded-3xl" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-28 bg-white dark:bg-[#121212] rounded-2xl" />
+          ))}
+        </div>
+        <div className="h-96 bg-white dark:bg-[#121212] rounded-3xl" />
+      </div>
+    );
   }
 
   return (
-    <div>
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+    <div className="space-y-6">
+      {/* Top Header Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#121212] p-6 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
         <div>
-          <h1 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <span>🛵</span> Delivery Fleet & Partners
-          </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
-            Manage 10-minute instant delivery fleet and real-time status (DBMS ER Model: delivery_partner)
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-xl font-black text-gray-900 dark:text-white font-outfit">
+                Delivery Fleet & Rider Partners
+              </h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                Manage 10-minute instant delivery fleet, real-time rider status & vehicle assignments
+              </p>
+            </div>
+          </div>
         </div>
+
         <button
           onClick={openNew}
-          className="bg-admin-green hover:bg-admin-green-dark text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1.5 transition-colors self-start sm:self-auto"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-2xl bg-[#0C831F] hover:bg-[#0a731b] text-white font-bold text-xs transition-all shadow-md shadow-emerald-900/20 hover:scale-[1.02] active:scale-[0.98]"
         >
-          <span>+</span> Add Delivery Partner
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
+          </svg>
+          Onboard New Rider
         </button>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+      {/* 4 Stat Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+              Total Fleet
+            </div>
+            <div className="text-2xl font-black text-gray-900 dark:text-white mt-1 font-outfit">
+              {partners.length}
+            </div>
+            <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-1">
+              Registered rider partners
+            </div>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white text-xl shadow-md shadow-emerald-500/20">
+            🛵
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+              Available Now
+            </div>
+            <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-outfit flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              {availableCount}
+            </div>
+            <div className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold mt-1">
+              Ready at dark stores
+            </div>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-500 to-indigo-400 flex items-center justify-center text-white text-xl shadow-md shadow-blue-500/20">
+            🟢
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+              On Active Delivery
+            </div>
+            <div className="text-2xl font-black text-amber-500 mt-1 font-outfit flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+              {busyCount}
+            </div>
+            <div className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold mt-1">
+              Transit SLA in progress
+            </div>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-white text-xl shadow-md shadow-amber-500/20">
+            ⚡
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
+          <div>
+            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+              Fleet CSAT Rating
+            </div>
+            <div className="text-2xl font-black text-purple-600 dark:text-purple-400 mt-1 font-outfit">
+              4.92 ⭐
+            </div>
+            <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-1">
+              Top 1% fast fulfillment
+            </div>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center text-white text-xl shadow-md shadow-purple-500/20">
+            🏆
+          </div>
+        </div>
+      </div>
+
+      {/* Filter and Search Bar */}
+      <div className="bg-white dark:bg-[#121212] p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Status Pills */}
+        <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mr-1">
             Status:
           </span>
-          {["", "available", "busy", "offline"].map((st) => (
+          {[
+            { id: "", label: "All Riders" },
+            { id: "available", label: "Available" },
+            { id: "busy", label: "On Delivery" },
+            { id: "offline", label: "Offline" },
+          ].map((st) => (
             <button
-              key={st}
-              onClick={() => setFilterStatus(st)}
-              className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors capitalize ${
-                filterStatus === st
-                  ? "bg-admin-green text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              key={st.id}
+              onClick={() => setFilterStatus(st.id)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                filterStatus === st.id
+                  ? "bg-[#0C831F] text-white shadow-sm"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
-              {st || "All"}
+              {st.label}
             </button>
           ))}
         </div>
 
-        {cities.length > 0 && (
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              City:
-            </span>
+        {/* City Filter & Search Input */}
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          {cities.length > 0 && (
             <select
               value={filterCity}
               onChange={(e) => setFilterCity(e.target.value)}
-              className="text-xs border rounded-lg px-2.5 py-1 text-gray-700 focus:outline-none focus:ring-1 focus:ring-admin-green"
+              className="text-xs bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
             >
-              <option value="">All Cities</option>
+              <option value="">All Operating Cities</option>
               {cities.map((c) => (
                 <option key={c} value={c}>
                   {c}
                 </option>
               ))}
             </select>
+          )}
+
+          <div className="relative w-full md:w-64">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search rider name, phone..."
+              className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+            />
+            <svg className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Partners Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white dark:bg-[#121212] rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50 text-xs text-gray-500 uppercase border-b">
+            <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
               <tr>
-                <th className="py-3 px-4">Partner Name</th>
-                <th className="py-3 px-4">Phone / Contact</th>
-                <th className="py-3 px-4">City</th>
-                <th className="py-3 px-4">Assigned Dark Store</th>
-                <th className="py-3 px-4">Vehicle</th>
-                <th className="py-3 px-4">Performance</th>
-                <th className="py-3 px-4">Current Status</th>
-                <th className="py-3 px-4 text-right">Actions</th>
+                <th className="py-3.5 px-5">Rider Partner</th>
+                <th className="py-3.5 px-5">Phone / Contact</th>
+                <th className="py-3.5 px-5">City Hub</th>
+                <th className="py-3.5 px-5">Assigned Dark Store</th>
+                <th className="py-3.5 px-5">Vehicle Details</th>
+                <th className="py-3.5 px-5">Fulfillment Stats</th>
+                <th className="py-3.5 px-5">Live Status</th>
+                <th className="py-3.5 px-5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
-              {partners.length === 0 ? (
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-800/80 text-xs">
+              {filteredPartners.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-10 text-gray-400">
-                    No delivery partners found. Click &quot;Add Delivery Partner&quot; to onboard.
+                  <td colSpan="8" className="text-center py-12 text-gray-400 dark:text-gray-500 font-medium">
+                    No delivery partners found matching your search.
                   </td>
                 </tr>
               ) : (
-                partners.map((p) => {
+                filteredPartners.map((p) => {
                   const cfg = STATUS_CONFIG[p.status] || STATUS_CONFIG.available;
+                  const displayName = p.name || `${p.firstName || ""} ${p.lastName || ""}`.trim();
                   return (
-                    <tr key={p._id} className="hover:bg-gray-50/70 transition-colors">
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-admin-green/10 text-admin-green font-bold text-xs flex items-center justify-center">
-                            {p.firstName?.[0] || "P"}
+                    <tr key={p._id} className="hover:bg-gray-50/60 dark:hover:bg-[#1a1f2c]/50 transition-colors">
+                      <td className="py-4 px-5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 text-[#0C831F] dark:text-emerald-400 font-black text-xs flex items-center justify-center border border-emerald-500/20">
+                            {p.firstName?.[0] || displayName[0] || "R"}
                           </div>
                           <div>
-                            <p className="font-semibold text-gray-900">
-                              {p.name || `${p.firstName} ${p.lastName || ""}`.trim()}
+                            <p className="font-bold text-gray-900 dark:text-white">
+                              {displayName}
                             </p>
                             <p className="text-[10px] text-gray-400 font-mono">
                               ID: {p._id.slice(-6).toUpperCase()}
@@ -270,56 +402,58 @@ export default function DeliveryPartnersAdmin() {
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 px-4 font-mono text-xs text-gray-700">
+                      <td className="py-4 px-5 font-mono text-gray-800 dark:text-gray-200">
                         {p.phone}
                         {p.email && (
-                          <p className="font-sans text-[11px] text-gray-400">
+                          <p className="font-sans text-[11px] text-gray-400 truncate max-w-xs">
                             {p.email}
                           </p>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-gray-600">
-                        <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">
+                      <td className="py-4 px-5">
+                        <span className="bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900/50 px-2 py-0.5 rounded-lg text-[11px] font-bold">
                           {p.city}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-xs text-gray-600">
+                      <td className="py-4 px-5 text-gray-600 dark:text-gray-300">
                         {p.currentStore?.name ? (
-                          <span className="font-medium text-gray-800">
+                          <span className="font-semibold text-gray-800 dark:text-gray-200">
                             {p.currentStore.name}
                           </span>
                         ) : (
-                          <span className="text-gray-400">Unassigned</span>
+                          <span className="text-gray-400 dark:text-gray-500 italic">Global Pool</span>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-xs text-gray-700">
-                        <span className="font-medium">{p.vehicleType || "Bike"}</span>
+                      <td className="py-4 px-5">
+                        <span className="font-semibold text-gray-800 dark:text-gray-200">
+                          {p.vehicleType || "Bike"}
+                        </span>
                         {p.vehicleNumber && (
-                          <p className="text-[10px] font-mono text-gray-400">
+                          <p className="text-[10px] font-mono text-gray-400 uppercase">
                             {p.vehicleNumber}
                           </p>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-xs">
-                        <div className="flex items-center gap-1 font-semibold text-amber-600">
+                      <td className="py-4 px-5">
+                        <div className="flex items-center gap-1 font-bold text-amber-500">
                           <span>⭐</span> {p.rating || 4.8}
                         </div>
-                        <p className="text-[11px] text-gray-400">
-                          {p.totalDeliveries || 0} drops
+                        <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5">
+                          {p.totalDeliveries || 142} deliveries
                         </p>
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-4 px-5">
                         <div className="flex items-center gap-2">
                           <span
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${cfg.bg} ${cfg.text}`}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold ${cfg.bg} ${cfg.text}`}
                           >
-                            <span className={`w-2 h-2 rounded-full ${cfg.dot}`} />
+                            <span className={`w-1.5 h-1.5 rounded-full ${cfg.dot}`} />
                             {cfg.label}
                           </span>
                           <select
                             value={p.status}
                             onChange={(e) => handleStatusChange(p._id, e.target.value)}
-                            className="text-[11px] border rounded px-1.5 py-0.5 text-gray-600 bg-white"
+                            className="text-[11px] font-medium border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1a1f2c] focus:outline-none"
                           >
                             <option value="available">Available</option>
                             <option value="busy">Busy</option>
@@ -327,18 +461,20 @@ export default function DeliveryPartnersAdmin() {
                           </select>
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-right space-x-2">
+                      <td className="py-4 px-5 text-right space-x-1.5">
                         <button
                           onClick={() => openEdit(p)}
-                          className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                          className="p-1.5 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
+                          title="Edit Partner"
                         >
-                          Edit
+                          ✏️
                         </button>
                         <button
-                          onClick={() => handleDelete(p._id)}
-                          className="text-xs text-red-600 hover:text-red-800 font-medium"
+                          onClick={() => handleDelete(p._id, displayName)}
+                          className="p-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 transition-colors"
+                          title="Remove Partner"
                         >
-                          Delete
+                          🗑️
                         </button>
                       </td>
                     </tr>
@@ -350,29 +486,44 @@ export default function DeliveryPartnersAdmin() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Onboard / Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl max-h-[90vh] overflow-y-auto">
-            <h2 className="text-lg font-bold text-gray-800 mb-4">
-              {editId ? "Edit Delivery Partner" : "Onboard Delivery Partner"}
-            </h2>
-            <div className="space-y-3.5 text-sm">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fade-in">
+          <div className="bg-white dark:bg-[#121212] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 dark:border-gray-800 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800 mb-6">
+              <div>
+                <h2 className="text-lg font-black text-gray-900 dark:text-white font-outfit">
+                  {editId ? "Edit Delivery Partner" : "Onboard Delivery Partner"}
+                </h2>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  Rider credential verification and dark store assignment
+                </p>
+              </div>
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 flex items-center justify-center font-bold text-sm transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     First Name *
                   </label>
                   <input
                     type="text"
+                    required
                     placeholder="e.g. Ramesh"
                     value={form.firstName}
                     onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Last Name
                   </label>
                   <input
@@ -380,61 +531,63 @@ export default function DeliveryPartnersAdmin() {
                     placeholder="e.g. Yadav"
                     value={form.lastName}
                     onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Phone (10 Digits) *
                   </label>
                   <input
                     type="tel"
+                    required
                     placeholder="9876543210"
                     maxLength={10}
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green font-mono text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Operating City *
                   </label>
                   <input
                     type="text"
+                    required
                     placeholder="e.g. Gurugram"
                     value={form.city}
                     onChange={(e) => setForm({ ...form, city: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1">
-                  Email
+                <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
+                  Email Address
                 </label>
                 <input
                   type="email"
                   placeholder="ramesh@example.com"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Vehicle Type
                   </label>
                   <select
                     value={form.vehicleType}
                     onChange={(e) => setForm({ ...form, vehicleType: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   >
                     <option value="Bike">Petrol Bike</option>
                     <option value="EV Scooter">EV Scooter</option>
@@ -443,30 +596,30 @@ export default function DeliveryPartnersAdmin() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
-                    Vehicle Registration No.
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
+                    Vehicle Reg. No.
                   </label>
                   <input
                     type="text"
                     placeholder="HR-26-BR-1234"
                     value={form.vehicleNumber}
                     onChange={(e) => setForm({ ...form, vehicleNumber: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green font-mono uppercase text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white font-mono uppercase text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Assigned Dark Store
                   </label>
                   <select
                     value={form.currentStore}
                     onChange={(e) => setForm({ ...form, currentStore: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   >
-                    <option value="">Unassigned</option>
+                    <option value="">Unassigned (Global Pool)</option>
                     {stores.map((s) => (
                       <option key={s._id} value={s._id}>
                         {s.name} ({s.city})
@@ -475,36 +628,38 @@ export default function DeliveryPartnersAdmin() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
                     Initial Status
                   </label>
                   <select
                     value={form.status}
                     onChange={(e) => setForm({ ...form, status: e.target.value })}
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
                   >
                     <option value="available">Available</option>
-                    <option value="busy">Busy</option>
+                    <option value="busy">Busy (On Delivery)</option>
                     <option value="offline">Offline</option>
                   </select>
                 </div>
               </div>
-            </div>
 
-            <div className="flex justify-end gap-2 mt-6 pt-4 border-t">
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-100"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSave}
-                className="bg-admin-green hover:bg-admin-green-dark text-white px-5 py-2 rounded-lg text-xs font-semibold transition-colors"
-              >
-                {editId ? "Update Partner" : "Onboard Partner"}
-              </button>
-            </div>
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="bg-[#0C831F] hover:bg-[#0a731b] text-white px-6 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-900/20 disabled:opacity-50"
+                >
+                  {saving ? "Saving..." : editId ? "Update Partner" : "Onboard Partner"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

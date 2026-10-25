@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import AISearch from "./AISearch";
+import ThemeToggle from "./ThemeToggle";
 
 const NAV_GROUPS = [
   {
@@ -133,7 +134,7 @@ export default function AdminLayout({ children }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
 
-  // Live ticking clock
+  // Live ticking clock in IST
   useEffect(() => {
     function updateClock() {
       const now = new Date();
@@ -172,7 +173,7 @@ export default function AdminLayout({ children }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F8FA] flex text-gray-800 font-sans antialiased">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#000000] flex text-gray-900 dark:text-gray-100 font-sans antialiased transition-colors duration-300">
       {/* AISearch Modal */}
       <AISearch isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
@@ -184,14 +185,14 @@ export default function AdminLayout({ children }) {
         />
       )}
 
-      {/* Modern Executive Sidebar */}
+      {/* Executive Sidebar */}
       <aside
-        className={`fixed lg:static top-0 bottom-0 left-0 z-40 w-64 bg-[#0F141C] border-r border-gray-800/80 flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:static top-0 bottom-0 left-0 z-40 w-64 bg-[#0F141C] dark:bg-[#05070a] border-r border-gray-800/80 dark:border-gray-900 flex flex-col transition-transform duration-300 ease-in-out shrink-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         {/* Brand Header */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-gray-800/80 bg-[#0A0D13]">
+        <div className="h-16 flex items-center justify-between px-5 border-b border-gray-800/80 dark:border-gray-900 bg-[#0A0D13] dark:bg-[#000000]">
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center p-1 shadow-sm group-hover:scale-105 transition-transform">
               <img
@@ -233,10 +234,10 @@ export default function AdminLayout({ children }) {
                       key={item.href}
                       href={item.href}
                       onClick={() => setSidebarOpen(false)}
-                      className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 ${
+                      className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 ${
                         isActive
-                          ? "bg-[#0C831F] text-white shadow-sm shadow-[#0C831F]/30"
-                          : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/60"
+                          ? "bg-[#0C831F] text-white shadow-md shadow-[#0C831F]/30"
+                          : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/60 dark:hover:bg-gray-900/60"
                       }`}
                     >
                       <div className="flex items-center gap-3">
@@ -263,10 +264,10 @@ export default function AdminLayout({ children }) {
         </div>
 
         {/* Live Operations & User footer */}
-        <div className="p-3 border-t border-gray-800/80 bg-[#0A0D13]">
-          <div className="flex items-center justify-between p-2 rounded-xl bg-gray-900/60 border border-gray-800">
+        <div className="p-3 border-t border-gray-800/80 dark:border-gray-900 bg-[#0A0D13] dark:bg-[#000000]">
+          <div className="flex items-center justify-between p-2 rounded-xl bg-gray-900/60 dark:bg-gray-950/60 border border-gray-800 dark:border-gray-800">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#0C831F] flex items-center justify-center text-white text-xs font-black shadow-inner">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0C831F] to-emerald-700 flex items-center justify-center text-white text-xs font-black shadow-inner">
                 KS
               </div>
               <div className="leading-tight">
@@ -277,7 +278,7 @@ export default function AdminLayout({ children }) {
             <button
               onClick={handleLogout}
               title="Logout from Admin"
-              className="p-1.5 text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+              className="p-1.5 text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -289,12 +290,12 @@ export default function AdminLayout({ children }) {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Modern Top bar */}
-        <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 px-4 lg:px-6 py-2.5 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+        {/* Modern Top bar with ThemeToggle */}
+        <header className="bg-white/80 dark:bg-[#0c1017]/85 backdrop-blur-xl border-b border-gray-200/80 dark:border-gray-800 px-4 lg:px-6 py-2.5 flex items-center justify-between sticky top-0 z-30 shadow-xs transition-colors duration-300">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100"
+              className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
               aria-label="Open Sidebar"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -304,9 +305,9 @@ export default function AdminLayout({ children }) {
 
             {/* Breadcrumb path */}
             <div className="hidden sm:flex items-center gap-2 text-xs">
-              <span className="text-gray-400 font-medium">Zippin Admin</span>
-              <span className="text-gray-300">/</span>
-              <span className="font-bold text-gray-800 capitalize">
+              <span className="text-gray-400 dark:text-gray-500 font-medium">Zippin Admin</span>
+              <span className="text-gray-300 dark:text-gray-600">/</span>
+              <span className="font-bold text-gray-800 dark:text-gray-200 capitalize">
                 {router.pathname === "/"
                   ? "Operational Dashboard"
                   : router.pathname.slice(1).replace(/-/g, " ")}
@@ -314,26 +315,26 @@ export default function AdminLayout({ children }) {
             </div>
 
             {/* Live Operations Pulse Indicator */}
-            <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 text-[11px] font-bold text-emerald-800">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-              <span>Live Hubs Online</span>
-              <span className="text-emerald-400">•</span>
-              <span className="font-mono text-emerald-700">{currentTime || "11:42 AM"}</span>
+            <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/60 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
+              <span className="w-2 h-2 rounded-full bg-[#0C831F] animate-ping"></span>
+              <span>Hubs Live</span>
+              <span className="text-emerald-400 dark:text-emerald-500">•</span>
+              <span className="font-mono text-emerald-700 dark:text-emerald-400">{currentTime || "11:42 AM"}</span>
             </div>
           </div>
 
           {/* Top Search & Actions */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
             {/* Global Search Button */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200/80 border border-gray-200 text-xs text-gray-500 hover:text-gray-800 transition-colors shadow-2xs"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200/80 dark:bg-gray-800/80 dark:hover:bg-gray-700/80 border border-gray-200 dark:border-gray-700 text-xs text-gray-600 dark:text-gray-300 transition-colors shadow-2xs"
             >
-              <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 text-gray-400 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <span className="hidden md:inline">Quick search...</span>
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold text-gray-400 bg-white border border-gray-200 rounded">
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded">
                 ⌘K
               </kbd>
             </button>
@@ -343,7 +344,7 @@ export default function AdminLayout({ children }) {
               href="http://localhost:3000"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-emerald-50 text-[#0C831F] border border-emerald-200/70 hover:bg-emerald-100 transition-colors"
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-[#0C831F] dark:text-emerald-400 border border-emerald-200/70 dark:border-emerald-800/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -351,43 +352,51 @@ export default function AdminLayout({ children }) {
               <span className="hidden sm:inline">Storefront</span>
             </a>
 
+            {/* Theme Toggle (☀️ / 🌙) */}
+            <ThemeToggle />
+
             {/* Notification Bell */}
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2 text-gray-500 hover:text-gray-800 rounded-xl hover:bg-gray-100 relative transition-colors"
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 relative transition-colors"
                 aria-label="Notifications"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-gray-900"></span>
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 p-3 z-50 text-xs animate-fade-in">
-                  <div className="flex items-center justify-between pb-2 border-b border-gray-100 font-bold text-gray-800">
+                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-[#161b22] rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 p-3 z-50 text-xs animate-fade-in">
+                  <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800 font-bold text-gray-800 dark:text-gray-100">
                     <span>Live Operations Feed</span>
-                    <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">
+                    <span className="text-[10px] bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 px-2 py-0.5 rounded-full font-bold">
                       3 New
                     </span>
                   </div>
-                  <div className="divide-y divide-gray-50 mt-2">
+                  <div className="divide-y divide-gray-50 dark:divide-gray-800 mt-2">
                     <div className="py-2">
-                      <p className="font-semibold text-gray-800">🛵 Order #ORD-9841 Dispatched</p>
-                      <p className="text-gray-500 text-[11px]">Rider Rahul Verma en-route to DLF Cyber City (ETA 7 min)</p>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">🛵 Order #ORD-9841 Dispatched</p>
+                      <p className="text-gray-500 dark:text-gray-400 text-[11px]">Rider Rahul Verma en-route to DLF Cyber City (ETA 7 min)</p>
                     </div>
                     <div className="py-2">
-                      <p className="font-semibold text-amber-600">⚠️ Low Stock Alert</p>
-                      <p className="text-gray-500 text-[11px]">Amul Taaza Milk 500ml is below 12 units in Sector 43 Hub</p>
+                      <p className="font-semibold text-amber-600 dark:text-amber-400">⚠️ Low Stock Alert</p>
+                      <p className="text-gray-500 dark:text-gray-400 text-[11px]">Amul Taaza Milk 500ml is below 12 units in Sector 43 Hub</p>
                     </div>
                     <div className="py-2">
-                      <p className="font-semibold text-emerald-600">💰 Settlement Completed</p>
-                      <p className="text-gray-500 text-[11px]">Razorpay daily settlement ₹42,850 completed successfully</p>
+                      <p className="font-semibold text-emerald-600 dark:text-emerald-400">💰 Settlement Completed</p>
+                      <p className="text-gray-500 dark:text-gray-400 text-[11px]">Razorpay daily settlement ₹42,850 completed successfully</p>
                     </div>
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* User Avatar */}
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#0C831F] via-emerald-600 to-[#F8CB46] flex items-center justify-center text-white font-black text-xs shadow-md ring-2 ring-emerald-300/60 dark:ring-emerald-700/60">
+              KS
             </div>
           </div>
         </header>

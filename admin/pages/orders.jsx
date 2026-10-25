@@ -162,17 +162,17 @@ export default function OrdersAdmin() {
       />
 
       {/* Top Header & Metrics */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs transition-colors duration-300">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight">
+            <h1 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
               Customer Orders & Dispatch
             </h1>
-            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase">
+            <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-[#0C831F] dark:text-emerald-400 text-[10px] font-black uppercase">
               Live Feed
             </span>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
             Real-time quick-commerce fulfillment pipeline across 6 dark stores in Gurugram & Delhi NCR.
           </p>
         </div>
@@ -180,7 +180,7 @@ export default function OrdersAdmin() {
         <div className="flex items-center gap-2.5">
           <button
             onClick={loadData}
-            className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold rounded-xl transition-colors cursor-pointer"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -199,16 +199,16 @@ export default function OrdersAdmin() {
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 isActive
                   ? "bg-[#0C831F] text-white shadow-sm shadow-[#0C831F]/30"
-                  : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200/80"
+                  : "bg-white dark:bg-[#121212] text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200/80 dark:border-gray-800"
               }`}
             >
               <span>{config.label}</span>
               <span
                 className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
-                  isActive ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"
+                  isActive ? "bg-white/20 text-white" : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
                 }`}
               >
                 {count}
@@ -219,7 +219,7 @@ export default function OrdersAdmin() {
       </div>
 
       {/* Search Input Bar */}
-      <div className="flex items-center gap-3 bg-white p-3 rounded-2xl border border-gray-200/80 shadow-xs">
+      <div className="flex items-center gap-3 bg-white dark:bg-[#121212] p-3 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs transition-colors duration-300">
         <svg className="w-4 h-4 text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
@@ -228,12 +228,12 @@ export default function OrdersAdmin() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Filter by Order ID (e.g. ORD-9821), Customer name, phone number, address..."
-          className="w-full text-xs md:text-sm bg-transparent focus:outline-none text-gray-800 placeholder-gray-400"
+          className="w-full text-xs md:text-sm bg-transparent focus:outline-none text-gray-800 dark:text-gray-100 placeholder-gray-400"
         />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery("")}
-            className="text-xs text-gray-400 hover:text-gray-600 font-bold px-2 py-1"
+            className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 font-bold px-2 py-1 cursor-pointer"
           >
             Clear
           </button>
@@ -241,7 +241,7 @@ export default function OrdersAdmin() {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs overflow-hidden">
+      <div className="bg-white dark:bg-[#121212] rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs overflow-hidden transition-colors duration-300">
         {loading ? (
           <div className="p-12 text-center text-gray-400 text-sm">
             <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
@@ -255,7 +255,7 @@ export default function OrdersAdmin() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-gray-50/80 text-gray-500 font-bold border-b border-gray-200/80 uppercase tracking-wider text-[10px]">
+                <tr className="bg-gray-50/80 dark:bg-[#0c1017] text-gray-500 dark:text-gray-400 font-bold border-b border-gray-200/80 dark:border-gray-800 uppercase tracking-wider text-[10px]">
                   <th className="py-3 px-4">Order ID & Date</th>
                   <th className="py-3 px-4">Customer & Phone</th>
                   <th className="py-3 px-4">Items / Total</th>
@@ -264,15 +264,15 @@ export default function OrdersAdmin() {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {filteredOrders.map((ord) => {
                   const statusConf = STATUS_CONFIG[ord.status] || STATUS_CONFIG.placed;
                   return (
-                    <tr key={ord._id} className="hover:bg-gray-50/70 transition-colors">
+                    <tr key={ord._id} className="hover:bg-gray-50/70 dark:hover:bg-gray-800/40 transition-colors">
                       {/* ID & Date */}
-                      <td className="py-3.5 px-4 font-mono font-bold text-gray-900">
+                      <td className="py-3.5 px-4 font-mono font-bold text-gray-900 dark:text-gray-100">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[#0C831F] font-black">{ord.orderNumber}</span>
+                          <span className="text-[#0C831F] dark:text-emerald-400 font-black">{ord.orderNumber}</span>
                         </div>
                         <div className="text-[10px] text-gray-400 font-sans mt-0.5">
                           {new Date(ord.createdAt || Date.now()).toLocaleTimeString("en-IN", {
@@ -286,8 +286,8 @@ export default function OrdersAdmin() {
 
                       {/* Customer */}
                       <td className="py-3.5 px-4">
-                        <div className="font-extrabold text-gray-800">{ord.customerName || "Customer"}</div>
-                        <div className="text-[11px] text-gray-500">{ord.customerPhone || "+91 98765 43210"}</div>
+                        <div className="font-extrabold text-gray-800 dark:text-gray-200">{ord.customerName || "Customer"}</div>
+                        <div className="text-[11px] text-gray-500 dark:text-gray-400">{ord.customerPhone || "+91 98765 43210"}</div>
                         <div className="text-[10px] text-gray-400 truncate max-w-[180px]">
                           {ord.deliveryAddress?.addressLine}
                         </div>
@@ -295,8 +295,8 @@ export default function OrdersAdmin() {
 
                       {/* Items & Total */}
                       <td className="py-3.5 px-4">
-                        <div className="font-black text-gray-900 text-sm">₹{ord.total}</div>
-                        <div className="text-[11px] text-gray-500">
+                        <div className="font-black text-gray-900 dark:text-white text-sm">₹{ord.total}</div>
+                        <div className="text-[11px] text-gray-500 dark:text-gray-400">
                           {(ord.items || []).length} items •{" "}
                           <span className="uppercase text-[10px] font-bold text-gray-400">
                             {ord.paymentMethod || "UPI"}
@@ -306,10 +306,10 @@ export default function OrdersAdmin() {
 
                       {/* Hub & Rider */}
                       <td className="py-3.5 px-4">
-                        <div className="font-semibold text-gray-800">
+                        <div className="font-semibold text-gray-800 dark:text-gray-200">
                           {ord.store?.name || "Sector 43 Hub"}
                         </div>
-                        <div className="text-[10px] text-emerald-600 font-bold mt-0.5">
+                        <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">
                           🛵 {ord.partner?.name || "Assigning Rider..."}
                         </div>
                       </td>
@@ -337,7 +337,7 @@ export default function OrdersAdmin() {
                           <button
                             onClick={() => setInvoiceOrder(ord)}
                             title="Generate & Print Tax Invoice"
-                            className="p-1.5 text-gray-500 hover:text-[#0C831F] hover:bg-emerald-50 rounded-lg border border-gray-200 transition-colors"
+                            className="p-1.5 text-gray-500 dark:text-gray-400 hover:text-[#0C831F] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 rounded-lg border border-gray-200 dark:border-gray-700 transition-colors cursor-pointer"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -347,7 +347,7 @@ export default function OrdersAdmin() {
                           {/* Details Button */}
                           <button
                             onClick={() => setSelectedOrder(ord)}
-                            className="px-2.5 py-1.5 text-xs font-bold text-gray-700 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                            className="px-2.5 py-1.5 text-xs font-bold text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
                           >
                             Details
                           </button>
@@ -364,13 +364,16 @@ export default function OrdersAdmin() {
 
       {/* Order Detail Drawer Modal */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => setSelectedOrder(null)}>
+          <div
+            className="bg-white dark:bg-[#121212] rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 max-w-xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-5 border-b border-gray-100 bg-gray-50/50">
+            <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#0c1017]">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono font-black text-base text-gray-900">
+                  <span className="font-mono font-black text-base text-gray-900 dark:text-white">
                     {selectedOrder.orderNumber}
                   </span>
                   <span
@@ -392,13 +395,13 @@ export default function OrdersAdmin() {
                     setInvoiceOrder(selectedOrder);
                     setSelectedOrder(null);
                   }}
-                  className="px-3 py-1.5 bg-emerald-50 text-[#0C831F] border border-emerald-200 font-bold text-xs rounded-xl hover:bg-emerald-100"
+                  className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 text-[#0C831F] dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 font-bold text-xs rounded-xl hover:bg-emerald-100 dark:hover:bg-emerald-900/40 cursor-pointer"
                 >
                   Print Invoice
                 </button>
                 <button
                   onClick={() => setSelectedOrder(null)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100"
+                  className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
                 >
                   ✕
                 </button>
@@ -408,13 +411,13 @@ export default function OrdersAdmin() {
             {/* Modal Content */}
             <div className="flex-1 overflow-y-auto p-5 space-y-5 text-xs">
               {/* Customer info */}
-              <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+              <div className="bg-gray-50 dark:bg-gray-800/40 rounded-2xl p-4 border border-gray-100 dark:border-gray-800">
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                   Customer & Delivery
                 </p>
-                <p className="font-extrabold text-sm text-gray-900">{selectedOrder.customerName}</p>
-                <p className="text-gray-600 font-semibold">{selectedOrder.customerPhone}</p>
-                <p className="text-gray-500 mt-1">
+                <p className="font-extrabold text-sm text-gray-900 dark:text-white">{selectedOrder.customerName}</p>
+                <p className="text-gray-600 dark:text-gray-300 font-semibold">{selectedOrder.customerPhone}</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-1">
                   {selectedOrder.deliveryAddress?.addressLine}, {selectedOrder.deliveryAddress?.city} -{" "}
                   {selectedOrder.deliveryAddress?.pincode}
                 </p>
@@ -425,23 +428,23 @@ export default function OrdersAdmin() {
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
                   Ordered Items ({selectedOrder.items?.length || 0})
                 </p>
-                <div className="divide-y divide-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
+                <div className="divide-y divide-gray-100 dark:divide-gray-800 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden">
                   {(selectedOrder.items || []).map((it, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-3 bg-white">
+                    <div key={idx} className="flex items-center justify-between p-3 bg-white dark:bg-gray-900">
                       <div className="flex items-center gap-3">
                         {it.image && (
                           <img
                             src={it.image}
                             alt=""
-                            className="w-10 h-10 rounded-lg object-contain bg-white border border-gray-100 p-0.5"
+                            className="w-10 h-10 rounded-lg object-contain bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-0.5"
                           />
                         )}
                         <div>
-                          <p className="font-extrabold text-gray-900">{it.title || it.name}</p>
+                          <p className="font-extrabold text-gray-900 dark:text-white">{it.title || it.name}</p>
                           <p className="text-gray-400 text-[11px]">{it.unit} • Qty: {it.quantity || it.qty || 1}</p>
                         </div>
                       </div>
-                      <div className="font-black text-gray-900">₹{it.total || it.price}</div>
+                      <div className="font-black text-gray-900 dark:text-white">₹{it.total || it.price}</div>
                     </div>
                   ))}
                 </div>
@@ -456,7 +459,7 @@ export default function OrdersAdmin() {
                   <select
                     value={selectedOrder.store?._id || selectedOrder.store || ""}
                     onChange={(e) => handleAssignStore(selectedOrder._id, e.target.value)}
-                    className="w-full p-2 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                    className="w-full p-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                   >
                     <option value="">Select Dark Store</option>
                     {stores.map((s) => (
@@ -474,7 +477,7 @@ export default function OrdersAdmin() {
                   <select
                     value={selectedOrder.partner?._id || selectedOrder.partner || ""}
                     onChange={(e) => handleAssignPartner(selectedOrder._id, e.target.value)}
-                    className="w-full p-2 rounded-xl bg-gray-50 border border-gray-200 text-xs font-semibold focus:outline-none"
+                    className="w-full p-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
                   >
                     <option value="">Assign Rider</option>
                     {partners.map((p) => (
@@ -487,22 +490,22 @@ export default function OrdersAdmin() {
               </div>
 
               {/* Financial summary */}
-              <div className="bg-emerald-50/60 rounded-2xl p-4 border border-emerald-100 space-y-1.5">
-                <div className="flex justify-between text-gray-600">
+              <div className="bg-emerald-50/60 dark:bg-emerald-950/30 rounded-2xl p-4 border border-emerald-100 dark:border-emerald-900/40 space-y-1.5">
+                <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Subtotal:</span>
-                  <span className="font-semibold text-gray-800">₹{selectedOrder.subtotal || selectedOrder.total - 33}</span>
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">₹{selectedOrder.subtotal || selectedOrder.total - 33}</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
+                <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Delivery Charge:</span>
-                  <span className="font-semibold text-gray-800">₹{selectedOrder.deliveryFee || 25}</span>
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">₹{selectedOrder.deliveryFee || 25}</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
+                <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>Taxes (5%):</span>
-                  <span className="font-semibold text-gray-800">₹{selectedOrder.tax || 8}</span>
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">₹{selectedOrder.tax || 8}</span>
                 </div>
-                <div className="border-t border-emerald-200/80 pt-1.5 flex justify-between text-sm font-black text-gray-900">
+                <div className="border-t border-emerald-200/80 dark:border-emerald-800/80 pt-1.5 flex justify-between text-sm font-black text-gray-900 dark:text-white">
                   <span>Total Amount:</span>
-                  <span className="text-[#0C831F]">₹{selectedOrder.total}</span>
+                  <span className="text-[#0C831F] dark:text-emerald-400">₹{selectedOrder.total}</span>
                 </div>
               </div>
             </div>

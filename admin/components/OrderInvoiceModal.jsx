@@ -22,21 +22,21 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
   const total = Number(order.total) || subtotal + deliveryFee + tax;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/70 backdrop-blur-xs overflow-y-auto print:p-0 print:bg-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto print:p-0 print:bg-white" onClick={onClose}>
       {/* Modal Card */}
-      <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 max-w-3xl w-full overflow-hidden my-8 print:shadow-none print:border-none print:m-0 print:max-w-none">
+      <div className="bg-white dark:bg-[#121212] rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800 max-w-3xl w-full overflow-hidden my-8 print:shadow-none print:border-none print:m-0 print:max-w-none" onClick={(e) => e.stopPropagation()}>
         {/* Modal Top Bar (Hidden during print) */}
-        <div className="flex items-center justify-between px-6 py-4 bg-gray-50 border-b border-gray-100 print:hidden">
+        <div className="flex items-center justify-between px-6 py-4 bg-gray-50 dark:bg-[#0c1017] border-b border-gray-100 dark:border-gray-800 print:hidden">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#0C831F]"></span>
-            <span className="font-extrabold text-sm text-gray-800">
+            <span className="font-extrabold text-sm text-gray-800 dark:text-gray-200">
               Tax Invoice & Receipt • {order.orderNumber}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 px-4 py-2 bg-[#0C831F] hover:bg-[#096618] text-white font-bold text-xs rounded-xl shadow-sm transition-all"
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#0C831F] hover:bg-[#096618] text-white font-bold text-xs rounded-xl shadow-sm transition-all cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -45,7 +45,7 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-gray-400 hover:text-gray-600 rounded-xl hover:bg-gray-100 transition-colors"
+              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
             >
               ✕
             </button>

@@ -4,5 +4,13 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/orders": "pages/orders.js",
-  "/stores": "pages/stores.js"
+  "/inventory": "pages/inventory.js",
+  "/products": "pages/products.js",
+  "/categories": "pages/categories.js",
+  "/delivery-partners": "pages/delivery-partners.js",
+  "/stores": "pages/stores.js",
+  "/payments": "pages/payments.js",
+  "/revenue": "pages/revenue.js",
+  "/login": "pages/login.js",
+  "/hero-management": "pages/hero-management.js"
 }
