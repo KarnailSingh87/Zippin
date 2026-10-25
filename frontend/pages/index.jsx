@@ -206,7 +206,7 @@ export default function Home() {
 
       {/* 1. Hero Promo Banner Carousel (Paan Corner & Superfast Delivery) */}
       <div className="px-4 pt-4">
-        <div className="relative overflow-hidden rounded-2xl md:rounded-3xl shadow-xs border border-gray-200/80 bg-white">
+        <div className="relative overflow-hidden rounded-2xl md:rounded-3xl shadow-sm">
           <div
             className="flex transition-transform duration-500 ease-out"
             style={{ transform: `translateX(-${activeSlide * 100}%)` }}
@@ -217,7 +217,7 @@ export default function Home() {
                   <img
                     src={slide.image}
                     alt={slide.title}
-                    className="w-full h-auto max-h-[220px] md:max-h-[280px] object-cover transition-transform duration-300 group-hover:scale-[1.01]"
+                    className="w-full h-auto max-h-[240px] md:max-h-[300px] object-cover transition-transform duration-300 group-hover:scale-[1.01] block"
                     onError={(e) => {
                       e.currentTarget.src = slide.fallback || "/images/banner-hero.jpg";
                     }}
