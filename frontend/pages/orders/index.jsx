@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 
 const API = "";
 
 export default function OrdersPage() {
   const { user, token } = useAuth();
+  const { reorder } = useCart();
   const router = useRouter();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -143,6 +145,19 @@ export default function OrdersPage() {
                   <span className="text-sm font-bold text-gray-800">
                     ₹{order.total}
                   </span>
+                </div>
+                <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between">
+                  <span className="text-[11px] text-gray-400">Order ID: #{order._id.slice(-6).toUpperCase()}</span>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (reorder) reorder(order.items);
+                    }}
+                    className="btn-green text-xs font-bold px-3 py-1.5 rounded-lg shadow-2xs hover:shadow-xs flex items-center gap-1.5"
+                  >
+                    <span>🔁</span> Reorder
+                  </button>
                 </div>
               </Link>
             );

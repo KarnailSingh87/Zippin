@@ -195,6 +195,9 @@ export default function Home() {
 
   return (
     <div className="pb-16 max-w-7xl mx-auto">
+      {/* Semantic Single H1 for SEO */}
+      <h1 className="sr-only">Zippin - Instant Groceries and Essentials in 8-10 Minutes</h1>
+
       {/* 1. Hero Promo Banner Carousel (Paan Corner & Superfast Delivery) */}
       <div className="px-4 pt-4">
         <div className="relative overflow-hidden rounded-2xl md:rounded-3xl shadow-xs border border-gray-200/80 bg-white">
@@ -294,6 +297,14 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* 3. Shelf: "Buy Again" Frequently Ordered Essentials */}
+      <ShelfCarousel
+        title="Buy Again"
+        subtitle="Frequently ordered staples and daily groceries for quick 1-tap re-ordering"
+        products={dairyProducts.length > 0 ? dairyProducts.slice(0, 8) : allProducts.slice(0, 8)}
+        slug="dairy-breakfast"
+      />
 
       {/* 4. Shelf: Paan Corner & Refreshments */}
       <ShelfCarousel

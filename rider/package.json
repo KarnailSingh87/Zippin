@@ -1,0 +1,12 @@
+{
+  "name": "zippin-rider-app",
+  "version": "1.0.0",
+  "description": "Zippin Delivery Partner Mobile Web Application",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -l 3002 ."
+  },
+  "keywords": ["delivery", "rider", "courier", "gps"],
+  "author": "Zippin Engineering",
+  "license": "MIT"
+}

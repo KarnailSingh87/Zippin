@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Zippin Rider Partner App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: #0c0f14; color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
+    header { background: #181d24; border-bottom: 1px solid #28303d; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 40; }
+    .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.1rem; color: #10b981; }
+    .status-badge { padding: 4px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+    .status-online { background: #064e3b; color: #34d399; border: 1px solid #059669; }
+    .status-offline { background: #334155; color: #94a3b8; border: 1px solid #475569; }
+    .status-break { background: #78350f; color: #fbbf24; border: 1px solid #d97706; }
+
+    main { flex: 1; padding: 16px; max-width: 500px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 16px; }
+    
+    .card { background: #161b22; border: 1px solid #232b36; border-radius: 16px; padding: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .card-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 700; margin-bottom: 12px; }
+
+    .duty-controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .btn { border: none; border-radius: 12px; padding: 12px 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .btn-green { background: #10b981; color: #022c22; }
+    .btn-green:hover { background: #34d399; }
+    .btn-amber { background: #f59e0b; color: #451a03; }
+    .btn-dark { background: #212833; color: #e2e8f0; border: 1px solid #334155; }
+    .btn-red { background: #ef4444; color: #ffffff; }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-box { background: #1f2733; border-radius: 12px; padding: 14px; text-align: center; }
+    .stat-val { font-size: 1.4rem; font-weight: 800; color: #f8fafc; }
+    .stat-lbl { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
+
+    /* Alert Banner / Modal */
+    .alert-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
+    .alert-content { background: #1a222d; border: 2px solid #10b981; border-radius: 20px; max-width: 400px; width: 100%; padding: 24px; text-align: center; box-shadow: 0 0 50px rgba(16,185,129,0.3); animation: pulseGlow 1.5s infinite alternate; }
+    @keyframes pulseGlow { from { border-color: #10b981; } to { border-color: #34d399; } }
+    .countdown-timer { font-size: 3rem; font-weight: 900; color: #10b981; margin: 12px 0; font-variant-numeric: tabular-nums; }
+    
+    .nav-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 12px; background: #2563eb; color: #fff; font-weight: 700; text-decoration: none; font-size: 0.95rem; margin-top: 10px; }
+    .sos-btn { background: #dc2626; color: white; border: none; border-radius: 12px; padding: 14px; font-weight: 800; font-size: 0.9rem; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; box-shadow: 0 4px 14px rgba(220,38,38,0.4); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span>⚡</span> Zippin Partner
+    </div>
+    <div id="statusBadge" class="status-badge status-online">● ONLINE</div>
+  </header>
+
+  <main>
+    <!-- Duty & Shift Controls -->
+    <div class="card">
+      <div class="card-title">Shift Controls</div>
+      <div class="duty-controls">
+        <button id="btnOnline" class="btn btn-green"><span>🛵</span> Go Online</button>
+        <button id="btnBreak" class="btn btn-amber"><span>☕</span> 15m Break</button>
+        <button id="btnOffline" class="btn btn-dark"><span>⏸️</span> Go Offline</button>
+      </div>
+    </div>
+
+    <!-- Active Deliveries & Order Navigation -->
+    <div class="card" id="activeOrderCard">
+      <div class="card-title">Current Delivery Assignment</div>
+      <div id="activeOrderContent">
+        <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 0.9rem;">
+          🛵 You are online. Waiting for order dispatch from dark store...
+        </div>
+      </div>
+      <button id="btnSimulateOrder" class="btn btn-dark" style="margin-top: 10px; width: 100%;">
+        🔔 Simulate Incoming Order Alert
+      </button>
+    </div>
+
+    <!-- Earnings & COD Cash in Hand -->
+    <div class="card">
+      <div class="card-title">Earnings & Settlement</div>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-val" id="todayEarnings">₹540</div>
+          <div class="stat-lbl">Today's Payout</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="cashInHand">₹280</div>
+          <div class="stat-lbl">COD Cash in Hand</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Safety & Emergency SOS -->
+    <div class="card">
+      <div class="card-title">Rider Safety & SOS</div>
+      <button id="btnSOS" class="sos-btn">
+        <span>🚨</span> EMERGENCY SOS (POLICE & AMBULANCE)
+      </button>
+    </div>
+  </main>
+
+  <!-- 45-Second Countdown Order Alert Modal -->
+  <div id="alertModal" class="alert-modal">
+    <div class="alert-content">
+      <div style="font-size: 2rem;">🔔</div>
+      <h2 style="font-size: 1.3rem; font-weight: 800; margin-top: 8px;">New Order Assigned!</h2>
+      <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">Sector 43 Dark Store → Sushant Lok Phase 1</p>
+      <div class="countdown-timer" id="countdownTimer">45s</div>
+      <div style="font-size: 1.1rem; font-weight: 700; color: #f8fafc; margin-bottom: 16px;">Earning: ₹65 (₹50 base + ₹15 surge)</div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <button id="btnRejectOrder" class="btn btn-red" style="font-size: 1rem; padding: 14px;">Reject</button>
+        <button id="btnAcceptOrder" class="btn btn-green" style="font-size: 1rem; padding: 14px;">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Audio Chime synthesizer using Web Audio API
+    function playChime() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      } catch (e) {}
+    }
+
+    // Status management
+    const statusBadge = document.getElementById('statusBadge');
+    document.getElementById('btnOnline').onclick = () => {
+      statusBadge.className = 'status-badge status-online';
+      statusBadge.textContent = '● ONLINE';
+    };
+    document.getElementById('btnBreak').onclick = () => {
+      statusBadge.className = 'status-badge status-break';
+      statusBadge.textContent = '☕ ON BREAK (15m)';
+    };
+    document.getElementById('btnOffline').onclick = () => {
+      statusBadge.className = 'status-badge status-offline';
+      statusBadge.textContent = '⏸️ OFFLINE';
+    };
+
+    // Countdown Alert Modal
+    let timer = 45;
+    let timerInterval = null;
+    const alertModal = document.getElementById('alertModal');
+    const countdownTimer = document.getElementById('countdownTimer');
+
+    function triggerOrderAlert() {
+      playChime();
+      alertModal.style.display = 'flex';
+      timer = 45;
+      countdownTimer.textContent = timer + 's';
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timer--;
+        countdownTimer.textContent = timer + 's';
+        if (timer <= 0) {
+          clearInterval(timerInterval);
+          alertModal.style.display = 'none';
+          alert('Order timed out and was reassigned to another partner.');
+        }
+      }, 1000);
+    }
+
+    document.getElementById('btnSimulateOrder').onclick = triggerOrderAlert;
+
+    document.getElementById('btnAcceptOrder').onclick = () => {
+      clearInterval(timerInterval);
+      alertModal.style.display = 'none';
+      renderActiveDelivery();
+    };
+
+    document.getElementById('btnRejectOrder').onclick = () => {
+      clearInterval(timerInterval);
+      alertModal.style.display = 'none';
+    };
+
+    function renderActiveDelivery() {
+      const destLat = 28.4595;
+      const destLng = 77.0266;
+      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}`;
+
+      document.getElementById('activeOrderContent').innerHTML = `
+        <div style="background: #1f2733; padding: 14px; border-radius: 12px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 800; color: #10b981;">ORDER #ZP-8924</span>
+            <span style="font-size: 0.75rem; background: #064e3b; color: #34d399; padding: 2px 8px; border-radius: 4px;">PICKUP COMPLETE</span>
+          </div>
+          <p style="font-size: 0.85rem; margin-top: 8px; color: #f1f5f9;">Drop: B-402, DLF Phase 2, Gurugram</p>
+          <a href="${googleMapsUrl}" target="_blank" class="nav-btn">
+            <span>🗺️</span> Open Google Maps Navigation
+          </a>
+        </div>
+        <div style="margin-top: 12px;">
+          <label style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">PROOF OF DELIVERY (4-DIGIT OTP)</label>
+          <div style="display: flex; gap: 8px; margin-top: 6px;">
+            <input type="text" maxlength="4" placeholder="Enter 4-digit OTP" style="flex: 1; padding: 10px; border-radius: 8px; background: #0c0f14; border: 1px solid #334155; color: #fff; font-size: 0.9rem;" />
+            <button class="btn btn-green" onclick="alert('Delivery Confirmed! ₹65 added to your wallet.')">Verify</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Emergency SOS
+    document.getElementById('btnSOS').onclick = () => {
+      if (confirm('EMERGENCY SOS: This will alert Zippin Safety Ops, Emergency Ambulance, and Police with your live GPS location. Continue?')) {
+        alert('🚨 Emergency SOS Dispatched! Police and Zippin Dark Store Hub safety team notified.');
+      }
+    };
+
+    // Telemetry ping
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition((pos) => {
+        // Telemetry GPS broadcast
+        fetch('/api/delivery-partners/telemetry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lat: pos.coords.latitude, lng: pos.coords.longitude })
+        }).catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
