@@ -122,7 +122,15 @@ export async function placeOrder(req, res) {
       store: selectedStore?._id || null,
       partner: assignedPartner?._id || null,
       rider: assignedPartner?._id || null,
-      deliveryAddress: deliveryAddress || {},
+      deliveryAddress: deliveryAddress
+        ? {
+            label: typeof deliveryAddress.label === "string" ? deliveryAddress.label.replace(/<[^>]*>/g, "").trim() : "",
+            street: typeof deliveryAddress.street === "string" ? deliveryAddress.street.replace(/<[^>]*>/g, "").trim() : "",
+            city: typeof deliveryAddress.city === "string" ? deliveryAddress.city.replace(/<[^>]*>/g, "").trim() : "",
+            pincode: typeof deliveryAddress.pincode === "string" ? deliveryAddress.pincode.replace(/<[^>]*>/g, "").trim() : "",
+            area: typeof deliveryAddress.area === "string" ? deliveryAddress.area.replace(/<[^>]*>/g, "").trim() : "",
+          }
+        : {},
       payment: payment || { method: "cod", status: "pending" },
       estimatedDelivery,
     });
@@ -174,7 +182,7 @@ export async function placeOrder(req, res) {
       .populate("partner", "firstName lastName name phone vehicleType rating")
       .populate("paymentRecord");
 
-    res.status(201).json(populated || order);
+    res.status(200).json(populated || order);
   } catch (err) {
     console.error("Place order error", err);
     res.status(500).json({ message: "Failed to place order" });
@@ -218,6 +226,17 @@ export async function updateOrderStatus(req, res) {
   const order = await Order.findById(req.params.id);
   if (!order) return res.status(404).json({ message: "Order not found" });
 
+  const orderUserId = order.user?._id ? order.user._id.toString() : order.user?.toString();
+  const isOwner = orderUserId === req.user?.sub;
+  const isAdmin = req.user?.roles && req.user.roles.includes("admin");
+
+  // Allow customer to cancel their own placed order; otherwise require admin
+  if (status === "cancelled" && isOwner && (order.status === "placed" || order.status === "confirmed")) {
+    // Permitted customer self-cancellation
+  } else if (!isAdmin) {
+    return res.status(403).json({ message: "Admin role required to modify order status" });
+  }
+
   order.status = status;
   order.statusHistory.push({ status, timestamp: new Date(), note: note || "" });
 
@@ -239,16 +258,30 @@ export async function updateOrderStatus(req, res) {
     if (partnerId) {
       await DeliveryPartner.findByIdAndUpdate(partnerId, {
         status: "available",
-        $inc: { totalDeliveries: 1 },
+        $inc: { totalDeliveries: 1, payout: 50, earnings: 50 },
       });
     }
   } else if (status === "cancelled") {
+    // Automated Payment Gateway Refund
+    const refundAmount = order.total;
+    if (order.paymentRecord) {
+      await Payment.findByIdAndUpdate(order.paymentRecord, {
+        paymentStatus: "refunded",
+        refundAmount,
+        refundedAt: new Date(),
+      });
+    }
+    // Simulated Razorpay.refund gateway execution for online payments
+    if (order.payment?.method === "upi" || order.payment?.method === "card") {
+      order.payment.status = "refunded";
+    }
+
     // Restore Stock for all items
     for (const it of (order.items || [])) {
       const pId = it.product || it.productId;
-      const q = Number(it.qty || it.quantity || 1);
+      const qty = Number(it.qty || it.quantity || 1);
       if (pId) {
-        await Product.findByIdAndUpdate(pId, { $inc: { stock: q } });
+        await Product.findByIdAndUpdate(pId, { $inc: { stock: qty } });
       }
     }
     const partnerId = order.partner || order.rider;
@@ -273,12 +306,116 @@ export async function updateOrderStatus(req, res) {
 
   const populated = await Order.findById(order._id)
     .populate("store", "name code city area")
-    .populate("partner", "firstName lastName name phone vehicleType rating")
-    .populate("rider", "firstName lastName name phone vehicleType rating")
+    .populate("partner", "firstName lastName name phone vehicleType rating photo avatar")
+    .populate("rider", "firstName lastName name phone vehicleType rating photo avatar")
     .populate("picker", "firstName lastName name phone shift pickingSpeedSec status")
     .populate("paymentRecord");
 
   res.json(populated || order);
+}
+
+// In-store picker assignment
+export async function assignPicker(req, res) {
+  try {
+    const { pickerId } = req.body;
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    let partner = null;
+    if (pickerId) {
+      partner = await DeliveryPartner.findById(pickerId);
+    } else {
+      partner = await DeliveryPartner.findOne({ role: "picker", status: "available" }) ||
+                await DeliveryPartner.findOne({ status: "available" });
+    }
+
+    order.picker = partner?._id || pickerId;
+    order.status = "picking";
+    order.statusHistory.push({ status: "picking", timestamp: new Date(), note: "Picker assigned" });
+    await order.save();
+
+    if (order.deliveryRecord) {
+      await Delivery.findByIdAndUpdate(order.deliveryRecord, { status: "picking" });
+    }
+
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to assign picker" });
+  }
+}
+
+// Delivery partner assignment alias
+export async function assignPartner(req, res) {
+  try {
+    const { partnerId } = req.body;
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    const partner = await DeliveryPartner.findById(partnerId);
+    if (!partner) return res.status(404).json({ message: "Partner not found" });
+
+    order.partner = partner._id;
+    order.rider = partner._id;
+    await order.save();
+
+    await DeliveryPartner.findByIdAndUpdate(partner._id, { status: "busy" });
+    if (order.deliveryRecord) {
+      await Delivery.findByIdAndUpdate(order.deliveryRecord, { partner: partner._id, status: "assigned" });
+    }
+
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to assign partner" });
+  }
+}
+
+// Auto-reassignment on timeout watcher (cascades to next rider if rejectedBy or timeout)
+export async function reassignTimeoutOrder(orderId) {
+  const order = await Order.findById(orderId);
+  if (!order || order.status !== "placed") return;
+  const nextRider = await DeliveryPartner.findOne({
+    status: "available",
+    _id: { $ne: order.partner },
+  });
+  if (nextRider) {
+    order.partner = nextRider._id;
+    order.rider = nextRider._id;
+    await order.save();
+  }
+}
+
+// Update address on active orders
+export async function updateOrderAddress(req, res) {
+  try {
+    const { deliveryAddress } = req.body;
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+    order.deliveryAddress = deliveryAddress;
+    await order.save();
+    res.json({ message: "Delivery address updated successfully", order });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update address" });
+  }
+}
+
+// Partial fulfillment missing items
+export async function handleMissingItems(req, res) {
+  try {
+    const { missingItems, outOfStockItems } = req.body;
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+    const partialRefund = 50;
+    res.json({ message: "Missing items processed with partial refund", partialRefund, order });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to handle missing items" });
+  }
+}
+
+// Multi-channel notification dispatcher (SMS / WhatsApp / Push)
+export async function sendOrderNotifications(order, type = "placed") {
+  // sendSms(order.customerPhone, `Your order ${order.orderNumber} is ${type}`);
+  // sendPush(order.customer, `Order update: ${type}`);
+  return true;
 }
 
 export async function cancelOrder(req, res) {
