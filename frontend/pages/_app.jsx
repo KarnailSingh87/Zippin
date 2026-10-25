@@ -19,32 +19,32 @@ export default function App({ Component, pageProps }) {
   return (
     <AuthProvider>
       <LocationProvider>
-        <CartProvider>
-          <ToastProvider>
-          <Head>
-            <title>Zippin - Everything delivered in 8-10 minutes</title>
-            <meta
-              name="description"
-              content="India's fastest delivery app. Buy milk, bread, butter, fresh fruits & vegetables, snacks, and daily groceries online with superfast 10-minute delivery."
-            />
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1, maximum-scale=1"
-            />
-            <meta name="theme-color" content="#FFFFFF" />
-            <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-            <link rel="shortcut icon" href="/favicon.ico" />
-            <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
-          </Head>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-          <Toast />
+        <ToastProvider>
+          <CartProvider>
+            <Head>
+              <title>Zippin - Everything delivered in 8-10 minutes</title>
+              <meta
+                name="description"
+                content="India's fastest delivery app. Buy milk, bread, butter, fresh fruits & vegetables, snacks, and daily groceries online with superfast 10-minute delivery."
+              />
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1, maximum-scale=1"
+              />
+              <meta name="theme-color" content="#FFFFFF" />
+              <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+              <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+              <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+              <link rel="shortcut icon" href="/favicon.ico" />
+              <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+            </Head>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+            <Toast />
+          </CartProvider>
         </ToastProvider>
-      </CartProvider>
-    </LocationProvider>
-  </AuthProvider>
+      </LocationProvider>
+    </AuthProvider>
   );
 }
