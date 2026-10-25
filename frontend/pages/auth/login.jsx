@@ -45,8 +45,8 @@ export default function LoginPage() {
           {/* Header */}
           <div className="text-center mb-6">
             <img
-              src="/images/blinkit-logo.svg"
-              alt="Blinkit"
+              src="/images/zippin_logo_blinkit_colours.png"
+              alt="Zippin"
               className="h-10 mx-auto mb-3 object-contain"
             />
             <h1 className="text-xl font-bold text-gray-800">Welcome back</h1>

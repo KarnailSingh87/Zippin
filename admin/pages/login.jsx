@@ -37,11 +37,12 @@ export default function AdminLogin() {
       <div className="w-full max-w-sm">
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <div className="text-center mb-6">
-            <div className="flex items-center justify-center gap-1 mb-2">
-              <span className="text-3xl font-black text-admin-green">
-                blink
-              </span>
-              <span className="text-3xl font-black text-admin-yellow">it</span>
+            <div className="flex items-center justify-center mb-3">
+              <img
+                src="/images/zippin_logo_blinkit_colours.png"
+                alt="Zippin"
+                className="h-10 object-contain"
+              />
             </div>
             <p className="text-xs bg-gray-100 inline-block px-3 py-1 rounded-full font-bold text-gray-600">
               ADMIN PANEL

@@ -58,10 +58,13 @@ export default function AdminLayout({ children }) {
         }`}
       >
         <div className="p-4 border-b border-white/10">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-black text-white">blink</span>
-            <span className="text-xl font-black text-admin-yellow">it</span>
-            <span className="text-xs bg-admin-yellow text-admin-sidebar px-1.5 py-0.5 rounded font-bold ml-1">
+          <div className="bg-white rounded-xl px-3 py-2 flex items-center justify-between shadow-sm">
+            <img
+              src="/images/zippin_logo_blinkit_colours.png"
+              alt="Zippin"
+              className="h-7 w-auto object-contain"
+            />
+            <span className="text-[10px] bg-admin-green text-white font-black px-2 py-0.5 rounded uppercase tracking-wider">
               ADMIN
             </span>
           </div>

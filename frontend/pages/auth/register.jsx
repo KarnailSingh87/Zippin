@@ -45,8 +45,8 @@ export default function RegisterPage() {
         <div className="bg-white rounded-2xl shadow-card p-6 sm:p-8">
           <div className="text-center mb-6">
             <img
-              src="/images/blinkit-logo.svg"
-              alt="Blinkit"
+              src="/images/zippin_logo_blinkit_colours.png"
+              alt="Zippin"
               className="h-10 mx-auto mb-3 object-contain"
             />
             <h1 className="text-xl font-bold text-gray-800">Create Account</h1>
