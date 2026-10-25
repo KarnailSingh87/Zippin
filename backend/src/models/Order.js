@@ -37,7 +37,10 @@ const OrderSchema = new mongoose.Schema({
   },
   statusHistory: [StatusHistorySchema],
   store: { type: mongoose.Schema.Types.ObjectId, ref: "Store" },
-  rider: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  partner: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" },
+  rider: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" }, // backwards-compatible alias
+  paymentRecord: { type: mongoose.Schema.Types.ObjectId, ref: "Payment" },
+  deliveryRecord: { type: mongoose.Schema.Types.ObjectId, ref: "Delivery" },
   deliveryAddress: {
     label: String,
     street: String,
@@ -55,5 +58,28 @@ const OrderSchema = new mongoose.Schema({
   estimatedDelivery: Date,
   createdAt: { type: Date, default: Date.now },
 });
+
+// ER Model virtual aliases
+OrderSchema.virtual("order_id").get(function () {
+  return this._id;
+});
+OrderSchema.virtual("customer_id").get(function () {
+  return this.user;
+});
+OrderSchema.virtual("store_id").get(function () {
+  return this.store;
+});
+OrderSchema.virtual("partner_id").get(function () {
+  return this.partner || this.rider;
+});
+OrderSchema.virtual("order_datetime").get(function () {
+  return this.createdAt;
+});
+OrderSchema.virtual("total_amount").get(function () {
+  return this.total;
+});
+
+OrderSchema.set("toJSON", { virtuals: true });
+OrderSchema.set("toObject", { virtuals: true });
 
 export default mongoose.model("Order", OrderSchema);

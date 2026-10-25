@@ -23,4 +23,18 @@ const ProductSchema = new mongoose.Schema({
 
 ProductSchema.index({ title: "text", tags: "text" });
 
+// ER Model virtual aliases
+ProductSchema.virtual("product_id").get(function () {
+  return this._id;
+});
+ProductSchema.virtual("product_name").get(function () {
+  return this.title;
+});
+ProductSchema.virtual("store_id").get(function () {
+  return this.storeId;
+});
+
+ProductSchema.set("toJSON", { virtuals: true });
+ProductSchema.set("toObject", { virtuals: true });
+
 export default mongoose.model("Product", ProductSchema);

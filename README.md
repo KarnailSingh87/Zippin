@@ -29,6 +29,37 @@ Notes:
 - The frontends expect the backend API at NEXT_PUBLIC_API_URL (defaults to http://localhost:4000). See `.env.example` in each app.
 - To run on a single command consider adding a workspace tool (pnpm workspaces or concurrently). I can add that next if you want.
 
+---
+
+## 🗄️ Database Design & Relational ER Model (DBMS)
+
+This repository incorporates a complete DBMS relational architecture modeled after [Tanya534580/Blinkit-Database-Design-ER-Model](https://github.com/Tanya534580/Blinkit-Database-Design-ER-Model):
+
+- **Entities Covered**:
+  - `customer` (First Name, Last Name, Phone, Email, City)
+  - `store` (Dark Stores / Hyperlocal Fulfillment Warehouses)
+  - `delivery_partner` (10-minute fleet riders, live availability status)
+  - `product` (Catalog items linked to stores & categories)
+  - `customer_order` (Order header linking customer, store, partner)
+  - `order_item` (Normalized line items with quantities and prices)
+  - `payment` (Financial transaction record with status and gateways)
+  - `inventory` (Per-store SKU stock levels & low-stock thresholds)
+  - `delivery` (Real-time dispatch and delivery lifecycle tracking)
+
+- **Database Files**:
+  - [`database/schema.sql`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/database/schema.sql) — Full MySQL / ANSI SQL DDL schema with primary keys, foreign key constraints, cascade rules, and indexes.
+  - [`database/seed_data.sql`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/database/seed_data.sql) — Realistic sample seed data for relational databases.
+  - [`database/ER_DIAGRAM.md`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/database/ER_DIAGRAM.md) — Mermaid ER diagram, normalization analysis (1NF, 2NF, 3NF, BCNF), relationship cardinalities, and sample analytical queries.
+
+- **Admin Management Pages**:
+  - Dark Stores: [`/stores`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/stores.jsx)
+  - Delivery Fleet: [`/delivery-partners`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/delivery-partners.jsx)
+  - Dark Store Inventory: [`/inventory`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/inventory.jsx)
+  - Orders & Dispatch Assignment: [`/orders`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/orders.jsx)
+  - Payments & Settlements: [`/payments`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/payments.jsx)
+
+---
+
 <!-- Last documentation review: 2023-12-23 -->
 
 <!-- Status check: README updated on 2024-04-11 -->

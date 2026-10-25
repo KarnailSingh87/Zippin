@@ -444,10 +444,187 @@ async function seed() {
     });
   }
 
+  // Seed Dark Stores / Warehouses (ER Model: store)
+  const storesToInsert = [
+    {
+      name: "Blinkit Dark Store #101 - Cyber Hub",
+      code: "STORE-GGN-101",
+      city: "Gurugram",
+      area: "DLF Cyber City",
+      address: "Building 10B, DLF Cyber Hub, Sector 24",
+      pincode: "122002",
+      phone: "0124-4112233",
+      isActive: true,
+      createdAt: new Date(),
+    },
+    {
+      name: "Blinkit Dark Store #102 - Sector 56",
+      code: "STORE-GGN-102",
+      city: "Gurugram",
+      area: "Golf Course Road",
+      address: "Shop 14-16, Huda Market, Sector 56",
+      pincode: "122011",
+      phone: "0124-4556677",
+      isActive: true,
+      createdAt: new Date(),
+    },
+    {
+      name: "Blinkit Dark Store #103 - Saket",
+      code: "STORE-DEL-103",
+      city: "New Delhi",
+      area: "Saket District Centre",
+      address: "Plot 3, Community Center, Saket",
+      pincode: "110017",
+      phone: "011-26554433",
+      isActive: true,
+      createdAt: new Date(),
+    },
+    {
+      name: "Blinkit Dark Store #104 - Indiranagar",
+      code: "STORE-BLR-104",
+      city: "Bengaluru",
+      area: "Indiranagar 100ft Road",
+      address: "420, 100 Feet Rd, HAL 2nd Stage, Indiranagar",
+      pincode: "560038",
+      phone: "080-4998877",
+      isActive: true,
+      createdAt: new Date(),
+    },
+    {
+      name: "Blinkit Dark Store #105 - Koramangala",
+      code: "STORE-BLR-105",
+      city: "Bengaluru",
+      area: "Koramangala 4th Block",
+      address: "88, 80 Feet Rd, 4th Block, Koramangala",
+      pincode: "560034",
+      phone: "080-4112345",
+      isActive: true,
+      createdAt: new Date(),
+    },
+  ];
+
+  await db.collection("stores").deleteMany({});
+  const storeResult = await db.collection("stores").insertMany(storesToInsert);
+  const primaryStoreId = storeResult.insertedIds[0];
+  console.log(`Successfully seeded ${storeResult.insertedCount} Blinkit Dark Stores!`);
+
+  // Seed Delivery Partners (ER Model: delivery_partner)
+  const partnersToInsert = [
+    {
+      firstName: "Ramesh",
+      lastName: "Yadav",
+      name: "Ramesh Yadav",
+      phone: "9876543210",
+      email: "ramesh.yadav@blinkitdelivery.com",
+      city: "Gurugram",
+      status: "available",
+      vehicleType: "Bike",
+      vehicleNumber: "HR-26-BR-1234",
+      rating: 4.9,
+      totalDeliveries: 342,
+      currentStore: primaryStoreId,
+      isActive: true,
+      createdAt: new Date(),
+    },
+    {
+      firstName: "Suresh",
+      lastName: "Verma",
+      name: "Suresh Verma",
+      phone: "9876543211",
+      email: "suresh.v@blinkitdelivery.com",
+      city: "Gurugram",
+      status: "busy",
+      vehicleType: "EV Scooter",
+      vehicleNumber: "HR-26-EV-5678",
+      rating: 4.8,
+      totalDeliveries: 512,
+      currentStore: primaryStoreId,
+      isActive: true,
+      createdAt: new Date(),
+    },
+    {
+      firstName: "Vikas",
+      lastName: "Kumar",
+      name: "Vikas Kumar",
+      phone: "9876543212",
+      email: "vikas.k@blinkitdelivery.com",
+      city: "New Delhi",
+      status: "available",
+      vehicleType: "Bike",
+      vehicleNumber: "DL-3C-AS-9012",
+      rating: 4.7,
+      totalDeliveries: 280,
+      currentStore: storeResult.insertedIds[2],
+      isActive: true,
+      createdAt: new Date(),
+    },
+    {
+      firstName: "Anil",
+      lastName: "Gowda",
+      name: "Anil Gowda",
+      phone: "9876543213",
+      email: "anil.g@blinkitdelivery.com",
+      city: "Bengaluru",
+      status: "available",
+      vehicleType: "Bike",
+      vehicleNumber: "KA-01-EQ-3456",
+      rating: 4.9,
+      totalDeliveries: 420,
+      currentStore: storeResult.insertedIds[3],
+      isActive: true,
+      createdAt: new Date(),
+    },
+    {
+      firstName: "Deepak",
+      lastName: "Singh",
+      name: "Deepak Singh",
+      phone: "9876543214",
+      email: "deepak.s@blinkitdelivery.com",
+      city: "Bengaluru",
+      status: "offline",
+      vehicleType: "EV Scooter",
+      vehicleNumber: "KA-03-EV-7890",
+      rating: 4.6,
+      totalDeliveries: 195,
+      currentStore: storeResult.insertedIds[4],
+      isActive: true,
+      createdAt: new Date(),
+    },
+  ];
+
+  await db.collection("deliverypartners").deleteMany({});
+  const partnerResult = await db.collection("deliverypartners").insertMany(partnersToInsert);
+  console.log(`Successfully seeded ${partnerResult.insertedCount} Blinkit Delivery Partners!`);
+
+  // Assign primaryStoreId to products
+  for (const p of productsToInsert) {
+    p.storeId = primaryStoreId;
+  }
+
   // Clear existing products and reseed
   await db.collection("products").deleteMany({});
   const result = await db.collection("products").insertMany(productsToInsert);
   console.log(`Successfully seeded ${result.insertedCount} authentic Blinkit products!`);
+
+  // Seed inventory records per store (ER Model: inventory)
+  const inventoryToInsert = [];
+  const insertedProductIds = Object.values(result.insertedIds);
+  for (const sId of Object.values(storeResult.insertedIds)) {
+    for (const pId of insertedProductIds) {
+      inventoryToInsert.push({
+        store: sId,
+        product: pId,
+        stock: Math.floor(Math.random() * 80) + 10,
+        lowStockThreshold: 10,
+        lastRestockedAt: new Date(),
+        createdAt: new Date(),
+      });
+    }
+  }
+
+  await db.collection("inventories").deleteMany({});
+  const invResult = await db.collection("inventories").insertMany(inventoryToInsert);
+  console.log(`Successfully seeded ${invResult.insertedCount} inventory records across all stores!`);
 
   await mongoose.disconnect();
   console.log("Seeding complete!");

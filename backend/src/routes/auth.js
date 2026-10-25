@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { register, login, me, updateProfile } from "../controllers/auth.js";
+import { register, login, googleLogin, me, updateProfile } from "../controllers/auth.js";
 import { authenticate } from "../middleware/auth.js";
 
 const router = Router();
 router.post("/register", register);
 router.post("/login", login);
+router.post("/google", googleLogin);
 router.get("/me", authenticate, me);
 router.put("/profile", authenticate, updateProfile);
 

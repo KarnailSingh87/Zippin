@@ -237,24 +237,91 @@ export default function OrderDetailPage() {
         </div>
       </div>
 
-      {/* Delivery info */}
-      <div className="bg-white rounded-2xl shadow-card p-5">
+      {/* Delivery & Fulfillment info (ER Model: store, delivery_partner, payment) */}
+      <div className="bg-white rounded-2xl shadow-card p-5 mb-4">
         <h2 className="text-sm font-bold text-gray-800 mb-3">
-          Delivery Details
+          Delivery & Fulfillment Details
         </h2>
-        <div className="text-sm text-gray-600 space-y-1">
-          {order.deliveryAddress && (
-            <p>
-              📍 {order.deliveryAddress.label}: {order.deliveryAddress.street},{" "}
-              {order.deliveryAddress.city} - {order.deliveryAddress.pincode}
-            </p>
+        <div className="text-sm text-gray-600 space-y-3">
+          {/* Assigned Delivery Partner Card */}
+          {order.partner && (
+            <div className="bg-emerald-50/60 border border-emerald-100 rounded-xl p-3 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">
+                  🛵
+                </div>
+                <div>
+                  <p className="font-bold text-gray-800 text-xs">
+                    {order.partner.name || order.partner.firstName}
+                  </p>
+                  <p className="text-[11px] text-gray-500">
+                    Blinkit Partner • {order.partner.vehicleType || "Bike"} • ⭐ {order.partner.rating || 4.8}
+                  </p>
+                </div>
+              </div>
+              {order.partner.phone && (
+                <a
+                  href={`tel:${order.partner.phone}`}
+                  className="bg-emerald-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-emerald-700 transition-colors"
+                >
+                  Call Rider
+                </a>
+              )}
+            </div>
           )}
-          <p>
-            💳 Payment:{" "}
-            {order.payment?.method === "cod"
-              ? "Cash on Delivery"
-              : (order.payment?.method || "N/A").toUpperCase()}
-          </p>
+
+          {/* Fulfillment Dark Store */}
+          {order.store && (
+            <div className="flex items-start gap-2 text-xs text-gray-600">
+              <span className="text-sm">🏬</span>
+              <div>
+                <p className="font-semibold text-gray-800">
+                  Fulfillment Hub: {order.store.name}
+                </p>
+                <p className="text-gray-400">
+                  {order.store.area}, {order.store.city} {order.store.pincode ? `(${order.store.pincode})` : ""}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Destination Address */}
+          {order.deliveryAddress && (
+            <div className="flex items-start gap-2 text-xs text-gray-600">
+              <span className="text-sm">📍</span>
+              <div>
+                <p className="font-semibold text-gray-800">
+                  Drop Location ({order.deliveryAddress.label || "Home"}):
+                </p>
+                <p className="text-gray-500">
+                  {order.deliveryAddress.street}, {order.deliveryAddress.city}{" "}
+                  {order.deliveryAddress.pincode ? `- ${order.deliveryAddress.pincode}` : ""}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Payment */}
+          <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-xs">
+            <span className="text-gray-500">Payment Method:</span>
+            <span className="font-semibold uppercase text-gray-800">
+              {order.payment?.method === "cod"
+                ? "Cash on Delivery"
+                : (order.payment?.method || "N/A").toUpperCase()}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-gray-500">Payment Status:</span>
+            <span
+              className={`font-semibold capitalize px-2 py-0.5 rounded ${
+                order.payment?.status === "completed"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-amber-100 text-amber-700"
+              }`}
+            >
+              {order.payment?.status || "pending"}
+            </span>
+          </div>
         </div>
       </div>
     </div>

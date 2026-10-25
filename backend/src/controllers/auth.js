@@ -7,8 +7,9 @@ const JWT_EXPIRES_IN = parseInt(process.env.JWT_EXPIRES_IN || "604800"); // 7 da
 
 export async function register(req, res) {
   try {
-    const { name, email, phone, password } = req.body;
-    if (!name || !email || !phone || !password) {
+    const { name, firstName, lastName, email, phone, city, password } = req.body;
+    const finalName = name || (firstName ? `${firstName} ${lastName || ""}`.trim() : "");
+    if (!finalName || !email || !phone || !password) {
       return res.status(400).json({ message: "Missing required fields" });
     }
     const existing = await User.findOne({ $or: [{ email }, { phone }] });
@@ -16,7 +17,15 @@ export async function register(req, res) {
       return res.status(400).json({ message: "User already exists" });
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, phone, passwordHash });
+    const user = new User({
+      name: finalName,
+      firstName: firstName || finalName.split(" ")[0] || "",
+      lastName: lastName || finalName.split(" ").slice(1).join(" ") || "",
+      email,
+      phone,
+      city: city || "Gurugram",
+      passwordHash,
+    });
     await user.save();
 
     const token = jwt.sign({ sub: user._id, roles: user.roles }, JWT_SECRET, {
@@ -26,8 +35,11 @@ export async function register(req, res) {
       user: {
         id: user._id,
         name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         phone: user.phone,
+        city: user.city,
         roles: user.roles,
       },
       token,
@@ -95,10 +107,13 @@ export async function me(req, res) {
 
 export async function updateProfile(req, res) {
   try {
-    const { name, addresses } = req.body;
+    const { name, firstName, lastName, city, addresses } = req.body;
     const user = await User.findById(req.user.sub);
     if (!user) return res.status(404).json({ message: "User not found" });
     if (name) user.name = name;
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (city) user.city = city;
     if (addresses) user.addresses = addresses;
     await user.save();
     const updated = await User.findById(req.user.sub).select("-passwordHash");
@@ -108,3 +123,57 @@ export async function updateProfile(req, res) {
     res.status(500).json({ message: "Failed to update profile" });
   }
 }
+
+// Google / Firebase OAuth Login
+export async function googleLogin(req, res) {
+  try {
+    const { email, name, firstName, lastName, photoURL, phone, googleId } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required for Google Sign-In" });
+    }
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      const finalName = name || (firstName ? `${firstName} ${lastName || ""}`.trim() : "Google User");
+      // Generate guaranteed unique 10-digit phone if not provided by Google
+      const randomPhone = phone || `9${Math.floor(100000000 + Math.random() * 900000000)}`;
+      const passwordHash = await bcrypt.hash(`oauth_${Date.now()}_${Math.random()}`, 10);
+
+      user = new User({
+        name: finalName,
+        firstName: firstName || finalName.split(" ")[0] || "",
+        lastName: lastName || finalName.split(" ").slice(1).join(" ") || "",
+        email,
+        phone: randomPhone,
+        city: "Gurugram",
+        passwordHash,
+        roles: ["customer"],
+      });
+      await user.save();
+    }
+
+    const token = jwt.sign(
+      { sub: user._id, roles: user.roles || ["customer"] },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        city: user.city,
+        roles: user.roles || ["customer"],
+      },
+      token,
+    });
+  } catch (err) {
+    console.error("Google login error:", err);
+    res.status(500).json({ message: "Google authentication failed" });
+  }
+}
+

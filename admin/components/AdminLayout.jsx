@@ -8,7 +8,11 @@ const NAV_ITEMS = [
   { href: "/", label: "Dashboard", icon: "📊" },
   { href: "/products", label: "Products", icon: "📦" },
   { href: "/categories", label: "Categories", icon: "📁" },
+  { href: "/stores", label: "Dark Stores", icon: "🏬" },
+  { href: "/delivery-partners", label: "Delivery Fleet", icon: "🛵" },
+  { href: "/inventory", label: "Inventory", icon: "📋" },
   { href: "/orders", label: "Orders", icon: "🛒" },
+  { href: "/payments", label: "Payments", icon: "💳" },
 ];
 
 export default function AdminLayout({ children }) {

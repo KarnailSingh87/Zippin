@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import Category from "../models/Category.js";
 import Product from "../models/Product.js";
+import Store from "../models/Store.js";
+import DeliveryPartner from "../models/DeliveryPartner.js";
 
 const router = Router();
 
@@ -880,9 +882,12 @@ router.post("/seed", async (req, res) => {
     if (!demoUser) {
       const passwordHash = await bcrypt.hash("demo123", 10);
       await new User({
-        name: "Demo User",
+        name: "Demo Customer",
+        firstName: "Demo",
+        lastName: "Customer",
         email: "demo@blinkit.com",
         phone: "9876543210",
+        city: "Gurugram",
         passwordHash,
         roles: ["customer"],
         addresses: [
@@ -896,11 +901,89 @@ router.post("/seed", async (req, res) => {
       }).save();
     }
 
+    // Ensure stores exist
+    let storeCount = await Store.countDocuments();
+    let primaryStore = null;
+    if (storeCount === 0) {
+      primaryStore = await Store.create({
+        name: "Blinkit Dark Store #101 - Cyber Hub",
+        code: "STORE-GGN-101",
+        city: "Gurugram",
+        area: "DLF Cyber City",
+        address: "Building 10B, DLF Cyber Hub, Sector 24",
+        pincode: "122002",
+        phone: "0124-4112233",
+        isActive: true,
+      });
+      await Store.create({
+        name: "Blinkit Dark Store #102 - Sector 56",
+        code: "STORE-GGN-102",
+        city: "Gurugram",
+        area: "Golf Course Road",
+        address: "Shop 14-16, Huda Market, Sector 56",
+        pincode: "122011",
+        phone: "0124-4556677",
+        isActive: true,
+      });
+      await Store.create({
+        name: "Blinkit Dark Store #103 - Saket",
+        code: "STORE-DEL-103",
+        city: "New Delhi",
+        area: "Saket District Centre",
+        address: "Plot 3, Community Center, Saket",
+        pincode: "110017",
+        phone: "011-26554433",
+        isActive: true,
+      });
+    } else {
+      primaryStore = await Store.findOne({ isActive: true });
+    }
+
+    // Ensure delivery partners exist
+    let partnerCount = await DeliveryPartner.countDocuments();
+    if (partnerCount === 0) {
+      await DeliveryPartner.create({
+        firstName: "Ramesh",
+        lastName: "Yadav",
+        name: "Ramesh Yadav",
+        phone: "9876543210",
+        email: "ramesh.yadav@blinkitdelivery.com",
+        city: "Gurugram",
+        status: "available",
+        vehicleType: "Bike",
+        vehicleNumber: "HR-26-BR-1234",
+        rating: 4.9,
+        currentStore: primaryStore?._id,
+        isActive: true,
+      });
+      await DeliveryPartner.create({
+        firstName: "Suresh",
+        lastName: "Verma",
+        name: "Suresh Verma",
+        phone: "9876543211",
+        email: "suresh.v@blinkitdelivery.com",
+        city: "Gurugram",
+        status: "available",
+        vehicleType: "EV Scooter",
+        vehicleNumber: "HR-26-EV-5678",
+        rating: 4.8,
+        currentStore: primaryStore?._id,
+        isActive: true,
+      });
+    }
+
+    // Update products without storeId
+    if (primaryStore) {
+      await Product.updateMany({ storeId: null }, { storeId: primaryStore._id });
+    }
+
     res.json({
       message: "Seed complete",
       categories: Object.keys(categories).length,
       productsCreated: created,
       productsUpdated: updated,
+      storesSeeded: storeCount,
+      partnersSeeded: partnerCount,
     });
   } catch (err) {
     console.error("Seed error", err);
