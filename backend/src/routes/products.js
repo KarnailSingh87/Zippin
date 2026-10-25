@@ -17,7 +17,8 @@ router.get("/", async (req, res) => {
     }
 
     if (q) {
-      filter.$or = [{ title: new RegExp(q, "i") }, { tags: new RegExp(q, "i") }];
+      const safeQ = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      filter.$or = [{ title: new RegExp(safeQ, "i") }, { tags: new RegExp(safeQ, "i") }];
     }
 
     if (category) {
@@ -164,17 +165,34 @@ router.get("/:id", async (req, res) => {
 
 // admin CRUD
 router.post("/", authenticate, requireAdmin, async (req, res) => {
-  const p = new Product(req.body);
-  await p.save();
-  res.json(p);
+  try {
+    const { price, mrp } = req.body;
+    if (mrp && Number(price) > Number(mrp)) {
+      return res.status(400).json({ message: "Selling price cannot exceed Maximum Retail Price (MRP)" });
+    }
+    const p = new Product(req.body);
+    await p.save();
+    res.json(p);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 router.put("/:id", authenticate, requireAdmin, async (req, res) => {
-  const p = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
-  if (!p) return res.status(404).json({ message: "Not found" });
-  res.json(p);
+  try {
+    const { price, mrp } = req.body;
+    if (mrp && Number(price) > Number(mrp)) {
+      return res.status(400).json({ message: "Selling price cannot exceed Maximum Retail Price (MRP)" });
+    }
+    const p = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!p) return res.status(404).json({ message: "Not found" });
+    res.json(p);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 router.delete("/:id", authenticate, requireAdmin, async (req, res) => {

@@ -6,11 +6,20 @@ const ProductSchema = new mongoose.Schema({
   description: String,
   category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
   images: [{ url: String, publicId: String }],
-  price: { type: Number, required: true },
-  mrp: { type: Number, default: 0 },
+  price: { type: Number, required: true, min: 0 },
+  mrp: { type: Number, default: 0, min: 0 },
   discount: { type: Number, default: 0 },
   unit: { type: String, default: "" },
-  stock: { type: Number, default: 0 },
+  variants: [
+    {
+      name: String,
+      unit: String,
+      price: Number,
+      mrp: Number,
+      stock: { type: Number, default: 0 },
+    },
+  ],
+  stock: { type: Number, default: 0, min: 0 },
   storeId: { type: mongoose.Schema.Types.ObjectId, ref: "Store" },
   tags: [String],
   isAvailable: { type: Boolean, default: true },
@@ -19,6 +28,13 @@ const ProductSchema = new mongoose.Schema({
   rating: { type: Number, default: 0 },
   ratingCount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
+});
+
+ProductSchema.pre("validate", function (next) {
+  if (this.mrp > 0 && this.price > this.mrp) {
+    return next(new Error("Selling price cannot exceed Maximum Retail Price (MRP)"));
+  }
+  next();
 });
 
 ProductSchema.index({ title: "text", tags: "text" });

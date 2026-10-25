@@ -8,6 +8,18 @@ const StoreSchema = new mongoose.Schema({
   address: { type: String, default: "" },
   pincode: { type: String, default: "" },
   phone: { type: String, default: "" },
+  deliveryRadiusKm: { type: Number, default: 3.5 },
+  surgeMultiplier: { type: Number, default: 1.0 },
+  coordinates: {
+    lat: { type: Number, default: 28.4595 },
+    lng: { type: Number, default: 77.0266 },
+  },
+  geofencePolygon: [
+    {
+      lat: Number,
+      lng: Number,
+    },
+  ],
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
 });

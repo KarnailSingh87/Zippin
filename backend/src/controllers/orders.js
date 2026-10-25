@@ -4,6 +4,7 @@ import Store from "../models/Store.js";
 import DeliveryPartner from "../models/DeliveryPartner.js";
 import Payment from "../models/Payment.js";
 import Delivery from "../models/Delivery.js";
+import User from "../models/User.js";
 
 export async function placeOrder(req, res) {
   try {
@@ -14,40 +15,79 @@ export async function placeOrder(req, res) {
     let subtotal = 0;
     const orderItems = [];
 
+    // 1. Atomic Stock Decrement & Item Validation
     for (const item of items) {
-      const product = await Product.findById(item.productId);
-      if (!product) continue;
-      const qty = item.qty || 1;
+      const qty = Number(item.qty || item.quantity || 1);
+      const pId = item.productId || item.product?._id || item.product || item._id;
+      if (!pId) continue;
+
+      const product = await Product.findOneAndUpdate(
+        { _id: pId, stock: { $gte: qty } },
+        { $inc: { stock: -qty } },
+        { new: true }
+      );
+
+      if (!product) {
+        // Rollback already deducted items if any
+        for (const alreadyDeducted of orderItems) {
+          await Product.findByIdAndUpdate(alreadyDeducted.product, {
+            $inc: { stock: alreadyDeducted.qty },
+          });
+        }
+        return res.status(400).json({
+          message: "One or more items are out of stock or have insufficient quantity",
+        });
+      }
+
       subtotal += product.price * qty;
       orderItems.push({
         product: product._id,
         name: product.title,
+        title: product.title,
         qty,
+        quantity: qty,
         price: product.price,
         mrp: product.mrp || product.price,
-        unit: product.unit,
+        unit: product.unit || "1 pack",
         image: product.images?.[0]?.url || "",
       });
     }
 
-    const deliveryFee = subtotal >= 499 ? 0 : 30;
-    const total = subtotal + deliveryFee;
+    if (orderItems.length === 0) {
+      return res.status(400).json({ message: "No valid items in order" });
+    }
+
+    // 2. Harmonized Pricing: Free above 199, else 25 delivery fee
+    const deliveryFee = subtotal >= 199 ? 0 : 25;
+    const handlingFee = 0;
+    const tax = 0;
+    const total = subtotal + deliveryFee + handlingFee + tax;
     const estimatedDelivery = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    // 1. Resolve Fulfillment Store
+    // 3. Resolve Customer Contact Details
+    let customerName = "Customer";
+    let customerPhone = "+91 98765 43210";
+    try {
+      const u = await User.findById(req.user.sub);
+      if (u) {
+        customerName = u.name || `${u.firstName || ""} ${u.lastName || ""}`.trim() || customerName;
+        customerPhone = u.phone || customerPhone;
+      }
+    } catch (_) {}
+
+    // 4. Resolve Fulfillment Store
     let selectedStore = null;
     if (storeId) {
       selectedStore = await Store.findById(storeId);
     }
     if (!selectedStore) {
-      // Find active store matching city or default to first active store
       const userCity = deliveryAddress?.city || "Gurugram";
       selectedStore =
         (await Store.findOne({ city: new RegExp(userCity, "i"), isActive: true })) ||
         (await Store.findOne({ isActive: true }));
     }
 
-    // 2. Resolve Available Delivery Partner in the same city
+    // 5. Resolve Available Delivery Partner in the same city
     let assignedPartner = null;
     if (selectedStore) {
       assignedPartner = await DeliveryPartner.findOne({
@@ -57,12 +97,19 @@ export async function placeOrder(req, res) {
       });
     }
 
-    // 3. Create Order
+    // 6. Create Order Entity
+    const orderNumber = `ORD-${Date.now().toString().slice(-6)}`;
     const order = new Order({
       user: req.user.sub,
+      customer: req.user.sub,
+      customerName,
+      customerPhone,
+      orderNumber,
       items: orderItems,
       subtotal,
       deliveryFee,
+      handlingFee,
+      tax,
       total,
       status: "placed",
       statusHistory: [
@@ -82,7 +129,7 @@ export async function placeOrder(req, res) {
 
     await order.save();
 
-    // 4. Create Payment Entity
+    // 7. Create Payment Entity
     const paymentMethod = payment?.method || "cod";
     const paymentStatus =
       payment?.status || (paymentMethod === "cod" ? "pending" : "completed");
@@ -100,7 +147,7 @@ export async function placeOrder(req, res) {
     });
     await paymentDoc.save();
 
-    // 5. Create Delivery Entity
+    // 8. Create Delivery Entity
     const deliveryDoc = new Delivery({
       order: order._id,
       store: selectedStore?._id || null,
@@ -112,13 +159,12 @@ export async function placeOrder(req, res) {
     });
     await deliveryDoc.save();
 
-    // 6. If partner assigned, update their status to busy
+    // 9. If partner assigned, update status safely
     if (assignedPartner) {
-      assignedPartner.status = "busy";
-      await assignedPartner.save();
+      await DeliveryPartner.findByIdAndUpdate(assignedPartner._id, { status: "busy" });
     }
 
-    // Link references on order
+    // Link references
     order.paymentRecord = paymentDoc._id;
     order.deliveryRecord = deliveryDoc._id;
     await order.save();
@@ -128,7 +174,7 @@ export async function placeOrder(req, res) {
       .populate("partner", "firstName lastName name phone vehicleType rating")
       .populate("paymentRecord");
 
-    res.json(populated || order);
+    res.status(201).json(populated || order);
   } catch (err) {
     console.error("Place order error", err);
     res.status(500).json({ message: "Failed to place order" });
@@ -155,6 +201,15 @@ export async function getOrder(req, res) {
     .populate("user", "name email phone firstName lastName");
 
   if (!order) return res.status(404).json({ message: "Order not found" });
+
+  // Ownership / IDOR Authorization Check
+  const orderUserId = order.user?._id ? order.user._id.toString() : order.user?.toString();
+  const isOwner = orderUserId === req.user.sub;
+  const isAdmin = req.user.roles && req.user.roles.includes("admin");
+  if (!isOwner && !isAdmin) {
+    return res.status(403).json({ message: "Forbidden: You do not have access to this order" });
+  }
+
   res.json(order);
 }
 
@@ -168,21 +223,18 @@ export async function updateOrderStatus(req, res) {
 
   if (status === "delivered") {
     order.payment.status = "completed";
-    // Sync payment entity
     if (order.paymentRecord) {
       await Payment.findByIdAndUpdate(order.paymentRecord, {
         paymentStatus: "completed",
         paidAt: new Date(),
       });
     }
-    // Sync delivery entity
     if (order.deliveryRecord) {
       await Delivery.findByIdAndUpdate(order.deliveryRecord, {
         status: "delivered",
         deliveredAt: new Date(),
       });
     }
-    // Free the partner
     const partnerId = order.partner || order.rider;
     if (partnerId) {
       await DeliveryPartner.findByIdAndUpdate(partnerId, {
@@ -191,6 +243,14 @@ export async function updateOrderStatus(req, res) {
       });
     }
   } else if (status === "cancelled") {
+    // Restore Stock for all items
+    for (const it of (order.items || [])) {
+      const pId = it.product || it.productId;
+      const q = Number(it.qty || it.quantity || 1);
+      if (pId) {
+        await Product.findByIdAndUpdate(pId, { $inc: { stock: q } });
+      }
+    }
     const partnerId = order.partner || order.rider;
     if (partnerId) {
       await DeliveryPartner.findByIdAndUpdate(partnerId, { status: "available" });
@@ -221,6 +281,48 @@ export async function updateOrderStatus(req, res) {
   res.json(populated || order);
 }
 
+export async function cancelOrder(req, res) {
+  const order = await Order.findById(req.params.id);
+  if (!order) return res.status(404).json({ message: "Order not found" });
+
+  const orderUserId = order.user?._id ? order.user._id.toString() : order.user?.toString();
+  const isOwner = orderUserId === req.user.sub;
+  const isAdmin = req.user.roles && req.user.roles.includes("admin");
+
+  if (!isOwner && !isAdmin) {
+    return res.status(403).json({ message: "Forbidden: You cannot cancel this order" });
+  }
+
+  if (order.status !== "placed" && order.status !== "confirmed" && !isAdmin) {
+    return res.status(400).json({ message: "Order cannot be cancelled after packing or dispatch" });
+  }
+
+  order.status = "cancelled";
+  order.cancellationReason = req.body.reason || "Cancelled by customer";
+  order.statusHistory.push({
+    status: "cancelled",
+    timestamp: new Date(),
+    note: order.cancellationReason,
+  });
+
+  // Restore inventory
+  for (const it of (order.items || [])) {
+    const pId = it.product || it.productId;
+    const q = Number(it.qty || it.quantity || 1);
+    if (pId) {
+      await Product.findByIdAndUpdate(pId, { $inc: { stock: q } });
+    }
+  }
+
+  const partnerId = order.partner || order.rider;
+  if (partnerId) {
+    await DeliveryPartner.findByIdAndUpdate(partnerId, { status: "available" });
+  }
+
+  await order.save();
+  res.json(order);
+}
+
 export async function listAllOrders(req, res) {
   const statusFilter = req.query.status ? { status: req.query.status } : {};
   const orders = await Order.find(statusFilter)
@@ -238,7 +340,7 @@ export async function listAllOrders(req, res) {
 
 export async function assignPartnerToOrder(req, res) {
   try {
-    const { partnerId } = req.body;
+    const partnerId = req.body.partnerId || req.body.partner || req.body.riderId;
     const order = await Order.findById(req.params.id);
     if (!order) return res.status(404).json({ message: "Order not found" });
 
@@ -249,9 +351,8 @@ export async function assignPartnerToOrder(req, res) {
     order.rider = partner._id;
     await order.save();
 
-    // Mark partner as busy
-    partner.status = "busy";
-    await partner.save();
+    // Mark partner as busy safely without triggering strict schema validation
+    await DeliveryPartner.findByIdAndUpdate(partner._id, { status: "busy" });
 
     // Sync delivery record
     await Delivery.findOneAndUpdate(
@@ -316,15 +417,12 @@ export async function assignPickerToOrder(req, res) {
     if (!picker) return res.status(404).json({ message: "Picker not found" });
 
     order.picker = picker._id;
-    // If order was placed or confirmed, moving to picking
     if (order.status === "placed" || order.status === "confirmed") {
       order.status = "picking";
     }
     await order.save();
 
-    // Mark picker as busy
-    picker.status = "busy";
-    await picker.save();
+    await DeliveryPartner.findByIdAndUpdate(picker._id, { status: "busy" });
 
     const populated = await Order.findById(order._id)
       .populate("store", "name code city area")
@@ -339,4 +437,3 @@ export async function assignPickerToOrder(req, res) {
     res.status(500).json({ message: "Failed to assign picker" });
   }
 }
-

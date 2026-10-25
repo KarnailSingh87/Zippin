@@ -11,11 +11,11 @@ import { authenticate, requireAdmin } from "../middleware/auth.js";
 
 const router = Router();
 
-router.get("/", listPartners);
-router.get("/:id", getPartner);
+router.get("/", authenticate, requireAdmin, listPartners);
+router.get("/:id", authenticate, getPartner);
 router.post("/", authenticate, requireAdmin, createPartner);
 router.put("/:id", authenticate, requireAdmin, updatePartner);
-router.patch("/:id/status", authenticate, updatePartnerStatus);
+router.patch("/:id/status", authenticate, requireAdmin, updatePartnerStatus);
 router.delete("/:id", authenticate, requireAdmin, deletePartner);
 
 export default router;

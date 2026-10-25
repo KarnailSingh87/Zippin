@@ -4,6 +4,7 @@ import {
   listOrders,
   getOrder,
   updateOrderStatus,
+  cancelOrder,
   listAllOrders,
   assignPartnerToOrder,
   assignStoreToOrder,
@@ -16,7 +17,9 @@ router.post("/", authenticate, placeOrder);
 router.get("/", authenticate, listOrders);
 router.get("/all", authenticate, requireAdmin, listAllOrders);
 router.get("/:id", authenticate, getOrder);
-router.patch("/:id/status", authenticate, requireAdmin, updateOrderStatus);
+router.post("/:id/cancel", authenticate, cancelOrder);
+router.patch("/:id/status", authenticate, updateOrderStatus);
+router.patch("/:id/assign", authenticate, requireAdmin, assignPartnerToOrder);
 router.patch("/:id/assign-partner", authenticate, requireAdmin, assignPartnerToOrder);
 router.patch("/:id/assign-store", authenticate, requireAdmin, assignStoreToOrder);
 router.patch("/:id/assign-picker", authenticate, requireAdmin, assignPickerToOrder);

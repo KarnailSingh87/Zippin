@@ -19,10 +19,15 @@ const DeliveryPartnerSchema = new mongoose.Schema({
   },
   vehicleType: {
     type: String,
-    enum: ["Bike", "EV Scooter", "Bicycle", "Van", "None (In-Store Picker)"],
     default: "Bike",
   },
   vehicleNumber: { type: String, default: "" },
+  documents: {
+    drivingLicense: { type: String, default: "" },
+    aadhar: { type: String, default: "" },
+  },
+  photoUrl: { type: String, default: "" },
+  walletBalance: { type: Number, default: 0 },
   rating: { type: Number, default: 4.8 },
   totalDeliveries: { type: Number, default: 0 },
   pickingSpeedSec: { type: Number, default: 95 },

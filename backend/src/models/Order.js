@@ -28,6 +28,7 @@ const OrderSchema = new mongoose.Schema({
   items: [ItemSchema],
   subtotal: { type: Number, default: 0 },
   deliveryFee: { type: Number, default: 0 },
+  handlingFee: { type: Number, default: 0 },
   tax: { type: Number, default: 0 },
   discount: { type: Number, default: 0 },
   total: { type: Number, default: 0 },
@@ -52,12 +53,16 @@ const OrderSchema = new mongoose.Schema({
   deliveryRecord: { type: mongoose.Schema.Types.ObjectId, ref: "Delivery" },
   deliveryAddress: {
     label: String,
+    addressLine: String,
     street: String,
     city: String,
     pincode: String,
     lat: Number,
     lng: Number,
   },
+  deliveryOtp: { type: String, default: "1234" },
+  podImageUrl: { type: String, default: "" },
+  cancellationReason: { type: String, default: "" },
   payment: {
     method: { type: String, default: "cod" },
     status: { type: String, default: "pending" },
@@ -66,6 +71,10 @@ const OrderSchema = new mongoose.Schema({
   couponCode: String,
   estimatedDelivery: Date,
   createdAt: { type: Date, default: Date.now },
+});
+
+OrderSchema.virtual("paymentMethod").get(function () {
+  return this.payment?.method || "cod";
 });
 
 // ER Model virtual aliases
