@@ -27,20 +27,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/categories": [
+    "/orders": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/categories.js"
+      "static/chunks/pages/orders.js"
     ],
-    "/pickers": [
+    "/riders": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/pickers.js"
-    ],
-    "/products": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/products.js"
+      "static/chunks/pages/riders.js"
     ]
   },
   "ampFirstPages": []

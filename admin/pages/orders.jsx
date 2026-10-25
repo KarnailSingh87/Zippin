@@ -16,7 +16,8 @@ const STATUS_CONFIG = {
 export default function OrdersAdmin() {
   const [orders, setOrders] = useState([]);
   const [stores, setStores] = useState([]);
-  const [partners, setPartners] = useState([]);
+  const [riders, setRiders] = useState([]);
+  const [pickers, setPickers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,15 +36,17 @@ export default function OrdersAdmin() {
   async function loadData() {
     try {
       setLoading(true);
-      const [ordRes, storeRes, partnerRes] = await Promise.all([
+      const [ordRes, storeRes, riderRes, pickerRes] = await Promise.all([
         fetch(`${API}/api/orders/all`, { headers: { Authorization: `Bearer ${token}` } }),
         fetch(`${API}/api/stores`),
-        fetch(`${API}/api/delivery-partners`),
+        fetch(`${API}/api/delivery-partners?role=rider`),
+        fetch(`${API}/api/delivery-partners?role=picker`),
       ]);
 
       if (ordRes.ok) setOrders(await ordRes.json());
       if (storeRes.ok) setStores(await storeRes.json());
-      if (partnerRes.ok) setPartners(await partnerRes.json());
+      if (riderRes.ok) setRiders(await riderRes.json());
+      if (pickerRes.ok) setPickers(await pickerRes.json());
     } catch (e) {
       console.error("Error loading orders", e);
     }
@@ -82,7 +85,7 @@ export default function OrdersAdmin() {
     }
   }
 
-  async function handleAssignPartner(orderId, partnerId) {
+  async function handleAssignRider(orderId, partnerId) {
     try {
       const res = await fetch(`${API}/api/orders/${orderId}/assign-partner`, {
         method: "PATCH",
@@ -93,8 +96,39 @@ export default function OrdersAdmin() {
         body: JSON.stringify({ partnerId }),
       });
       if (res.ok) {
-        showToast("Rider partner assigned successfully!");
-        loadData();
+        const updated = await res.json();
+        showToast("Delivery Rider assigned successfully!");
+        setOrders((prev) =>
+          prev.map((o) => (o._id === orderId ? { ...o, partner: updated.partner, rider: updated.rider } : o))
+        );
+        if (selectedOrder?._id === orderId) {
+          setSelectedOrder((prev) => ({ ...prev, partner: updated.partner, rider: updated.rider }));
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function handleAssignPicker(orderId, pickerId) {
+    try {
+      const res = await fetch(`${API}/api/orders/${orderId}/assign-picker`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ pickerId }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        showToast("In-Store Picker assigned successfully!");
+        setOrders((prev) =>
+          prev.map((o) => (o._id === orderId ? { ...o, picker: updated.picker, status: updated.status } : o))
+        );
+        if (selectedOrder?._id === orderId) {
+          setSelectedOrder((prev) => ({ ...prev, picker: updated.picker, status: updated.status }));
+        }
       }
     } catch (err) {
       console.error(err);
@@ -112,8 +146,14 @@ export default function OrdersAdmin() {
         body: JSON.stringify({ storeId }),
       });
       if (res.ok) {
+        const updated = await res.json();
         showToast("Dark Store hub assigned successfully!");
-        loadData();
+        setOrders((prev) =>
+          prev.map((o) => (o._id === orderId ? { ...o, store: updated.store } : o))
+        );
+        if (selectedOrder?._id === orderId) {
+          setSelectedOrder((prev) => ({ ...prev, store: updated.store }));
+        }
       }
     } catch (err) {
       console.error(err);
@@ -259,7 +299,7 @@ export default function OrdersAdmin() {
                   <th className="py-3 px-4">Order ID & Date</th>
                   <th className="py-3 px-4">Customer & Phone</th>
                   <th className="py-3 px-4">Items / Total</th>
-                  <th className="py-3 px-4">Fulfillment Hub</th>
+                  <th className="py-3 px-4">Fulfillment Hub & Crew</th>
                   <th className="py-3 px-4">Status Pipeline</th>
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
@@ -304,13 +344,21 @@ export default function OrdersAdmin() {
                         </div>
                       </td>
 
-                      {/* Hub & Rider */}
+                      {/* Hub & Crew: Picker + Rider */}
                       <td className="py-3.5 px-4">
-                        <div className="font-semibold text-gray-800 dark:text-gray-200">
-                          {ord.store?.name || "Sector 43 Hub"}
+                        <div className="font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-1">
+                          <span>🏬</span>
+                          <span>{ord.store?.name || "Sector 43 Hub"}</span>
                         </div>
-                        <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">
-                          🛵 {ord.partner?.name || "Assigning Rider..."}
+                        <div className="flex flex-col gap-0.5 mt-1">
+                          <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1">
+                            <span>📦</span>
+                            <span>{ord.picker?.name || "Picker: Pending"}</span>
+                          </span>
+                          <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                            <span>🛵</span>
+                            <span>{ord.partner?.name || ord.rider?.name || "Rider: Pending"}</span>
+                          </span>
                         </div>
                       </td>
 
@@ -366,7 +414,7 @@ export default function OrdersAdmin() {
       {selectedOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => setSelectedOrder(null)}>
           <div
-            className="bg-white dark:bg-[#121212] rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 max-w-xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="bg-white dark:bg-[#121212] rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 max-w-2xl w-full max-h-[88vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -450,42 +498,68 @@ export default function OrdersAdmin() {
                 </div>
               </div>
 
-              {/* Store & Rider Assignments */}
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
-                    Fulfillment Dark Store
-                  </label>
-                  <select
-                    value={selectedOrder.store?._id || selectedOrder.store || ""}
-                    onChange={(e) => handleAssignStore(selectedOrder._id, e.target.value)}
-                    className="w-full p-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
-                  >
-                    <option value="">Select Dark Store</option>
-                    {stores.map((s) => (
-                      <option key={s._id} value={s._id}>
-                        {s.name} ({s.code || s.city})
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              {/* Hub, Picker & Rider Assignments */}
+              <div>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                  Dispatch & Fulfillment Assignment
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {/* Dark Store */}
+                  <div className="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
+                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                      🏬 Dark Store Hub
+                    </label>
+                    <select
+                      value={selectedOrder.store?._id || selectedOrder.store || ""}
+                      onChange={(e) => handleAssignStore(selectedOrder._id, e.target.value)}
+                      className="w-full p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
+                    >
+                      <option value="">Select Dark Store</option>
+                      {stores.map((s) => (
+                        <option key={s._id} value={s._id}>
+                          {s.name} ({s.code || s.city})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                <div>
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
-                    Assigned Delivery Rider
-                  </label>
-                  <select
-                    value={selectedOrder.partner?._id || selectedOrder.partner || ""}
-                    onChange={(e) => handleAssignPartner(selectedOrder._id, e.target.value)}
-                    className="w-full p-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
-                  >
-                    <option value="">Assign Rider</option>
-                    {partners.map((p) => (
-                      <option key={p._id} value={p._id}>
-                        {p.name} ({p.vehicleNumber || p.phone})
-                      </option>
-                    ))}
-                  </select>
+                  {/* Store Picker */}
+                  <div className="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
+                    <label className="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider block mb-1">
+                      📦 In-Store Picker
+                    </label>
+                    <select
+                      value={selectedOrder.picker?._id || selectedOrder.picker || ""}
+                      onChange={(e) => handleAssignPicker(selectedOrder._id, e.target.value)}
+                      className="w-full p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
+                    >
+                      <option value="">Assign Store Picker</option>
+                      {pickers.map((p) => (
+                        <option key={p._id} value={p._id}>
+                          {p.name} ({p.shift || "Morning"} • {p.pickingSpeedSec || 80}s)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Delivery Rider */}
+                  <div className="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
+                    <label className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block mb-1">
+                      🛵 Delivery Rider
+                    </label>
+                    <select
+                      value={selectedOrder.partner?._id || selectedOrder.partner || selectedOrder.rider?._id || selectedOrder.rider || ""}
+                      onChange={(e) => handleAssignRider(selectedOrder._id, e.target.value)}
+                      className="w-full p-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-900 dark:text-gray-100 focus:outline-none"
+                    >
+                      <option value="">Assign Delivery Rider</option>
+                      {riders.map((r) => (
+                        <option key={r._id} value={r._id}>
+                          {r.name} ({r.vehicleNumber || r.vehicleType})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 

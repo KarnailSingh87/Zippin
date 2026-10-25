@@ -7,6 +7,7 @@ import {
   listAllOrders,
   assignPartnerToOrder,
   assignStoreToOrder,
+  assignPickerToOrder,
 } from "../controllers/orders.js";
 import { authenticate, requireAdmin } from "../middleware/auth.js";
 
@@ -18,5 +19,6 @@ router.get("/:id", authenticate, getOrder);
 router.patch("/:id/status", authenticate, requireAdmin, updateOrderStatus);
 router.patch("/:id/assign-partner", authenticate, requireAdmin, assignPartnerToOrder);
 router.patch("/:id/assign-store", authenticate, requireAdmin, assignStoreToOrder);
+router.patch("/:id/assign-picker", authenticate, requireAdmin, assignPickerToOrder);
 
 export default router;

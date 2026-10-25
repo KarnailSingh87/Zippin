@@ -6,11 +6,11 @@ import ThemeToggle from "./ThemeToggle";
 
 const NAV_GROUPS = [
   {
-    title: "OPERATIONS & FULFILLMENT",
+    title: "DASHBOARD",
     items: [
       {
         href: "/",
-        label: "Dashboard",
+        label: "Overview",
         badge: "Live",
         badgeColor: "bg-emerald-500/20 text-emerald-300",
         icon: (
@@ -19,6 +19,11 @@ const NAV_GROUPS = [
           </svg>
         ),
       },
+    ],
+  },
+  {
+    title: "OPERATIONS & DISPATCH",
+    items: [
       {
         href: "/orders",
         label: "Customer Orders",
@@ -45,7 +50,7 @@ const NAV_GROUPS = [
         href: "/pickers",
         label: "Store Pickers",
         badge: "6 Pickers",
-        badgeColor: "bg-purple-500/20 text-purple-300",
+        badgeColor: "bg-amber-500/20 text-amber-300",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -56,32 +61,10 @@ const NAV_GROUPS = [
         href: "/stores",
         label: "Dark Stores",
         badge: "6 Hubs",
-        badgeColor: "bg-amber-500/20 text-amber-300",
+        badgeColor: "bg-purple-500/20 text-purple-300",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-          </svg>
-        ),
-      },
-      {
-        href: "/revenue",
-        label: "Revenue & Finance",
-        badge: "₹ Ledger",
-        badgeColor: "bg-emerald-500/20 text-emerald-300",
-        icon: (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3M9 13c6.667 0 6.667-10 0-10" />
-          </svg>
-        ),
-      },
-      {
-        href: "/hero-management",
-        label: "Hero & Banners",
-        badge: "Visuals",
-        badgeColor: "bg-pink-500/20 text-pink-300",
-        icon: (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         ),
       },
@@ -123,6 +106,22 @@ const NAV_GROUPS = [
           </svg>
         ),
       },
+    ],
+  },
+  {
+    title: "FINANCE & MARKETING",
+    items: [
+      {
+        href: "/revenue",
+        label: "Revenue & Finance",
+        badge: "₹ Ledger",
+        badgeColor: "bg-emerald-500/20 text-emerald-300",
+        icon: (
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3M9 13c6.667 0 6.667-10 0-10" />
+          </svg>
+        ),
+      },
       {
         href: "/payments",
         label: "Settlement Ledger",
@@ -131,6 +130,17 @@ const NAV_GROUPS = [
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+          </svg>
+        ),
+      },
+      {
+        href: "/hero-management",
+        label: "Hero & Banners",
+        badge: "Visuals",
+        badgeColor: "bg-pink-500/20 text-pink-300",
+        icon: (
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         ),
       },

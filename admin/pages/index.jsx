@@ -202,11 +202,11 @@ export default function Dashboard() {
       shadow: "shadow-indigo-500/20",
     },
     {
-      title: "Active Fleet Riders",
-      value: `${stats.activePartners}/${stats.partners}`,
+      title: "Delivery Fleet Riders",
+      value: `${stats.activeRiders}/${stats.riders}`,
       change: "8.4 min ETA",
       subtitle: "Riders on-road in NCR",
-      link: "/delivery-partners",
+      link: "/riders",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -216,18 +216,18 @@ export default function Dashboard() {
       shadow: "shadow-teal-500/20",
     },
     {
-      title: "Active Categories",
-      value: stats.categories.toLocaleString(),
-      change: "100% Stocked",
-      subtitle: "Dairy, Fresh, Snacks & Drinks",
-      link: "/categories",
+      title: "Store Pickers & Packers",
+      value: `${stats.activePickers}/${stats.pickers}`,
+      change: "82s SLA",
+      subtitle: "In-store bag assembly",
+      link: "/pickers",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
         </svg>
       ),
-      color: "from-amber-500 to-orange-500",
-      shadow: "shadow-amber-500/20",
+      color: "from-purple-500 to-indigo-600",
+      shadow: "shadow-purple-500/20",
     },
     {
       title: "Settlement Ledger",
@@ -244,7 +244,7 @@ export default function Dashboard() {
       shadow: "shadow-pink-500/20",
     },
     {
-      title: "Fulfillment Rating",
+      title: "Fulfillment CSAT",
       value: "4.9 ★",
       change: "2.4k Reviews",
       subtitle: "99.8% on-time delivery rate",
@@ -356,16 +356,16 @@ export default function Dashboard() {
         <div className="flex items-center gap-6 border-t md:border-t-0 md:border-l border-gray-800 pt-3 md:pt-0 md:pl-6 text-xs">
           <div>
             <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Avg Packing Time</div>
-            <div className="text-base font-black text-emerald-400 mt-0.5">2.1 mins ⚡</div>
+            <div className="text-base font-black text-emerald-400 mt-0.5">82s SLA 📦</div>
           </div>
           <div>
             <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Avg Transit Time</div>
             <div className="text-base font-black text-amber-300 mt-0.5">6.3 mins 🛵</div>
           </div>
           <div>
-            <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Fleet Utilization</div>
+            <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Active Staff Live</div>
             <div className="text-base font-black text-teal-400 mt-0.5">
-              {stats.activePartners}/{stats.partners} Active
+              {stats.activeRiders} Riders • {stats.activePickers} Pickers
             </div>
           </div>
         </div>
@@ -405,7 +405,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Action Navigation Tiles */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {/* Hero & Banners Card */}
         <Link
           href="/hero-management"
@@ -421,7 +421,7 @@ export default function Dashboard() {
             </div>
           </div>
           <p className="text-[11px] text-pink-600 dark:text-pink-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Edit Promo Posters</span>
+            <span>Edit Banners</span>
             <span>→</span>
           </p>
         </Link>
@@ -433,7 +433,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Revenue Analytics</p>
+              <p className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Revenue & Ledger</p>
               <p className="text-lg font-black text-[#0C831F] dark:text-emerald-400 mt-1">Settlements</p>
             </div>
             <div className="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/40 text-[#0C831F] dark:text-emerald-400 rounded-xl flex items-center justify-center font-bold text-lg">
@@ -441,7 +441,7 @@ export default function Dashboard() {
             </div>
           </div>
           <p className="text-[11px] text-[#0C831F] dark:text-emerald-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Financial Audit Ledger</span>
+            <span>Financial Audit</span>
             <span>→</span>
           </p>
         </Link>
@@ -461,27 +461,47 @@ export default function Dashboard() {
             </div>
           </div>
           <p className="text-[11px] text-indigo-600 dark:text-indigo-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Manage Warehouses</span>
+            <span>Warehouses</span>
             <span>→</span>
           </p>
         </Link>
 
-        {/* Delivery Fleet Card */}
+        {/* Delivery Riders Card */}
         <Link
-          href="/delivery-partners"
-          className="bg-white dark:bg-[#121212] hover:border-amber-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group block"
+          href="/riders"
+          className="bg-white dark:bg-[#121212] hover:border-teal-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group block"
         >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Delivery Fleet</p>
-              <p className="text-lg font-black text-gray-900 dark:text-white mt-1">{stats.activePartners} Active</p>
+              <p className="text-lg font-black text-teal-600 dark:text-teal-400 mt-1">{stats.activeRiders} Riders</p>
             </div>
-            <div className="w-10 h-10 bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center font-bold text-lg">
+            <div className="w-10 h-10 bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 rounded-xl flex items-center justify-center font-bold text-lg">
               🛵
             </div>
           </div>
-          <p className="text-[11px] text-amber-600 dark:text-amber-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Track Fleet Riders</span>
+          <p className="text-[11px] text-teal-600 dark:text-teal-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+            <span>Fleet Riders</span>
+            <span>→</span>
+          </p>
+        </Link>
+
+        {/* Store Pickers Card */}
+        <Link
+          href="/pickers"
+          className="bg-white dark:bg-[#121212] hover:border-purple-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group block"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Store Pickers</p>
+              <p className="text-lg font-black text-purple-600 dark:text-purple-400 mt-1">{stats.activePickers} Pickers</p>
+            </div>
+            <div className="w-10 h-10 bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center font-bold text-lg">
+              📦
+            </div>
+          </div>
+          <p className="text-[11px] text-purple-600 dark:text-purple-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+            <span>Store Pickers</span>
             <span>→</span>
           </p>
         </Link>

@@ -2,8 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/pickers": "pages/pickers.js",
+  "/": "pages/index.js",
   "/products": "pages/products.js",
-  "/categories": "pages/categories.js",
-  "/": "pages/index.js"
+  "/orders": "pages/orders.js",
+  "/riders": "pages/riders.js"
 }

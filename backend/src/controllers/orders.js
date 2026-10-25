@@ -214,6 +214,8 @@ export async function updateOrderStatus(req, res) {
   const populated = await Order.findById(order._id)
     .populate("store", "name code city area")
     .populate("partner", "firstName lastName name phone vehicleType rating")
+    .populate("rider", "firstName lastName name phone vehicleType rating")
+    .populate("picker", "firstName lastName name phone shift pickingSpeedSec status")
     .populate("paymentRecord");
 
   res.json(populated || order);
@@ -225,6 +227,8 @@ export async function listAllOrders(req, res) {
     .populate("user", "name email phone firstName lastName")
     .populate("store", "name code city area")
     .populate("partner", "firstName lastName name phone vehicleType rating status")
+    .populate("rider", "firstName lastName name phone vehicleType rating status")
+    .populate("picker", "firstName lastName name phone shift pickingSpeedSec status")
     .populate("paymentRecord")
     .populate("deliveryRecord")
     .sort({ createdAt: -1 })
@@ -263,6 +267,8 @@ export async function assignPartnerToOrder(req, res) {
     const populated = await Order.findById(order._id)
       .populate("store", "name code city area")
       .populate("partner", "firstName lastName name phone vehicleType rating")
+      .populate("rider", "firstName lastName name phone vehicleType rating")
+      .populate("picker", "firstName lastName name phone shift pickingSpeedSec status")
       .populate("paymentRecord");
 
     res.json(populated);
@@ -289,6 +295,8 @@ export async function assignStoreToOrder(req, res) {
     const populated = await Order.findById(order._id)
       .populate("store", "name code city area")
       .populate("partner", "firstName lastName name phone vehicleType rating")
+      .populate("rider", "firstName lastName name phone vehicleType rating")
+      .populate("picker", "firstName lastName name phone shift pickingSpeedSec status")
       .populate("paymentRecord");
 
     res.json(populated);
@@ -297,3 +305,38 @@ export async function assignStoreToOrder(req, res) {
     res.status(500).json({ message: "Failed to assign store" });
   }
 }
+
+export async function assignPickerToOrder(req, res) {
+  try {
+    const { pickerId } = req.body;
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    const picker = await DeliveryPartner.findById(pickerId);
+    if (!picker) return res.status(404).json({ message: "Picker not found" });
+
+    order.picker = picker._id;
+    // If order was placed or confirmed, moving to picking
+    if (order.status === "placed" || order.status === "confirmed") {
+      order.status = "picking";
+    }
+    await order.save();
+
+    // Mark picker as busy
+    picker.status = "busy";
+    await picker.save();
+
+    const populated = await Order.findById(order._id)
+      .populate("store", "name code city area")
+      .populate("partner", "firstName lastName name phone vehicleType rating")
+      .populate("rider", "firstName lastName name phone vehicleType rating")
+      .populate("picker", "firstName lastName name phone shift pickingSpeedSec status")
+      .populate("paymentRecord");
+
+    res.json(populated);
+  } catch (err) {
+    console.error("Assign picker error:", err);
+    res.status(500).json({ message: "Failed to assign picker" });
+  }
+}
+

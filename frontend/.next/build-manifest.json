@@ -27,10 +27,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/category/[slug]": [
+    "/auth/login": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/category/[slug].js"
+      "static/chunks/pages/auth/login.js"
+    ],
+    "/checkout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/checkout.js"
     ]
   },
   "ampFirstPages": []

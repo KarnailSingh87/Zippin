@@ -35,11 +35,12 @@ export default function AISearch({ isOpen, onClose }) {
     if (!query.trim()) {
       // Default quick suggestions
       setResults([
+        { type: "action", label: "Delivery Fleet Riders (10 Active Riders)", path: "/riders", badge: "Fleet", icon: "🛵" },
+        { type: "action", label: "Store Pickers & Packers (6 In-Store Pickers)", path: "/pickers", badge: "SLA Velocity", icon: "📦" },
         { type: "action", label: "Manage Homepage Banners & Posters", path: "/hero-management", badge: "Hero Editor", icon: "🖼️" },
-        { type: "action", label: "View Revenue & Settlements Analytics", path: "/revenue", badge: "Finance", icon: "💰" },
-        { type: "action", label: "Track Live Customer Orders & Invoices", path: "/orders", badge: "Live Orders", icon: "🛵" },
-        { type: "action", label: "Manage 85 Products & Inventories", path: "/products", badge: "Catalog", icon: "🍎" },
+        { type: "action", label: "Live Customer Orders & Fulfillment", path: "/orders", badge: "Orders", icon: "📋" },
         { type: "action", label: "Dark Store Fulfillment Hubs", path: "/stores", badge: "Hubs", icon: "🏬" },
+        { type: "action", label: "Revenue & Settlements Analytics", path: "/revenue", badge: "Finance", icon: "💰" },
       ]);
       setSelectedIndex(0);
       return;
@@ -50,14 +51,57 @@ export default function AISearch({ isOpen, onClose }) {
       const q = query.toLowerCase().trim();
       const matched = [];
 
+      // Static shortcut checks
+      if ("riders".includes(q) || "delivery".includes(q) || "fleet".includes(q) || "bike".includes(q)) {
+        matched.push({
+          type: "action",
+          label: "View Delivery Riders & Fleet Management",
+          sub: "10 registered delivery riders across NCR dark stores",
+          path: "/riders",
+          badge: "Fleet Page",
+          icon: "🛵",
+        });
+      }
+      if ("pickers".includes(q) || "packers".includes(q) || "picking".includes(q) || "warehouse".includes(q)) {
+        matched.push({
+          type: "action",
+          label: "View Store Pickers & Assembly Management",
+          sub: "6 active pickers, 82s avg pick speed SLA",
+          path: "/pickers",
+          badge: "Pickers Page",
+          icon: "📦",
+        });
+      }
+
       try {
         const token = localStorage.getItem("admin_token");
-        const [prodRes, ordRes, catRes, storeRes] = await Promise.all([
+        const [prodRes, ordRes, catRes, storeRes, partnerRes] = await Promise.all([
           fetch(`/api/products?limit=100`),
           fetch(`/api/orders/all`, { headers: token ? { Authorization: `Bearer ${token}` } : {} }),
           fetch(`/api/categories`),
           fetch(`/api/stores`),
+          fetch(`/api/delivery-partners`),
         ]);
+
+        if (partnerRes.ok) {
+          const partners = await partnerRes.json();
+          partners
+            .filter((p) => p.name?.toLowerCase().includes(q) || p.phone?.includes(q) || p.vehicleNumber?.toLowerCase().includes(q))
+            .slice(0, 3)
+            .forEach((p) => {
+              const isPicker = p.role === "picker";
+              matched.push({
+                type: isPicker ? "picker" : "rider",
+                label: p.name,
+                sub: isPicker
+                  ? `Store Picker • Shift: ${p.shift || "Morning"} • Speed: ${p.pickingSpeedSec || 80}s`
+                  : `Delivery Rider • Vehicle: ${p.vehicleNumber || p.vehicleType || "EV"}`,
+                path: isPicker ? `/pickers?search=${encodeURIComponent(p.name)}` : `/riders?search=${encodeURIComponent(p.name)}`,
+                badge: isPicker ? "Picker" : "Rider",
+                icon: isPicker ? "📦" : "🛵",
+              });
+            });
+        }
 
         if (prodRes.ok) {
           const prods = await prodRes.json();
@@ -88,7 +132,7 @@ export default function AISearch({ isOpen, onClose }) {
                 sub: `₹${o.total} • Status: ${o.status?.toUpperCase()}`,
                 path: `/orders?search=${encodeURIComponent(o.orderNumber)}`,
                 badge: "Order",
-                icon: "🛵",
+                icon: "📋",
               });
             });
         }
