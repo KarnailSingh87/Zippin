@@ -103,25 +103,11 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 bg-gradient-to-r from-[#0C831F] to-emerald-600 hover:from-[#0a731b] hover:to-emerald-500 text-white py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-900/30 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+              className="w-full mt-2 bg-gradient-to-r from-[#0C831F] to-emerald-600 hover:from-[#0a731b] hover:to-emerald-500 text-white py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-900/30 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 cursor-pointer"
             >
               {loading ? "Authenticating..." : "Enter Admin Dashboard"}
             </button>
           </form>
-
-          <div className="mt-6 bg-gray-50 dark:bg-[#161c27] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 text-xs">
-            <p className="font-bold text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1.5">
-              <span>🔑</span> Default Credentials:
-            </p>
-            <div className="space-y-0.5 text-gray-500 dark:text-gray-400 font-mono text-[11px]">
-              <p>
-                Email: <span className="text-emerald-600 dark:text-emerald-400 font-bold">admin@zippin.com</span>
-              </p>
-              <p>
-                Password: <span className="text-emerald-600 dark:text-emerald-400 font-bold">admin123</span>
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </div>

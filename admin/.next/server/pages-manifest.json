@@ -3,8 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/pickers": "pages/pickers.js",
-  "/orders": "pages/orders.js",
-  "/stores": "pages/stores.js",
-  "/riders": "pages/riders.js"
+  "/riders": "pages/riders.js",
+  "/pickers": "pages/pickers.js"
 }

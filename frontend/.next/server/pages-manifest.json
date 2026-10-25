@@ -1,1 +1,8 @@
-{"/_error":"pages/_error.js","/_app":"pages/_app.js","/account":"pages/account.html","/auth/login":"pages/auth/login.html","/about":"pages/about.html","/auth/register":"pages/auth/register.html","/blog":"pages/blog.html","/careers":"pages/careers.html","/cart":"pages/cart.html","/category/[slug]":"pages/category/[slug].html","/categories":"pages/categories.html","/":"pages/index.html","/checkout":"pages/checkout.html","/download":"pages/download.html","/lead":"pages/lead.html","/orders":"pages/orders.html","/orders/[id]":"pages/orders/[id].html","/partner/delivery":"pages/partner/delivery.html","/partner/franchise":"pages/partner/franchise.html","/partner/seller":"pages/partner/seller.html","/partner/warehouse":"pages/partner/warehouse.html","/press":"pages/press.html","/search":"pages/search.html","/support":"pages/support.html","/_document":"pages/_document.js","/404":"pages/404.html"}
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js",
+  "/auth/login": "pages/auth/login.js",
+  "/category/[slug]": "pages/category/[slug].js"
+}

@@ -21,7 +21,7 @@ export default function CartDrawer() {
 
   const FREE_DELIVERY_THRESHOLD = 199;
   const deliveryFee = totalPrice >= FREE_DELIVERY_THRESHOLD || totalPrice === 0 ? 0 : 25;
-  const handlingCharge = totalPrice > 0 ? 4 : 0;
+  const handlingCharge = 0;
   const grandTotal = totalPrice + deliveryFee + handlingCharge;
   const amountNeededForFreeDelivery = Math.max(0, FREE_DELIVERY_THRESHOLD - totalPrice);
   const freeDeliveryProgress = Math.min(100, Math.round((totalPrice / FREE_DELIVERY_THRESHOLD) * 100));
@@ -134,55 +134,62 @@ export default function CartDrawer() {
 
               {/* Cart Items List */}
               <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-xs divide-y divide-gray-100">
-                {items.map((item) => (
-                  <div key={item.product._id} className="py-3 first:pt-0 last:pb-0 flex items-center gap-3">
-                    <img
-                      src={
-                        item.product.images?.[0]?.url ||
-                        `https://placehold.co/60x60/f0f0f0/666?text=Zippin`
-                      }
-                      alt={item.product.title}
-                      className="w-12 h-12 object-contain rounded-xl bg-gray-50 p-1 shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-xs font-bold text-gray-900 truncate">
-                        {item.product.title}
-                      </h4>
-                      <p className="text-[11px] text-gray-500">
-                        {item.product.unit || "1 unit"}
-                      </p>
-                      <div className="text-xs font-black text-gray-900 mt-1">
-                        ₹{item.product.price * item.quantity}
-                        {item.quantity > 1 && (
-                          <span className="text-[10px] text-gray-400 font-normal ml-1">
-                            (₹{item.product.price} each)
-                          </span>
-                        )}
+                {items.map((item, idx) => {
+                  const prod = (typeof item.product === 'object' && item.product) ? item.product : {};
+                  const pId = prod._id || item.productId || item.product || `item-${idx}`;
+                  const title = prod.title || item.title || item.name || "Item";
+                  const unit = prod.unit || item.unit || "1 pack";
+                  const price = Number(prod.price ?? item.price ?? 0);
+                  const qty = Number(item.quantity || item.qty || 1);
+                  const imgUrl = prod.images?.[0]?.url || item.image || (item.images && item.images[0]?.url) || "/favicon.svg";
+
+                  return (
+                    <div key={pId} className="py-3 first:pt-0 last:pb-0 flex items-center gap-3">
+                      <img
+                        src={imgUrl}
+                        alt={title}
+                        className="w-12 h-12 object-contain rounded-xl bg-gray-50 p-1 shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-xs font-bold text-gray-900 truncate">
+                          {title}
+                        </h4>
+                        <p className="text-[11px] text-gray-500">
+                          {unit}
+                        </p>
+                        <div className="text-xs font-black text-gray-900 mt-1">
+                          ₹{price * qty}
+                          {qty > 1 && (
+                            <span className="text-[10px] text-gray-400 font-normal ml-1">
+                              (₹{price} each)
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Quantity Pill */}
+                      <div className="flex items-center bg-[#0C831F] text-white rounded-lg overflow-hidden shrink-0 shadow-2xs">
+                        <button
+                          onClick={() => removeItem(pId)}
+                          className="w-6 h-6 flex items-center justify-center hover:bg-[#0a6b19] font-black text-xs transition-colors cursor-pointer"
+                          aria-label="Decrease"
+                        >
+                          −
+                        </button>
+                        <span className="w-5 text-center text-xs font-black select-none">
+                          {qty}
+                        </span>
+                        <button
+                          onClick={() => addItem(prod._id ? prod : { _id: pId, title, price, unit })}
+                          className="w-6 h-6 flex items-center justify-center hover:bg-[#0a6b19] font-black text-xs transition-colors cursor-pointer"
+                          aria-label="Increase"
+                        >
+                          +
+                        </button>
                       </div>
                     </div>
-
-                    {/* Quantity Pill */}
-                    <div className="flex items-center bg-[#0C831F] text-white rounded-lg overflow-hidden shrink-0 shadow-2xs">
-                      <button
-                        onClick={() => removeItem(item.product._id)}
-                        className="w-6 h-6 flex items-center justify-center hover:bg-[#0a6b19] font-black text-xs transition-colors"
-                        aria-label="Decrease"
-                      >
-                        −
-                      </button>
-                      <span className="w-5 text-center text-xs font-black select-none">
-                        {item.quantity}
-                      </span>
-                      <button
-                        onClick={() => addItem(item.product)}
-                        className="w-6 h-6 flex items-center justify-center hover:bg-[#0a6b19] font-black text-xs transition-colors"
-                        aria-label="Increase"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Bill Details */}

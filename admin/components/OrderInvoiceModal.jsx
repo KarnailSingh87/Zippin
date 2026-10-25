@@ -9,6 +9,7 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
 
   const invoiceNumber = `INV-${order.orderNumber || order._id?.slice(-6)?.toUpperCase()}`;
   const orderDate = new Date(order.createdAt || Date.now()).toLocaleDateString("en-IN", {
+    timeZone: "Asia/Kolkata",
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -16,10 +17,14 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
     minute: "2-digit",
   });
 
-  const subtotal = Number(order.subtotal) || Number(order.total) - 33 || 0;
-  const deliveryFee = Number(order.deliveryFee) || (subtotal > 199 ? 0 : 25);
-  const tax = Number(order.tax) || 8;
-  const total = Number(order.total) || subtotal + deliveryFee + tax;
+  const itemsSubtotal = (order.items || []).reduce(
+    (acc, i) => acc + (Number(i.price || 0) * Number(i.quantity || i.qty || 1)),
+    0
+  );
+  const subtotal = itemsSubtotal > 0 ? itemsSubtotal : (Number(order.subtotal) || Number(order.total) || 0);
+  const deliveryFee = Number(order.deliveryFee) || (subtotal >= 199 ? 0 : 25);
+  const tax = Number(order.tax) || 0;
+  const total = subtotal + deliveryFee + tax;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto print:p-0 print:bg-white" onClick={onClose}>

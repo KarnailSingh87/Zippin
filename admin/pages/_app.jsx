@@ -1,9 +1,22 @@
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
 import "../styles/globals.css";
 import AdminLayout from "../components/AdminLayout";
 import { ThemeProvider } from "../context/ThemeContext";
 import Head from "next/head";
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("admin_token");
+      if (!token && router.pathname !== "/login") {
+        router.push("/login");
+      }
+    }
+  }, [router.pathname]);
+
   return (
     <ThemeProvider>
       <Head>
