@@ -130,14 +130,9 @@ export default function StoresAdmin() {
               </svg>
             </div>
             <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="text-xl font-black text-gray-900 dark:text-white font-outfit">
-                  Store Facility & Operations
-                </h1>
-                <span className="text-[10px] font-black uppercase bg-emerald-100 dark:bg-emerald-950/60 text-[#0C831F] dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800/60 px-2.5 py-0.5 rounded-full">
-                  Hamirpur Hub • Single Exclusive Store
-                </span>
-              </div>
+              <h1 className="text-xl font-black text-gray-900 dark:text-white font-outfit">
+                Store Facility & Operations
+              </h1>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                 Primary physical fulfillment store facility for Hamirpur District (Gandhi Chowk), serving all local catchments
               </p>

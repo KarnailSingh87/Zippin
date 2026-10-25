@@ -3,6 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/partner/franchise": "pages/partner/franchise.js",
-  "/category/[slug]": "pages/category/[slug].js"
+  "/category/[slug]": "pages/category/[slug].js",
+  "/partner/franchise": "pages/partner/franchise.js"
 }

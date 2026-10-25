@@ -291,7 +291,7 @@ export default function RevenueAnalytics() {
         <div className="bg-white dark:bg-[#121212] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4 transition-colors duration-300">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-extrabold text-gray-900 dark:text-white">Store Revenue Performance</h2>
-            <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase">Single Branch</span>
+            <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase">Hamirpur</span>
           </div>
 
           <div className="space-y-2.5 text-xs">

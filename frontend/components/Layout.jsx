@@ -375,14 +375,9 @@ export default function Layout({ children }) {
                 </svg>
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="font-black text-gray-900 text-lg tracking-tight">Select Delivery Location</h3>
-                  <span className="text-[10px] font-black uppercase bg-emerald-100 text-[#0C831F] px-2 py-0.5 rounded-full border border-emerald-300">
-                    Hamirpur Hub • Single Branch
-                  </span>
-                </div>
+                <h3 className="font-black text-gray-900 text-lg tracking-tight">Select Delivery Location</h3>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Exclusive Hamirpur Store Facility — deliveries calculated dynamically from Gandhi Chowk
+                  Deliveries calculated dynamically from Gandhi Chowk, Hamirpur
                 </p>
               </div>
             </div>
