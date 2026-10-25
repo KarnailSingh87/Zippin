@@ -178,8 +178,8 @@ export async function placeOrder(req, res) {
     await order.save();
 
     const populated = await Order.findById(order._id)
-      .populate("store", "name code city area phone")
-      .populate("partner", "firstName lastName name phone vehicleType rating")
+      .populate("store", "name code city area address pincode phone coordinates deliveryRadiusKm")
+      .populate("partner", "firstName lastName name phone vehicleType rating location")
       .populate("paymentRecord");
 
     res.status(200).json(populated || order);
@@ -191,8 +191,8 @@ export async function placeOrder(req, res) {
 
 export async function listOrders(req, res) {
   const orders = await Order.find({ user: req.user.sub })
-    .populate("store", "name code city area")
-    .populate("partner", "firstName lastName name phone vehicleType rating")
+    .populate("store", "name code city area address pincode phone coordinates")
+    .populate("partner", "firstName lastName name phone vehicleType rating location")
     .populate("paymentRecord")
     .sort({ createdAt: -1 })
     .limit(50);
@@ -202,8 +202,9 @@ export async function listOrders(req, res) {
 export async function getOrder(req, res) {
   const order = await Order.findById(req.params.id)
     .populate("items.product")
-    .populate("store", "name code city area phone")
-    .populate("partner", "firstName lastName name phone vehicleType rating status")
+    .populate("store", "name code city area address pincode phone coordinates deliveryRadiusKm")
+    .populate("partner", "firstName lastName name phone vehicleType rating status location")
+    .populate("rider", "firstName lastName name phone vehicleType rating status location")
     .populate("paymentRecord")
     .populate("deliveryRecord")
     .populate("user", "name email phone firstName lastName");
@@ -300,14 +301,24 @@ export async function updateOrderStatus(req, res) {
         pickedUpAt: new Date(),
       });
     }
+    const partnerId = order.partner || order.rider;
+    if (partnerId && order.store) {
+      const st = await Store.findById(order.store);
+      if (st && st.coordinates?.lat && st.coordinates?.lng) {
+        await DeliveryPartner.findByIdAndUpdate(partnerId, {
+          location: { lat: st.coordinates.lat, lng: st.coordinates.lng },
+          status: "busy",
+        });
+      }
+    }
   }
 
   await order.save();
 
   const populated = await Order.findById(order._id)
-    .populate("store", "name code city area")
-    .populate("partner", "firstName lastName name phone vehicleType rating photo avatar")
-    .populate("rider", "firstName lastName name phone vehicleType rating photo avatar")
+    .populate("store", "name code city area address pincode phone coordinates")
+    .populate("partner", "firstName lastName name phone vehicleType rating photo avatar location")
+    .populate("rider", "firstName lastName name phone vehicleType rating photo avatar location")
     .populate("picker", "firstName lastName name phone shift pickingSpeedSec status")
     .populate("paymentRecord");
 
@@ -464,9 +475,9 @@ export async function listAllOrders(req, res) {
   const statusFilter = req.query.status ? { status: req.query.status } : {};
   const orders = await Order.find(statusFilter)
     .populate("user", "name email phone firstName lastName")
-    .populate("store", "name code city area")
-    .populate("partner", "firstName lastName name phone vehicleType rating status")
-    .populate("rider", "firstName lastName name phone vehicleType rating status")
+    .populate("store", "name code city area address pincode phone coordinates")
+    .populate("partner", "firstName lastName name phone vehicleType rating status location")
+    .populate("rider", "firstName lastName name phone vehicleType rating status location")
     .populate("picker", "firstName lastName name phone shift pickingSpeedSec status")
     .populate("paymentRecord")
     .populate("deliveryRecord")

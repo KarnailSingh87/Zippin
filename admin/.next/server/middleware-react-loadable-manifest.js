@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"settings.jsx -> ../components/StoreMapPicker\":{\"id\":\"settings.jsx -> ../components/StoreMapPicker\",\"files\":[\"static/chunks/components_StoreMapPicker_jsx.js\"]}}"

@@ -157,8 +157,19 @@ export default function OrderDetailPage() {
   const currentStatusIdx = STATUSES.indexOf(order.status);
 
   // Dynamic Real-Time ETA Recalculation & Distance Matrix (TC-4.7.02)
-  const riderLocation = order.delivery?.location || { latitude: 28.4595, longitude: 77.0266 };
-  const storeLocation = { latitude: 28.4600, longitude: 77.0250 };
+  const storeLat = order.store?.coordinates?.lat || 31.6862;
+  const storeLng = order.store?.coordinates?.lng || 76.5213;
+  const storeLocation = { latitude: storeLat, longitude: storeLng };
+
+  const partnerLat = order.partner?.location?.lat || order.rider?.location?.lat;
+  const partnerLng = order.partner?.location?.lng || order.rider?.location?.lng;
+
+  const riderLocation = partnerLat && partnerLng
+    ? { latitude: partnerLat, longitude: partnerLng }
+    : (order.delivery?.location && order.delivery.location.latitude !== 28.4595
+        ? order.delivery.location
+        : { latitude: storeLat + 0.003, longitude: storeLng + 0.002 });
+
   const distanceMatrix = Math.sqrt(
     Math.pow((riderLocation.latitude - storeLocation.latitude) * 111, 2) +
     Math.pow((riderLocation.longitude - storeLocation.longitude) * 111, 2)

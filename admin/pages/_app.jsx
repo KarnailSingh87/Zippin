@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import "../styles/globals.css";
+import "leaflet/dist/leaflet.css";
 import AdminLayout from "../components/AdminLayout";
 import { ThemeProvider } from "../context/ThemeContext";
 import { cacheManager } from "../lib/cacheManager";

@@ -161,6 +161,37 @@ export function LocationProvider({ children }) {
     }
   }, []);
 
+  // Sync with live primary store configuration from platform settings
+  useEffect(() => {
+    async function syncStore() {
+      try {
+        const res = await fetch("/api/stores/primary");
+        if (res.ok) {
+          const store = await res.json();
+          if (store && store.coordinates?.lat && store.coordinates?.lng) {
+            const mapped = {
+              id: store._id || "str-hmr-501",
+              name: store.name,
+              district: store.city || "Hamirpur",
+              city: store.city || "Hamirpur",
+              state: store.state || "Himachal Pradesh",
+              area: store.area || "District Center",
+              address: store.address || "Main Bazaar, Hamirpur",
+              pincode: store.pincode || "177001",
+              coordinates: store.coordinates,
+              deliveryRadiusKm: store.deliveryRadiusKm || 12.0,
+            };
+            setOriginStore(mapped);
+            if (DISTRICT_STORES.length > 0) {
+              DISTRICT_STORES[0] = { ...DISTRICT_STORES[0], ...mapped };
+            }
+          }
+        }
+      } catch (e) {}
+    }
+    syncStore();
+  }, []);
+
   /**
    * Set location manually from typed input or selection
    */

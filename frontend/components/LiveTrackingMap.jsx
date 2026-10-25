@@ -16,24 +16,25 @@ export default function LiveTrackingMap({
   const [currentRiderPos, setCurrentRiderPos] = useState(null);
   const [isFollowing, setIsFollowing] = useState(true);
 
-  // Normalize coordinates for single-branch Hamirpur store catchment
-  // Hamirpur Store #501 coordinates: 31.6862° N, 76.5213° E
-  const storeLat = 31.6862;
-  const storeLng = 76.5213;
+  // Dynamic coordinates for store origin and customer destination
+  const storeLat = order?.store?.coordinates?.lat || storeLocation?.latitude || 31.6862;
+  const storeLng = order?.store?.coordinates?.lng || storeLocation?.longitude || 76.5213;
+  const storeName = order?.store?.name || "Zippin Hamirpur Hub";
+  const storeAddress = order?.store?.address || "Main Bazaar, Near Gandhi Chowk";
 
-  // Delivery destination coordinates (Hamirpur locality)
-  const destLat = 31.6938;
-  const destLng = 76.5279;
+  // Delivery destination coordinates
+  const destLat = order?.deliveryAddress?.coordinates?.lat || (storeLat + 0.0076);
+  const destLng = order?.deliveryAddress?.coordinates?.lng || (storeLng + 0.0066);
 
-  // Initial rider location: between store and destination
+  // Initial rider location: starts from store towards destination
   const initialRiderLat =
-    riderLocation?.latitude && riderLocation.latitude !== 28.4595
+    riderLocation?.latitude && Math.abs(riderLocation.latitude - storeLat) < 0.5
       ? riderLocation.latitude
-      : 31.6896;
+      : storeLat + (destLat - storeLat) * 0.35;
   const initialRiderLng =
-    riderLocation?.longitude && riderLocation.longitude !== 77.0266
+    riderLocation?.longitude && Math.abs(riderLocation.longitude - storeLng) < 0.5
       ? riderLocation.longitude
-      : 76.5245;
+      : storeLng + (destLng - storeLng) * 0.35;
 
   const partnerName =
     order?.partner?.name ||
@@ -94,7 +95,7 @@ export default function LiveTrackingMap({
             🏬
           </div>
           <span class="mt-1 bg-gray-900/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-md whitespace-nowrap">
-            Hamirpur Hub #501
+            ${storeName}
           </span>
         </div>
       `,
@@ -139,7 +140,7 @@ export default function LiveTrackingMap({
 
     // Add Markers
     L.marker([storeLat, storeLng], { icon: storeIcon })
-      .bindPopup("<b>Zippin Store #501</b><br/>Hamirpur District Hub (Dispatched)")
+      .bindPopup(`<b>${storeName}</b><br/>${storeAddress}<br/><span style="color:#0C831F">Origin Coordinates: ${storeLat.toFixed(4)}, ${storeLng.toFixed(4)}</span>`)
       .addTo(map);
 
     L.marker([destLat, destLng], { icon: destIcon })
@@ -311,8 +312,8 @@ export default function LiveTrackingMap({
           </div>
           <div className="flex items-center justify-between gap-4 pt-1 border-t border-gray-100">
             <span className="text-[11px] text-gray-500">Dispatch Hub:</span>
-            <span className="text-[11px] font-semibold text-gray-800">
-              Store #501 (Gandhi Chowk)
+            <span className="text-[11px] font-semibold text-gray-800 truncate max-w-[150px]">
+              {storeName}
             </span>
           </div>
         </div>
