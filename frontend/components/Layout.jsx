@@ -6,7 +6,6 @@ import { useAuth } from "../context/AuthContext";
 import { useLocation, DISTRICT_DARK_STORES } from "../context/LocationContext";
 import CartDrawer from "./CartDrawer";
 import SearchTypeahead from "./SearchTypeahead";
-import ZipperAnnouncementBar from "./ZipperAnnouncementBar";
 
 export default function Layout({ children }) {
   const { totalItems, totalPrice, totalSavings, isOpen, setIsOpen } = useCart();
@@ -83,12 +82,12 @@ export default function Layout({ children }) {
   const matchedOriginStore =
     stores.find(
       (s) =>
-        (locationSearch && (
-          s.district.toLowerCase().includes(locationSearch.toLowerCase()) ||
-          s.city.toLowerCase().includes(locationSearch.toLowerCase()) ||
-          locationSearch.toLowerCase().includes(s.district.toLowerCase()) ||
-          locationSearch.toLowerCase().includes(s.city.toLowerCase())
-        ))
+      (locationSearch && (
+        s.district.toLowerCase().includes(locationSearch.toLowerCase()) ||
+        s.city.toLowerCase().includes(locationSearch.toLowerCase()) ||
+        locationSearch.toLowerCase().includes(s.district.toLowerCase()) ||
+        locationSearch.toLowerCase().includes(s.city.toLowerCase())
+      ))
     ) || originStore;
 
   const dynamicEta = Math.max(5, Math.round(3 + (customDistance || 2.0) * 2.5));
@@ -138,8 +137,10 @@ export default function Layout({ children }) {
 
   return (
     <div className="min-h-screen bg-[#F4F6FB] flex flex-col font-sans">
-      {/* Sleek Zipper Announcement Banner Bar */}
-      <ZipperAnnouncementBar deliveryText="Superfast Delivery in 8-10 Minutes | Free Delivery on orders above ₹199" />
+      {/* Top delivery promotional announcement strip */}
+      <div className="bg-[#F8CB46] text-[#1C1C1C] text-center py-1.5 px-4 text-xs font-bold tracking-wide flex items-center justify-center border-b border-yellow-400">
+        <span>Superfast Delivery in {deliveryMinutes} Minutes | Free Delivery on orders above ₹199</span>
+      </div>
 
       {/* Main Header */}
       <header className="bg-white sticky top-0 z-50 border-b border-gray-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
@@ -389,13 +390,12 @@ export default function Layout({ children }) {
               {/* Status Message */}
               {locationStatus && (
                 <div
-                  className={`mt-2 p-2.5 rounded-xl text-xs font-medium flex items-center gap-2 ${
-                    locationStatus.type === "success"
+                  className={`mt-2 p-2.5 rounded-xl text-xs font-medium flex items-center gap-2 ${locationStatus.type === "success"
                       ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                       : locationStatus.type === "loading"
                         ? "bg-blue-50 text-blue-800 border border-blue-200"
                         : "bg-rose-50 text-rose-700 border border-rose-200"
-                  }`}
+                    }`}
                 >
                   <span>
                     {locationStatus.type === "success" ? "✅" : locationStatus.type === "loading" ? "🛰️" : "⚠️"}
@@ -477,11 +477,10 @@ export default function Layout({ children }) {
                           setCustomDistance(item.dist);
                           updateDistance(item.dist);
                         }}
-                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                          customDistance === item.dist
+                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${customDistance === item.dist
                             ? "bg-[#0C831F] text-white shadow-sm scale-105"
                             : "bg-white text-gray-700 border border-gray-200 hover:border-emerald-300"
-                        }`}
+                          }`}
                       >
                         {item.dist} km • ⚡ {item.eta}m
                       </button>
@@ -517,7 +516,7 @@ export default function Layout({ children }) {
                   onClick={() => {
                     const fullLoc =
                       locationSearch.toLowerCase().includes("hamirpur") &&
-                      !locationSearch.toLowerCase().includes("himachal")
+                        !locationSearch.toLowerCase().includes("himachal")
                         ? `${locationSearch}, Himachal Pradesh, India`
                         : locationSearch;
                     setManualLocation(fullLoc, customDistance);
@@ -560,11 +559,10 @@ export default function Layout({ children }) {
                           setShowLocationModal(false);
                           setLocationStatus(null);
                         }}
-                        className={`w-full text-left p-3 rounded-2xl border text-xs font-medium transition-all flex items-center justify-between cursor-pointer ${
-                          isSelected
+                        className={`w-full text-left p-3 rounded-2xl border text-xs font-medium transition-all flex items-center justify-between cursor-pointer ${isSelected
                             ? "border-[#0C831F] bg-emerald-50/70 text-[#0C831F] font-bold shadow-xs"
                             : "border-gray-100 hover:border-gray-300 text-gray-700 hover:bg-gray-50"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
                           <span className="text-base shrink-0">{isSelected ? "📍" : "🏢"}</span>
@@ -755,7 +753,7 @@ export default function Layout({ children }) {
                   aria-label="Download on the App Store"
                 >
                   <svg className="w-6 h-6 fill-current text-white shrink-0" viewBox="0 0 24 24">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 1.01-2.85-.92.04-2.07.62-2.73 1.39-.58.67-1.09 1.74-1.03 2.78 1.02.08 2.12-.57 2.75-1.32z"/>
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 1.01-2.85-.92.04-2.07.62-2.73 1.39-.58.67-1.09 1.74-1.03 2.78 1.02.08 2.12-.57 2.75-1.32z" />
                   </svg>
                   <div className="text-left leading-tight">
                     <div className="text-[10px] uppercase tracking-wide opacity-80 font-normal">Download on the</div>
@@ -768,10 +766,10 @@ export default function Layout({ children }) {
                   aria-label="Get it on Google Play"
                 >
                   <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M3.609 1.814L13.792 12 3.61 22.186A2.257 2.257 0 0 1 3 20.6V3.4A2.257 2.257 0 0 1 3.609 1.814z"/>
-                    <path fill="#34A853" d="M17.18 8.613l-3.388 3.388 3.388 3.387 3.824-2.173a1.444 1.444 0 0 0 0-2.43l-3.824-2.172z"/>
-                    <path fill="#EA4335" d="M13.792 12L3.61 22.186c.642.68 1.62.83 2.476.344l11.094-6.303L13.792 12z"/>
-                    <path fill="#FBBC05" d="M17.18 8.613L6.086 2.31A2.183 2.183 0 0 0 3.61 1.814L13.792 12l3.388-3.387z"/>
+                    <path fill="#4285F4" d="M3.609 1.814L13.792 12 3.61 22.186A2.257 2.257 0 0 1 3 20.6V3.4A2.257 2.257 0 0 1 3.609 1.814z" />
+                    <path fill="#34A853" d="M17.18 8.613l-3.388 3.388 3.388 3.387 3.824-2.173a1.444 1.444 0 0 0 0-2.43l-3.824-2.172z" />
+                    <path fill="#EA4335" d="M13.792 12L3.61 22.186c.642.68 1.62.83 2.476.344l11.094-6.303L13.792 12z" />
+                    <path fill="#FBBC05" d="M17.18 8.613L6.086 2.31A2.183 2.183 0 0 0 3.61 1.814L13.792 12l3.388-3.387z" />
                   </svg>
                   <div className="text-left leading-tight">
                     <div className="text-[9px] uppercase tracking-wider opacity-80 font-medium">Get it on</div>

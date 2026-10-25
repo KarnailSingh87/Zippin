@@ -349,42 +349,42 @@ export default function Dashboard() {
       </div>
 
       {/* SLA & Hyperlocal Velocity Pulse Banner */}
-      <div className="bg-gradient-to-r from-gray-900 via-slate-900 to-black text-white rounded-2xl p-5 shadow-lg border border-gray-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-gradient-to-r dark:from-gray-900 dark:via-slate-900 dark:to-black text-gray-900 dark:text-white rounded-2xl p-5 shadow-sm dark:shadow-lg border border-gray-200/90 dark:border-gray-800 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors duration-300">
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0C831F] to-emerald-700 text-white flex items-center justify-center font-bold shadow-md shadow-emerald-900/50 shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0C831F] to-emerald-700 text-white flex items-center justify-center font-bold shadow-md shadow-emerald-700/20 dark:shadow-emerald-900/50 shrink-0">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-black text-white tracking-tight">
+              <h2 className="text-base font-black text-gray-900 dark:text-white tracking-tight">
                 Zippin 10-Minute Hyperlocal Operations
               </h2>
-              <span className="flex items-center gap-1 text-[11px] bg-emerald-500/20 text-emerald-400 font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="flex items-center gap-1 text-[11px] bg-emerald-50 dark:bg-emerald-500/20 text-[#0C831F] dark:text-emerald-400 font-bold px-2.5 py-0.5 rounded-full border border-emerald-200/80 dark:border-emerald-500/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0C831F] dark:bg-emerald-400 animate-pulse"></span>
                 LIVE SLA 99.2%
               </span>
             </div>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
               Instant grocery fulfillment across 6 Dark Store Hubs in Gurugram, Delhi & Bengaluru
             </p>
           </div>
         </div>
 
         {/* Live SLA metrics */}
-        <div className="flex items-center gap-6 border-t md:border-t-0 md:border-l border-gray-800 pt-3 md:pt-0 md:pl-6 text-xs">
+        <div className="flex items-center gap-6 border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-800 pt-3 md:pt-0 md:pl-6 text-xs">
           <div>
-            <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Avg Packing Time</div>
-            <div className="text-base font-black text-emerald-400 mt-0.5">82s SLA 📦</div>
+            <div className="text-[10px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Avg Packing Time</div>
+            <div className="text-base font-black text-[#0C831F] dark:text-emerald-400 mt-0.5">82s SLA 📦</div>
           </div>
           <div>
-            <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Avg Transit Time</div>
-            <div className="text-base font-black text-amber-300 mt-0.5">6.3 mins 🛵</div>
+            <div className="text-[10px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Avg Transit Time</div>
+            <div className="text-base font-black text-amber-600 dark:text-amber-300 mt-0.5">6.3 mins 🛵</div>
           </div>
           <div>
-            <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Active Staff Live</div>
-            <div className="text-base font-black text-teal-400 mt-0.5">
+            <div className="text-[10px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Active Staff Live</div>
+            <div className="text-base font-black text-teal-600 dark:text-teal-400 mt-0.5">
               {stats.activeRiders} Riders • {stats.activePickers} Pickers
             </div>
           </div>
