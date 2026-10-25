@@ -45,6 +45,7 @@ const OrderSchema = new mongoose.Schema({
   },
   statusHistory: [StatusHistorySchema],
   store: { type: mongoose.Schema.Types.ObjectId, ref: "Store" },
+  picker: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" }, // Assigned dark store picker/packer
   partner: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" },
   rider: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" }, // backwards-compatible alias
   paymentRecord: { type: mongoose.Schema.Types.ObjectId, ref: "Payment" },

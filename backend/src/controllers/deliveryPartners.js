@@ -1,14 +1,21 @@
 import DeliveryPartner from "../models/DeliveryPartner.js";
 import Delivery from "../models/Delivery.js";
 
-// List delivery partners
+// List delivery partners (riders and pickers)
 export async function listPartners(req, res) {
   try {
-    const { status, city, active } = req.query;
+    const { status, city, active, role } = req.query;
     const filter = {};
     if (status) filter.status = status;
     if (city) filter.city = new RegExp(city, "i");
     if (active !== undefined) filter.isActive = active === "true";
+    if (role) {
+      if (role === "rider") {
+        filter.$or = [{ role: "rider" }, { role: { $exists: false } }, { role: null }];
+      } else {
+        filter.role = role;
+      }
+    }
 
     const partners = await DeliveryPartner.find(filter)
       .populate("currentStore", "name city area")
@@ -28,7 +35,7 @@ export async function getPartner(req, res) {
       "currentStore",
       "name city area"
     );
-    if (!partner) return res.status(404).json({ message: "Delivery partner not found" });
+    if (!partner) return res.status(404).json({ message: "Staff partner not found" });
 
     const activeDeliveries = await Delivery.find({
       partner: partner._id,
@@ -54,9 +61,13 @@ export async function createPartner(req, res) {
       phone,
       email,
       city,
+      role,
       status,
       vehicleType,
       vehicleNumber,
+      shift,
+      pickingSpeedSec,
+      totalOrdersPacked,
       currentStore,
     } = req.body;
 
@@ -75,9 +86,13 @@ export async function createPartner(req, res) {
       phone,
       email: email || "",
       city,
+      role: role || "rider",
       status: status || "available",
-      vehicleType: vehicleType || "Bike",
-      vehicleNumber: vehicleNumber || "",
+      vehicleType: role === "picker" ? "None (In-Store Picker)" : (vehicleType || "Bike"),
+      vehicleNumber: role === "picker" ? "" : (vehicleNumber || ""),
+      shift: shift || "Morning",
+      pickingSpeedSec: Number(pickingSpeedSec) || 95,
+      totalOrdersPacked: Number(totalOrdersPacked) || 0,
       currentStore: currentStore || null,
     });
 

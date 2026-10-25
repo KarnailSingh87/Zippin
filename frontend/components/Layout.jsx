@@ -12,9 +12,128 @@ export default function Layout({ children }) {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [currentLocation, setCurrentLocation] = useState("Gurugram, Sector 43, Haryana, India");
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
+  const [locationStatus, setLocationStatus] = useState(null);
+  const [locationSearch, setLocationSearch] = useState("");
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const router = useRouter();
   const menuRef = useRef(null);
+
+  // Load saved location on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("zippin_user_location");
+      if (saved) setCurrentLocation(saved);
+    }
+  }, []);
+
+  // Automatic GPS Geolocation & Reverse Geocoding
+  async function detectUserLocation() {
+    if (typeof window === "undefined") return;
+    if (!navigator.geolocation) {
+      setLocationStatus({ type: "error", message: "GPS not supported on this browser" });
+      return;
+    }
+
+    setIsDetectingLocation(true);
+    setLocationStatus({ type: "loading", message: "Acquiring GPS satellite fix..." });
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const { latitude, longitude } = pos.coords;
+          setLocationStatus({ type: "loading", message: "Resolving street & dark store zone..." });
+
+          // Reverse geocode via OpenStreetMap Nominatim
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=jsonv2&addressdetails=1`,
+            { headers: { "Accept-Language": "en" } }
+          );
+
+          if (res.ok) {
+            const data = await res.json();
+            const addr = data.address || {};
+            const locality =
+              addr.neighbourhood ||
+              addr.suburb ||
+              addr.residential ||
+              addr.road ||
+              addr.commercial ||
+              addr.village ||
+              "";
+            const city =
+              addr.city ||
+              addr.town ||
+              addr.state_district ||
+              addr.county ||
+              "";
+            const state = addr.state || "";
+            const postcode = addr.postcode || "";
+
+            const parts = [locality, city, state, postcode].filter(Boolean);
+            const formatted =
+              parts.length > 0
+                ? parts.join(", ")
+                : (data.display_name ? data.display_name.split(",").slice(0, 3).join(", ") : "Detected Location");
+
+            setCurrentLocation(formatted);
+            localStorage.setItem("zippin_user_location", formatted);
+            if (city) localStorage.setItem("zippin_user_city", city);
+            if (postcode) localStorage.setItem("zippin_user_pincode", postcode);
+            localStorage.setItem(
+              "zippin_user_coords",
+              JSON.stringify({ lat: latitude, lng: longitude })
+            );
+
+            setLocationStatus({ type: "success", message: "Location detected successfully! ⚡ 8-min delivery" });
+            setTimeout(() => {
+              setShowLocationModal(false);
+              setLocationStatus(null);
+            }, 800);
+          } else {
+            throw new Error("Geocoding failed");
+          }
+        } catch (err) {
+          console.warn("Reverse geocode fallback to IP:", err);
+          try {
+            const ipRes = await fetch("https://ipapi.co/json/");
+            if (ipRes.ok) {
+              const ipData = await ipRes.json();
+              const formatted = `${ipData.city || "Gurugram"}, ${ipData.region || "Haryana"}, ${ipData.postal || "122001"}`;
+              setCurrentLocation(formatted);
+              localStorage.setItem("zippin_user_location", formatted);
+              setLocationStatus({ type: "success", message: `Pinpointed to ${ipData.city || "your city"}` });
+              setTimeout(() => {
+                setShowLocationModal(false);
+                setLocationStatus(null);
+              }, 800);
+            } else {
+              setLocationStatus({ type: "error", message: "Unable to detect exact address. Please pick below." });
+            }
+          } catch {
+            setLocationStatus({ type: "error", message: "Unable to detect GPS. Please pick below." });
+          }
+        } finally {
+          setIsDetectingLocation(false);
+        }
+      },
+      (err) => {
+        setIsDetectingLocation(false);
+        if (err.code === 1) {
+          setLocationStatus({
+            type: "error",
+            message: "Location permission denied. Please allow GPS access or choose a city below.",
+          });
+        } else {
+          setLocationStatus({
+            type: "error",
+            message: "GPS signal timed out. Please select your neighborhood below.",
+          });
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  }
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -193,49 +312,170 @@ export default function Layout({ children }) {
 
       {/* Location Modal */}
       {showLocationModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative animate-slide-up">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative animate-slide-up border border-gray-100 max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setShowLocationModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-lg font-bold"
+              onClick={() => {
+                setShowLocationModal(false);
+                setLocationStatus(null);
+              }}
+              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-900 absolute top-5 right-5 flex items-center justify-center font-bold text-sm transition-colors"
             >
               ✕
             </button>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#0C831F] flex items-center justify-center">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+
+            {/* Modal Header */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#0C831F] flex items-center justify-center shadow-inner shrink-0">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 text-base">Select Delivery Location</h3>
-                <p className="text-xs text-gray-500">Fast delivery available in your neighborhood</p>
+                <h3 className="font-black text-gray-900 text-lg tracking-tight">Select Delivery Location</h3>
+                <p className="text-xs text-gray-500 mt-0.5">Instant 8-minute delivery enabled in your neighborhood</p>
               </div>
             </div>
-            <div className="space-y-2">
-              {[
-                "Gurugram, Sector 43, Haryana, India",
-                "New Delhi, Connaught Place, Delhi, India",
-                "Noida, Sector 62, Uttar Pradesh, India",
-                "Bengaluru, Indiranagar, Karnataka, India",
-                "Mumbai, Bandra West, Maharashtra, India"
-              ].map((loc, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setCurrentLocation(loc);
-                    setShowLocationModal(false);
-                  }}
-                  className={`w-full text-left p-3 rounded-xl border text-sm font-medium transition-colors flex items-center justify-between ${
-                    currentLocation === loc
-                      ? "border-[#0C831F] bg-emerald-50/50 text-[#0C831F] font-bold"
-                      : "border-gray-200 hover:border-gray-300 text-gray-700 hover:bg-gray-50"
+
+            {/* GPS Auto Detect Button (Primary Action) */}
+            <div className="mb-4">
+              <button
+                onClick={detectUserLocation}
+                disabled={isDetectingLocation}
+                className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-[#0C831F] hover:from-emerald-600 hover:to-[#0a731b] text-white flex items-center justify-between shadow-md shadow-emerald-900/20 active:scale-[0.99] transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white">
+                    {isDetectingLocation ? (
+                      <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="text-left">
+                    <div className="text-xs font-black tracking-wide flex items-center gap-1.5">
+                      <span>Detect My Current Location</span>
+                      <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded font-bold uppercase">GPS</span>
+                    </div>
+                    <div className="text-[11px] text-emerald-100 font-medium">
+                      {isDetectingLocation ? "Locating doorstep via satellite..." : "Automatically fetch address via browser GPS"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-xs font-bold bg-white text-[#0C831F] px-2.5 py-1 rounded-xl shadow-xs">
+                  {isDetectingLocation ? "Locating..." : "Auto Fetch"}
+                </div>
+              </button>
+
+              {/* Status Message */}
+              {locationStatus && (
+                <div
+                  className={`mt-2 p-2.5 rounded-xl text-xs font-medium flex items-center gap-2 ${
+                    locationStatus.type === "success"
+                      ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                      : locationStatus.type === "loading"
+                        ? "bg-blue-50 text-blue-800 border border-blue-200"
+                        : "bg-rose-50 text-rose-700 border border-rose-200"
                   }`}
                 >
-                  <span className="truncate">{loc}</span>
-                  {currentLocation === loc && <span>✓</span>}
+                  <span>
+                    {locationStatus.type === "success" ? "✅" : locationStatus.type === "loading" ? "🛰️" : "⚠️"}
+                  </span>
+                  <span>{locationStatus.message}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Search Input */}
+            <div className="relative mb-3">
+              <input
+                type="text"
+                value={locationSearch}
+                onChange={(e) => setLocationSearch(e.target.value)}
+                placeholder="Search area, landmark or pincode..."
+                className="w-full pl-9 pr-8 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+              />
+              <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              {locationSearch && (
+                <button
+                  onClick={() => setLocationSearch("")}
+                  className="absolute right-3 top-2.5 text-xs text-gray-400 hover:text-gray-600 font-bold"
+                >
+                  ✕
                 </button>
-              ))}
+              )}
+            </div>
+
+            {/* Popular / Saved Delivery Hubs */}
+            <div>
+              <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                Fast Delivery Available In:
+              </div>
+              <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+                {[
+                  { name: "Gurugram, Sector 43, Haryana, India", hub: "Cyber City Hub #101", city: "Gurugram", pin: "122002" },
+                  { name: "Gurugram, DLF Phase 2, Haryana, India", hub: "Golf Course Hub #102", city: "Gurugram", pin: "122008" },
+                  { name: "New Delhi, Connaught Place, Delhi, India", hub: "CP Central Hub #201", city: "New Delhi", pin: "110001" },
+                  { name: "New Delhi, Saket / South Delhi, Delhi, India", hub: "Saket Metro Hub #202", city: "New Delhi", pin: "110017" },
+                  { name: "Noida, Sector 62, Uttar Pradesh, India", hub: "Electronic City Hub #301", city: "Noida", pin: "201309" },
+                  { name: "Noida, Sector 18, Uttar Pradesh, India", hub: "Atta Market Hub #302", city: "Noida", pin: "201301" },
+                  { name: "Bengaluru, Indiranagar, Karnataka, India", hub: "100ft Road Hub #401", city: "Bengaluru", pin: "560038" },
+                  { name: "Bengaluru, Koramangala, Karnataka, India", hub: "Sony Signal Hub #402", city: "Bengaluru", pin: "560034" },
+                  { name: "Mumbai, Bandra West, Maharashtra, India", hub: "Hill Road Hub #501", city: "Mumbai", pin: "400050" },
+                  { name: "Mumbai, Andheri East, Maharashtra, India", hub: "MIDC Tech Hub #502", city: "Mumbai", pin: "400093" },
+                ]
+                  .filter((item) =>
+                    !locationSearch ||
+                    item.name.toLowerCase().includes(locationSearch.toLowerCase()) ||
+                    item.pin.includes(locationSearch) ||
+                    item.hub.toLowerCase().includes(locationSearch.toLowerCase())
+                  )
+                  .map((loc, i) => {
+                    const isSelected = currentLocation === loc.name;
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          setCurrentLocation(loc.name);
+                          localStorage.setItem("zippin_user_location", loc.name);
+                          localStorage.setItem("zippin_user_city", loc.city);
+                          localStorage.setItem("zippin_user_pincode", loc.pin);
+                          setShowLocationModal(false);
+                          setLocationStatus(null);
+                        }}
+                        className={`w-full text-left p-3 rounded-2xl border text-xs font-medium transition-all flex items-center justify-between ${
+                          isSelected
+                            ? "border-[#0C831F] bg-emerald-50/70 text-[#0C831F] font-bold shadow-xs"
+                            : "border-gray-100 hover:border-gray-300 text-gray-700 hover:bg-gray-50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className="text-base shrink-0">{isSelected ? "📍" : "🏢"}</span>
+                          <div className="truncate">
+                            <div className="truncate font-bold text-gray-900">{loc.name}</div>
+                            <div className="text-[10px] text-gray-400 font-mono mt-0.5">
+                              {loc.hub} • PIN: {loc.pin}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="text-[10px] font-bold text-[#0C831F] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                            ⚡ 8 min
+                          </span>
+                          {isSelected && <span className="text-xs font-black text-[#0C831F]">✓</span>}
+                        </div>
+                      </button>
+                    );
+                  })}
+              </div>
             </div>
           </div>
         </div>

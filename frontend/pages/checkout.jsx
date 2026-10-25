@@ -21,7 +21,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(null);
 
-  // Set address from user profile once loaded
+  // Set address from user profile or automatically detected location
   useEffect(() => {
     if (user?.addresses?.[0]) {
       setAddress((prev) => ({
@@ -30,6 +30,18 @@ export default function CheckoutPage() {
         city: user.addresses[0].city || prev.city,
         pincode: user.addresses[0].pincode || prev.pincode,
       }));
+    } else if (typeof window !== "undefined") {
+      const savedLoc = localStorage.getItem("zippin_user_location");
+      const savedCity = localStorage.getItem("zippin_user_city");
+      const savedPin = localStorage.getItem("zippin_user_pincode");
+      if (savedLoc) {
+        setAddress((prev) => ({
+          ...prev,
+          street: savedLoc,
+          city: savedCity || prev.city,
+          pincode: savedPin || prev.pincode,
+        }));
+      }
     }
   }, [user]);
 

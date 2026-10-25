@@ -7,6 +7,11 @@ const DeliveryPartnerSchema = new mongoose.Schema({
   phone: { type: String, required: true, unique: true, trim: true },
   email: { type: String, trim: true, default: "" },
   city: { type: String, required: true, trim: true },
+  role: {
+    type: String,
+    enum: ["rider", "picker"],
+    default: "rider",
+  },
   status: {
     type: String,
     enum: ["available", "busy", "offline"],
@@ -14,12 +19,19 @@ const DeliveryPartnerSchema = new mongoose.Schema({
   },
   vehicleType: {
     type: String,
-    enum: ["Bike", "EV Scooter", "Bicycle", "Van"],
+    enum: ["Bike", "EV Scooter", "Bicycle", "Van", "None (In-Store Picker)"],
     default: "Bike",
   },
   vehicleNumber: { type: String, default: "" },
   rating: { type: Number, default: 4.8 },
   totalDeliveries: { type: Number, default: 0 },
+  pickingSpeedSec: { type: Number, default: 95 },
+  totalOrdersPacked: { type: Number, default: 0 },
+  shift: {
+    type: String,
+    enum: ["Morning", "Evening", "Night"],
+    default: "Morning",
+  },
   currentStore: { type: mongoose.Schema.Types.ObjectId, ref: "Store" },
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
