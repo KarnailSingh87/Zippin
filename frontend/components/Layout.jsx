@@ -85,11 +85,26 @@ export default function Layout({ children }) {
               JSON.stringify({ lat: latitude, lng: longitude })
             );
 
-            setLocationStatus({ type: "success", message: "Location detected successfully! ⚡ 8-min delivery" });
+            const isServiceable = ["gurugram", "delhi", "noida", "bengaluru", "mumbai"].some(
+              (c) => (city || "").toLowerCase().includes(c) || (state || "").toLowerCase().includes(c)
+            );
+
+            if (isServiceable) {
+              setLocationStatus({
+                type: "success",
+                message: "Location detected successfully! ⚡ 8-min delivery",
+              });
+            } else {
+              setLocationStatus({
+                type: "error",
+                message: "Area is currently not serviceable. Coming soon to your city! ⚡",
+              });
+            }
+
             setTimeout(() => {
               setShowLocationModal(false);
               setLocationStatus(null);
-            }, 800);
+            }, 1200);
           } else {
             throw new Error("Geocoding failed");
           }
@@ -475,6 +490,32 @@ export default function Layout({ children }) {
                       </button>
                     );
                   })}
+                {locationSearch &&
+                  ![
+                    { name: "Gurugram, Sector 43, Haryana, India", hub: "Cyber City Hub #101", city: "Gurugram", pin: "122002" },
+                    { name: "Gurugram, DLF Phase 2, Haryana, India", hub: "Golf Course Hub #102", city: "Gurugram", pin: "122008" },
+                    { name: "New Delhi, Connaught Place, Delhi, India", hub: "CP Central Hub #201", city: "New Delhi", pin: "110001" },
+                    { name: "New Delhi, Saket / South Delhi, Delhi, India", hub: "Saket Metro Hub #202", city: "New Delhi", pin: "110017" },
+                    { name: "Noida, Sector 62, Uttar Pradesh, India", hub: "Electronic City Hub #301", city: "Noida", pin: "201309" },
+                    { name: "Noida, Sector 18, Uttar Pradesh, India", hub: "Atta Market Hub #302", city: "Noida", pin: "201301" },
+                    { name: "Bengaluru, Indiranagar, Karnataka, India", hub: "100ft Road Hub #401", city: "Bengaluru", pin: "560038" },
+                    { name: "Bengaluru, Koramangala, Karnataka, India", hub: "Sony Signal Hub #402", city: "Bengaluru", pin: "560034" },
+                    { name: "Mumbai, Bandra West, Maharashtra, India", hub: "Hill Road Hub #501", city: "Mumbai", pin: "400050" },
+                    { name: "Mumbai, Andheri East, Maharashtra, India", hub: "MIDC Tech Hub #502", city: "Mumbai", pin: "400093" },
+                  ].some(
+                    (item) =>
+                      item.name.toLowerCase().includes(locationSearch.toLowerCase()) ||
+                      item.pin.includes(locationSearch) ||
+                      item.hub.toLowerCase().includes(locationSearch.toLowerCase())
+                  ) && (
+                    <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-center space-y-1">
+                      <span className="text-xl">📍</span>
+                      <div className="text-xs font-bold text-amber-900">Area Not Serviceable</div>
+                      <div className="text-[11px] text-amber-700">
+                        This pincode is currently unserviceable. Coming soon to your neighborhood! 🚀
+                      </div>
+                    </div>
+                  )}
               </div>
             </div>
           </div>

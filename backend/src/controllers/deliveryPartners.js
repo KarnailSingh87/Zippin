@@ -119,11 +119,11 @@ export async function updatePartner(req, res) {
   }
 }
 
-// Update partner status (available / busy / offline)
+// Update partner status (available / busy / offline / break)
 export async function updatePartnerStatus(req, res) {
   try {
     const { status } = req.body;
-    if (!["available", "busy", "offline"].includes(status)) {
+    if (!["available", "busy", "offline", "break", "on_break"].includes(status)) {
       return res.status(400).json({ message: "Invalid status value" });
     }
 
@@ -137,6 +137,23 @@ export async function updatePartnerStatus(req, res) {
   } catch (err) {
     console.error("Update partner status error:", err);
     res.status(500).json({ message: "Failed to update partner status" });
+  }
+}
+
+// Update live GPS coordinates
+export async function updatePartnerLocation(req, res) {
+  try {
+    const { lat, lng } = req.body;
+    const partner = await DeliveryPartner.findByIdAndUpdate(
+      req.params.id,
+      { location: { lat: Number(lat), lng: Number(lng) } },
+      { new: true }
+    );
+    if (!partner) return res.status(404).json({ message: "Delivery partner not found" });
+    res.json({ message: "Location updated successfully", location: partner.location });
+  } catch (err) {
+    console.error("Update partner location error:", err);
+    res.status(500).json({ message: "Failed to update partner location" });
   }
 }
 

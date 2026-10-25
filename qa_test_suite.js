@@ -341,9 +341,26 @@ async function runTestSuite() {
   await db.collection("users").deleteOne({ email: "login_test_temp@test.com" });
 
   // OTP authentication audit
-  logTest("TC-2.4.05", "Auth", "Phone OTP Login Support", "Implemented", "Missing", false, "No OTP endpoints implemented. System only provides email/password & Google auth.");
-  logTest("TC-2.4.06", "Auth", "OTP Brute-Force Rate Limiting", "Implemented", "N/A", false, "Cannot evaluate OTP rate limit because OTP service is not present.");
-  logTest("TC-2.4.07", "Auth", "Token Refresh Endpoint", "Implemented", "Missing", false, "No /api/auth/refresh endpoint. Single JWT used with 7-day lifetime.");
+  const otpSendRes = await httpReq("POST", "/api/auth/otp/send", { phone: "9876543210" });
+  const otpVerifyRes = await httpReq("POST", "/api/auth/otp/verify", { phone: "9876543210", otp: "123456" });
+  const otpSuccess = otpSendRes.status === 200 && otpVerifyRes.status === 200 && !!otpVerifyRes.body?.token;
+  logTest("TC-2.4.05", "Auth", "Phone OTP Login Support", "Implemented", otpSuccess ? "Implemented" : "Missing", otpSuccess, "Endpoints /api/auth/otp/send and /verify operational");
+
+  // OTP brute-force rate limit
+  let otpRateLimited = false;
+  for (let i = 0; i < 10; i++) {
+    const limRes = await httpReq("POST", "/api/auth/otp/send", { phone: "9876543210" });
+    if (limRes.status === 429) {
+      otpRateLimited = true;
+      break;
+    }
+  }
+  logTest("TC-2.4.06", "Auth", "OTP Brute-Force Rate Limiting", "Implemented", otpRateLimited ? "Implemented" : "N/A", otpRateLimited, "Rate limiter restricts aggressive OTP requests");
+
+  // Token refresh audit
+  const refreshRes = await httpReq("POST", "/api/auth/refresh", { token: otpVerifyRes.body?.token || tokenCustA });
+  const refreshSuccess = refreshRes.status === 200 && !!refreshRes.body?.token;
+  logTest("TC-2.4.07", "Auth", "Token Refresh Endpoint", "Implemented", refreshSuccess ? "Implemented" : "Missing", refreshSuccess, "POST /api/auth/refresh provides fresh tokens");
 
   // =========================================================================
   // SECTION 2.5: AUTHORIZATION & IDOR (Insecure Direct Object Reference)

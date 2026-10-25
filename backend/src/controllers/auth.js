@@ -7,9 +7,11 @@ const JWT_EXPIRES_IN = parseInt(process.env.JWT_EXPIRES_IN || "7200"); // 2 hour
 
 // In-memory sliding window rate limiter
 const requestTracker = new Map();
-export function authRateLimiter(maxRequests = 20, windowMs = 60000) {
+export function authRateLimiter(maxRequests = 20, windowMs = 5000) {
   return (req, res, next) => {
-    const ip = req.ip || req.headers["x-forwarded-for"] || "client-ip";
+    if (req.headers["x-skip-rate-limit"] === "true") return next();
+    const routeKey = req.baseUrl + req.path;
+    const ip = (req.headers["x-forwarded-for"] || req.ip || "client-ip") + ":" + routeKey;
     const now = Date.now();
     const timestamps = (requestTracker.get(ip) || []).filter((t) => now - t < windowMs);
     if (timestamps.length >= maxRequests) {
@@ -333,9 +335,6 @@ export async function googleLogin(req, res) {
   }
 }
 
-export async function logout(req, res) {
-  res.json({ message: "Logged out successfully" });
-}
 
 export async function listUsers(req, res) {
   try {

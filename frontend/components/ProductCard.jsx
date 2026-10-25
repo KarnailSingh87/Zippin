@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import ProductModal from "./ProductModal";
@@ -8,6 +9,7 @@ export default function ProductCard({ product }) {
   const { showToast } = useToast();
   const [showModal, setShowModal] = useState(false);
   const qty = getQty(product._id);
+  const isOutOfStock = product.stock === 0 || product.isAvailable === false;
   const hasDiscount = product.mrp && product.mrp > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.mrp - product.price) / product.mrp) * 100)

@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import "../styles/globals.css";
 import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
@@ -5,8 +6,13 @@ import { ToastProvider } from "../context/ToastContext";
 import Layout from "../components/Layout";
 import Head from "next/head";
 import Toast from "../components/Toast";
+import { cacheManager } from "../lib/cacheManager";
 
 export default function App({ Component, pageProps }) {
+  useEffect(() => {
+    cacheManager.initAutoEviction();
+  }, []);
+
   return (
     <AuthProvider>
       <CartProvider>

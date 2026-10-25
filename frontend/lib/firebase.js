@@ -13,6 +13,18 @@ const firebaseConfig = {
 // Initialize Firebase safely
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
+// Support Web Push messaging via firebase/messaging
+export const getMessagingInstance = async () => {
+  if (typeof window !== "undefined") {
+    try {
+      const { getMessaging } = await import("firebase/messaging");
+      return getMessaging(app);
+    } catch {
+      return null;
+    }
+  }
+  return null;
+};
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
