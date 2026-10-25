@@ -5,9 +5,9 @@ const INITIAL_CAMPAIGNS = [
   {
     id: "camp-001",
     title: "⚡ Flash 10-Minute Mango Festival!",
-    body: "Fresh Alphonso and Kesar mangoes just arrived at your nearest dark store. Get 20% off with MANGO20.",
+    body: "Fresh Alphonso and Kesar mangoes just arrived at your Hamirpur store. Get 20% off with MANGO20.",
     channel: "Push Notification",
-    targetAudience: "All NCR Customers",
+    targetAudience: "Hamirpur Customers",
     recipients: 14250,
     delivered: "99.4%",
     clicks: "18.2%",

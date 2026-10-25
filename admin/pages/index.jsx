@@ -297,7 +297,7 @@ export default function Dashboard() {
             </span>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Real-time fulfillment metrics, financial audits, and fleet telematics across active dark stores
+            Real-time fulfillment metrics, financial audits, and fleet telematics for Hamirpur store
           </p>
         </div>
 
@@ -367,7 +367,7 @@ export default function Dashboard() {
               </span>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              Instant grocery fulfillment from Zippin Hamirpur District Dark Store Hub
+              Instant grocery fulfillment from Zippin Hamirpur Store Facility
             </p>
           </div>
         </div>

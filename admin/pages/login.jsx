@@ -62,7 +62,7 @@ export default function AdminLogin() {
               Admin Gateway
             </h2>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Sign in to manage catalog, orders, dark stores & fleet SLA
+              Sign in to manage catalog, orders, Hamirpur store & fleet SLA
             </p>
           </div>
 

@@ -122,7 +122,7 @@ export default function CartDrawer() {
                     Delivery in 8 minutes
                   </div>
                   <div className="text-[11px] text-gray-500 font-medium">
-                    Order will be prepared at your nearest dark store
+                    Order will be prepared at Hamirpur Store
                   </div>
                 </div>
               </div>

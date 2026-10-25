@@ -70,7 +70,7 @@ export default function PlatformSettings() {
 
       {savedToast && (
         <div className="bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 p-4 rounded-xl text-emerald-800 dark:text-emerald-300 text-xs font-bold flex items-center gap-2">
-          <span>✓</span> Configuration saved and synced across dark stores successfully!
+          <span>✓</span> Configuration saved and synced with Hamirpur store successfully!
         </div>
       )}
 
@@ -158,7 +158,7 @@ export default function PlatformSettings() {
           <div className="flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-3">
             <span className="text-lg">⏱️</span>
             <h2 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">
-              Operational SLAs & Dark Stores
+              Operational SLAs & Store Operations
             </h2>
           </div>
 

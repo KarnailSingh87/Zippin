@@ -132,7 +132,7 @@ export default function ProductModal({ product, onClose }) {
               </div>
               <div className="flex items-center gap-2.5 text-gray-700">
                 <span className="text-base shrink-0">⚡</span>
-                <span className="font-medium">Superfast 8-10 minute delivery from local dark store</span>
+                <span className="font-medium">Superfast 8-10 minute delivery from Hamirpur Store</span>
               </div>
               <div className="flex items-center gap-2.5 text-gray-700">
                 <span className="text-base shrink-0">🏷️</span>
