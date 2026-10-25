@@ -96,10 +96,10 @@ export default function ProductModal({ product, onClose }) {
               )}
             </div>
 
-            {/* Why Shop from Blinkit Guarantee Box */}
+            {/* Why Shop from Zippin Guarantee Box */}
             <div className="bg-[#F8F9FA] rounded-2xl p-4 border border-gray-100 space-y-3 mb-6 text-xs">
               <div className="font-bold text-gray-900 uppercase text-[10px] tracking-wider">
-                Why shop from Blinkit?
+                Why shop from Zippin?
               </div>
               <div className="flex items-center gap-2.5 text-gray-700">
                 <span className="text-base shrink-0">⚡</span>

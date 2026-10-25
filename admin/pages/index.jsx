@@ -96,7 +96,7 @@ export default function Dashboard() {
       <div className="mb-6">
         <h1 className="text-xl font-bold text-gray-800">Operational Dashboard</h1>
         <p className="text-xs text-gray-500 mt-0.5">
-          Real-time metrics for Blinkit 10-minute grocery delivery network
+          Real-time metrics for Zippin 10-minute grocery delivery network
         </p>
       </div>
 

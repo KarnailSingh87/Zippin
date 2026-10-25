@@ -109,7 +109,7 @@ export default function Home() {
         if (featRes.ok) setFeatured(await featRes.json());
         if (allRes.ok) setAllProducts(await allRes.json());
       } catch (e) {
-        console.error("Failed to load Blinkit store data", e);
+        console.error("Failed to load Zippin store data", e);
       }
       setLoading(false);
     }
@@ -240,7 +240,7 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* 3. Category Matrix: The Iconic Blinkit Category Tiles */}
+      {/* 3. Category Matrix: The Iconic Zippin Category Tiles */}
       <div className="px-4 mt-8">
         <div className="flex items-center justify-between mb-4">
           <div>

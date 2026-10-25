@@ -259,7 +259,7 @@ export default function StoresAdmin() {
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Blinkit Dark Store #101 - Cyber Hub"
+                  placeholder="e.g. Zippin Dark Store #101 - Cyber Hub"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-green text-sm"

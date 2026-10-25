@@ -139,7 +139,7 @@ export default function CartDrawer() {
                     <img
                       src={
                         item.product.images?.[0]?.url ||
-                        `https://placehold.co/60x60/f0f0f0/666?text=Blinkit`
+                        `https://placehold.co/60x60/f0f0f0/666?text=Zippin`
                       }
                       alt={item.product.title}
                       className="w-12 h-12 object-contain rounded-xl bg-gray-50 p-1 shrink-0"

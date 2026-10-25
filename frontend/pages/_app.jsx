@@ -12,10 +12,10 @@ export default function App({ Component, pageProps }) {
       <CartProvider>
         <ToastProvider>
           <Head>
-            <title>Blinkit - Everything delivered in 8-10 minutes</title>
+            <title>Zippin - Everything delivered in 8-10 minutes</title>
             <meta
               name="description"
-              content="India's last minute app. Buy milk, bread, butter, fresh fruits & vegetables, snacks, and daily groceries online with superfast 10-minute delivery."
+              content="India's fastest delivery app. Buy milk, bread, butter, fresh fruits & vegetables, snacks, and daily groceries online with superfast 10-minute delivery."
             />
             <meta
               name="viewport"
@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }) {
             <meta name="theme-color" content="#FFE141" />
             <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
             <link rel="shortcut icon" href="/favicon.ico" />
-            <link rel="apple-touch-icon" href="/images/blinkit-app-icon.svg" />
+            <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
           </Head>
           <Layout>
             <Component {...pageProps} />

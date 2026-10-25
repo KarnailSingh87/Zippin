@@ -141,7 +141,7 @@ export default function LoginPage() {
             <p>
               Email:{" "}
               <span className="font-mono text-blinkit-green">
-                demo@blinkit.com
+                demo@zippin.com
               </span>
             </p>
             <p>

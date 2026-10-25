@@ -255,7 +255,7 @@ export default function OrderDetailPage() {
                     {order.partner.name || order.partner.firstName}
                   </p>
                   <p className="text-[11px] text-gray-500">
-                    Blinkit Partner • {order.partner.vehicleType || "Bike"} • ⭐ {order.partner.rating || 4.8}
+                    Zippin Partner • {order.partner.vehicleType || "Bike"} • ⭐ {order.partner.rating || 4.8}
                   </p>
                 </div>
               </div>

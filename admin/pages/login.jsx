@@ -64,7 +64,7 @@ export default function AdminLogin() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@blinkit.com"
+                placeholder="admin@zippin.com"
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-admin-green"
                 required
               />
@@ -96,7 +96,7 @@ export default function AdminLogin() {
             <p>
               Email:{" "}
               <span className="font-mono text-admin-green">
-                admin@blinkit.com
+                admin@zippin.com
               </span>
             </p>
             <p>

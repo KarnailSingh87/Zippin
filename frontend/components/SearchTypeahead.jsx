@@ -236,7 +236,7 @@ export default function SearchTypeahead({ mobile = false, onClose, className = "
                     <img
                       src={
                         p.images?.[0]?.url ||
-                        `https://placehold.co/48x48/f0f0f0/666?text=Blinkit`
+                        `https://placehold.co/48x48/f0f0f0/666?text=Zippin`
                       }
                       alt={p.title}
                       className="w-10 h-10 object-contain rounded-lg bg-gray-50 p-1 shrink-0"
