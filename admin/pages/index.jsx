@@ -377,7 +377,7 @@ export default function Dashboard() {
           <Link
             key={idx}
             href={stat.link}
-            className="bg-white dark:bg-[#121212] rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-[#0C831F] dark:hover:border-emerald-500 transition-all duration-200 group block"
+            className="bg-white dark:bg-[#121212] rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-[#0C831F] dark:hover:border-emerald-500 transition-all duration-200 group"
           >
             <div className="flex items-center justify-between mb-3">
               <span className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">
@@ -409,7 +409,7 @@ export default function Dashboard() {
         {/* Hero & Banners Card */}
         <Link
           href="/hero-management"
-          className="bg-white dark:bg-[#121212] hover:border-pink-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group block"
+          className="bg-white dark:bg-[#121212] hover:border-pink-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -429,7 +429,7 @@ export default function Dashboard() {
         {/* Revenue Analytics Card */}
         <Link
           href="/revenue"
-          className="bg-white dark:bg-[#121212] hover:border-[#0C831F] rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group block"
+          className="bg-white dark:bg-[#121212] hover:border-[#0C831F] rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -449,7 +449,7 @@ export default function Dashboard() {
         {/* Dark Stores Card */}
         <Link
           href="/stores"
-          className="bg-white dark:bg-[#121212] hover:border-indigo-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group block"
+          className="bg-white dark:bg-[#121212] hover:border-indigo-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -469,7 +469,7 @@ export default function Dashboard() {
         {/* Delivery Riders Card */}
         <Link
           href="/riders"
-          className="bg-white dark:bg-[#121212] hover:border-teal-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group block"
+          className="bg-white dark:bg-[#121212] hover:border-teal-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -489,7 +489,7 @@ export default function Dashboard() {
         {/* Store Pickers Card */}
         <Link
           href="/pickers"
-          className="bg-white dark:bg-[#121212] hover:border-purple-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group block"
+          className="bg-white dark:bg-[#121212] hover:border-purple-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
