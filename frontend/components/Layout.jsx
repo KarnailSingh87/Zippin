@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { useLocation, DISTRICT_DARK_STORES } from "../context/LocationContext";
 import CartDrawer from "./CartDrawer";
 import SearchTypeahead from "./SearchTypeahead";
+import ZipperAnnouncementBar from "./ZipperAnnouncementBar";
 
 export default function Layout({ children }) {
   const { totalItems, totalPrice, totalSavings, isOpen, setIsOpen } = useCart();
@@ -137,10 +138,8 @@ export default function Layout({ children }) {
 
   return (
     <div className="min-h-screen bg-[#F4F6FB] flex flex-col font-sans">
-      {/* Top delivery promotional announcement strip */}
-      <div className="bg-[#F8CB46] text-[#1C1C1C] text-center py-1.5 px-4 text-xs font-bold tracking-wide flex items-center justify-center border-b border-yellow-400">
-        <span>Superfast Delivery in {deliveryMinutes} Minutes | Free Delivery on orders above ₹199</span>
-      </div>
+      {/* Sleek Zipper Announcement Banner Bar */}
+      <ZipperAnnouncementBar deliveryText="Superfast Delivery in 8-10 Minutes | Free Delivery on orders above ₹199" />
 
       {/* Main Header */}
       <header className="bg-white sticky top-0 z-50 border-b border-gray-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
