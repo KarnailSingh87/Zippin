@@ -562,7 +562,7 @@ export default function Dashboard() {
                   <th className="pb-3">Order ID</th>
                   <th className="pb-3">Customer</th>
                   <th className="pb-3">Dark Store Hub</th>
-                  <th className="pb-3">Fleet Rider</th>
+                  <th className="pb-3">Fulfillment Crew</th>
                   <th className="pb-3">Total Amount</th>
                   <th className="pb-3">Status</th>
                   <th className="pb-3">Placed Time</th>
@@ -573,9 +573,10 @@ export default function Dashboard() {
                 {filteredRecentOrders.map((o) => {
                   const custName = o.customerName || o.user?.name || "Customer";
                   const storeName = o.store?.name || "Zippin Cyber Hub";
-                  const partnerName = o.partner?.firstName
+                  const partnerName = o.partner?.name || (o.partner?.firstName
                     ? `${o.partner.firstName} ${o.partner.lastName || ""}`
-                    : "Assigned Rider";
+                    : "Assigned Rider");
+                  const pickerName = o.picker?.name || "Assigned Picker";
 
                   return (
                     <tr key={o._id} className="hover:bg-gray-50/70 dark:hover:bg-gray-800/40 transition-colors">
@@ -594,10 +595,16 @@ export default function Dashboard() {
                         </span>
                       </td>
                       <td className="py-3">
-                        <span className="text-gray-600 dark:text-gray-400 flex items-center gap-1">
-                          <span>🛵</span>
-                          <span className="font-medium">{partnerName}</span>
-                        </span>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-[10px] text-amber-700 dark:text-amber-400 font-bold flex items-center gap-1">
+                            <span>📦</span>
+                            <span className="truncate max-w-[120px]">{pickerName}</span>
+                          </span>
+                          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                            <span>🛵</span>
+                            <span className="truncate max-w-[120px]">{partnerName}</span>
+                          </span>
+                        </div>
                       </td>
                       <td className="py-3 font-black text-gray-900 dark:text-white">
                         ₹{o.total}
