@@ -3,9 +3,12 @@ import mongoose from "mongoose";
 const ItemSchema = new mongoose.Schema({
   product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
   name: String,
+  title: String,
   qty: Number,
+  quantity: Number,
   price: Number,
   mrp: Number,
+  total: Number,
   unit: String,
   image: String,
 });
@@ -17,10 +20,15 @@ const StatusHistorySchema = new mongoose.Schema({
 });
 
 const OrderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  customer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  customerName: String,
+  customerPhone: String,
+  orderNumber: String,
   items: [ItemSchema],
   subtotal: { type: Number, default: 0 },
   deliveryFee: { type: Number, default: 0 },
+  tax: { type: Number, default: 0 },
   discount: { type: Number, default: 0 },
   total: { type: Number, default: 0 },
   status: {

@@ -43,9 +43,9 @@ export default function Layout({ children }) {
           <div className="flex items-center gap-3 shrink-0">
             <Link href="/" className="flex items-center group shrink-0">
               <img
-                src="/images/zippin_logo_blinkit_colours.png"
+                src="/images/zippin_logo_black_chain_yellow_zip.png"
                 alt="Zippin"
-                className="h-8 md:h-10 w-auto object-contain transition-transform group-hover:scale-105"
+                className="h-9 md:h-11 w-auto object-contain transition-transform group-hover:scale-105"
               />
             </Link>
 
@@ -339,8 +339,13 @@ export default function Layout({ children }) {
                 <li><Link href="/category/cold-drinks-juices" className="hover:text-[#0C831F]">Cold Drinks & Juices</Link></li>
                 <li><Link href="/category/instant-frozen-food" className="hover:text-[#0C831F]">Instant & Frozen Food</Link></li>
                 <li><Link href="/category/tea-coffee-health" className="hover:text-[#0C831F]">Tea, Coffee & Health</Link></li>
+                <li><Link href="/category/bakery-biscuits" className="hover:text-[#0C831F]">Bakery & Biscuits</Link></li>
+                <li><Link href="/category/sweet-tooth" className="hover:text-[#0C831F]">Sweet Tooth & Ice Cream</Link></li>
                 <li><Link href="/category/atta-rice-dal" className="hover:text-[#0C831F]">Atta, Rice & Dal</Link></li>
-                <li><Link href="/category/paan-corner" className="hover:text-[#0C831F]">Paan Corner</Link></li>
+                <li><Link href="/category/pharma-wellness" className="hover:text-[#0C831F]">Pharma & Wellness</Link></li>
+                <li><Link href="/category/pet-care" className="hover:text-[#0C831F]">Pet Care Store</Link></li>
+                <li><Link href="/category/baby-care" className="hover:text-[#0C831F]">Baby Care Essentials</Link></li>
+                <li><Link href="/category/paan-corner" className="hover:text-[#0C831F] font-bold text-emerald-800">🍃 Paan Corner</Link></li>
               </ul>
             </div>
 

@@ -102,8 +102,8 @@ export default function Home() {
       try {
         const [catRes, featRes, allRes] = await Promise.all([
           fetch(`${API}/api/categories`),
-          fetch(`${API}/api/products?featured=true&limit=24`),
-          fetch(`${API}/api/products?limit=140`),
+          fetch(`${API}/api/products?featured=true&limit=30`),
+          fetch(`${API}/api/products?limit=300`),
         ]);
         if (catRes.ok) setCategories(await catRes.json());
         if (featRes.ok) setFeatured(await featRes.json());
@@ -142,8 +142,12 @@ export default function Home() {
   const snacksProducts = getProductsByCatSlug(["munchies", "chips", "snack", "kurkure", "lays", "bhujia"]);
   const drinksProducts = getProductsByCatSlug(["cold-drinks", "juice", "soda", "coca", "pepsi", "sprite", "thums"]);
   const freshProduce = getProductsByCatSlug(["vegetables", "fruits", "veg", "onion", "tomato", "potato", "carrot"]);
-  const sweetsProducts = getProductsByCatSlug(["sweet", "ice-cream", "chocolate", "silk", "kitkat"]);
+  const paanProducts = getProductsByCatSlug(["paan-corner", "paan", "meetha", "mints", "freshener", "gum", "rolling"]);
+  const bakeryProducts = getProductsByCatSlug(["bakery-biscuits", "bakery", "biscuit", "cookies", "oreo", "bourbon", "good-day", "pav"]);
+  const pharmaProducts = getProductsByCatSlug(["pharma-wellness", "pharma", "crocin", "vicks", "pain", "band-aid", "digene", "eno", "electral"]);
+  const sweetsProducts = getProductsByCatSlug(["sweet", "ice-cream", "chocolate", "silk", "kitkat", "ferrero"]);
   const staplesProducts = getProductsByCatSlug(["atta", "rice", "dal", "pulses", "oil"]);
+  const petProducts = getProductsByCatSlug(["pet-care", "dog", "cat", "pedigree", "whiskas", "drools"]);
 
   if (loading) {
     return (
@@ -282,7 +286,23 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 4. Shelf: Dairy, Bread & Eggs */}
+      {/* 4. Shelf: Paan Corner & Refreshments */}
+      <ShelfCarousel
+        title="🍃 Paan Corner & Refreshments"
+        subtitle="Handcrafted Meetha Paan, mouth fresheners, mints & smoking essentials"
+        products={paanProducts.length > 0 ? paanProducts : allProducts.slice(0, 10)}
+        slug="paan-corner"
+      />
+
+      {/* 5. Shelf: Bakery & Biscuits */}
+      <ShelfCarousel
+        title="Bakery & Biscuits"
+        subtitle="Fresh bread, artisanal pav, butter cookies & chocolate biscuits"
+        products={bakeryProducts.length > 0 ? bakeryProducts : allProducts.slice(10, 20)}
+        slug="bakery-biscuits"
+      />
+
+      {/* 6. Shelf: Dairy, Bread & Eggs */}
       <ShelfCarousel
         title="Dairy, Bread & Eggs"
         subtitle="Fresh milk, butter, cheese, curd & daily morning essentials"
@@ -290,7 +310,7 @@ export default function Home() {
         slug="dairy-breakfast"
       />
 
-      {/* 5. Shelf: Snacks & Munchies */}
+      {/* 7. Shelf: Snacks & Munchies */}
       <ShelfCarousel
         title="Snacks & Munchies"
         subtitle="Crispy chips, namkeen, wafers & movie-night munchies"
@@ -298,7 +318,7 @@ export default function Home() {
         slug="munchies"
       />
 
-      {/* 6. Shelf: Cold Drinks & Juices */}
+      {/* 8. Shelf: Cold Drinks & Juices */}
       <ShelfCarousel
         title="Cold Drinks & Juices"
         subtitle="Chilled sodas, sparkling water, fruit juices & energy boosters"
@@ -306,7 +326,7 @@ export default function Home() {
         slug="cold-drinks-juices"
       />
 
-      {/* 7. Shelf: Farm Fresh Vegetables & Fruits */}
+      {/* 9. Shelf: Farm Fresh Vegetables & Fruits */}
       <ShelfCarousel
         title="Vegetables & Fruits"
         subtitle="Directly from certified farms with strict freshness checks"
@@ -314,7 +334,15 @@ export default function Home() {
         slug="vegetables-fruits"
       />
 
-      {/* 8. Shelf: Sweet Tooth & Chocolates */}
+      {/* 10. Shelf: Pharma & Wellness */}
+      <ShelfCarousel
+        title="Pharma & Wellness"
+        subtitle="Pain relief, first aid, cold care & fast-acting digestion remedies"
+        products={pharmaProducts.length > 0 ? pharmaProducts : allProducts.slice(20, 30)}
+        slug="pharma-wellness"
+      />
+
+      {/* 11. Shelf: Sweet Tooth & Chocolates */}
       <ShelfCarousel
         title="Sweet Tooth & Chocolates"
         subtitle="Cadbury, KitKat, wafer bars & ice cream treats"
@@ -322,7 +350,7 @@ export default function Home() {
         slug="sweet-tooth"
       />
 
-      {/* 9. Shelf: Atta, Rice & Dal */}
+      {/* 12. Shelf: Atta, Rice & Dal */}
       <ShelfCarousel
         title="Atta, Rice & Dal"
         subtitle="Premium grains, lentils, pulses & daily kitchen staples"

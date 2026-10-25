@@ -6,32 +6,88 @@ const router = Router();
 
 // list products with optional filters
 router.get("/", async (req, res) => {
-  const q = req.query.q || "";
-  const category = req.query.category;
-  const featured = req.query.featured;
-  const filter = {};
+  try {
+    const q = req.query.q || "";
+    const category = req.query.category;
+    const featured = req.query.featured;
+    const filter = {};
 
-  if (req.query.includeInactive !== "true" && req.query.all !== "true") {
-    filter.isAvailable = true;
+    if (req.query.includeInactive !== "true" && req.query.all !== "true") {
+      filter.isAvailable = true;
+    }
+
+    if (q) {
+      filter.$or = [{ title: new RegExp(q, "i") }, { tags: new RegExp(q, "i") }];
+    }
+
+    if (category) {
+      // Check if it's a valid ObjectId
+      const isValidId = /^[0-9a-fA-F]{24}$/.test(category);
+      if (isValidId) {
+        filter.category = category;
+      } else {
+        // Look up category by slug or name
+        const Category = (await import("../models/Category.js")).default;
+        const ALIASES = {
+          corner: "paan-corner",
+          paan: "paan-corner",
+          "paan-shop": "paan-corner",
+          pharmacy: "pharma-wellness",
+          wellness: "pharma-wellness",
+          pharma: "pharma-wellness",
+          pet: "pet-care",
+          pets: "pet-care",
+          baby: "baby-care",
+          bakery: "bakery-biscuits",
+          biscuits: "bakery-biscuits",
+          drinks: "cold-drinks-juices",
+          beverages: "cold-drinks-juices",
+          grocery: "vegetables-fruits",
+          fruits: "vegetables-fruits",
+          veggies: "vegetables-fruits",
+          sweets: "sweet-tooth",
+          cleaning: "cleaning-essentials",
+          household: "cleaning-essentials",
+          staples: "atta-rice-dal",
+          office: "home-office",
+        };
+        const targetSlug = ALIASES[category.toLowerCase()] || category.toLowerCase();
+        const catDoc = await Category.findOne({
+          $or: [
+            { slug: targetSlug },
+            { slug: new RegExp(`^${targetSlug}$`, "i") },
+            { name: new RegExp(targetSlug.replace(/-/g, " "), "i") },
+          ],
+        });
+        if (catDoc) {
+          filter.category = catDoc._id;
+        } else {
+          filter.$or = [
+            ...(filter.$or || []),
+            { tags: new RegExp(category, "i") },
+            { title: new RegExp(category, "i") },
+          ];
+        }
+      }
+    }
+
+    if (req.query.store) filter.storeId = req.query.store;
+    if (featured === "true") filter.isFeatured = true;
+
+    const limit = parseInt(req.query.limit) || 1000;
+    const sortField = req.query.sortBy || "sortOrder";
+    const sortOrder = req.query.order === "desc" ? -1 : 1;
+
+    const products = await Product.find(filter)
+      .populate("category", "name slug")
+      .populate("storeId", "name code city area")
+      .sort({ [sortField]: sortOrder, createdAt: -1 })
+      .limit(limit);
+    res.json(products);
+  } catch (err) {
+    console.error("Products query error:", err);
+    res.status(500).json({ error: err.message, products: [] });
   }
-
-  if (q) {
-    filter.$or = [{ title: new RegExp(q, "i") }, { tags: new RegExp(q, "i") }];
-  }
-  if (category) filter.category = category;
-  if (req.query.store) filter.storeId = req.query.store;
-  if (featured === "true") filter.isFeatured = true;
-
-  const limit = parseInt(req.query.limit) || 1000;
-  const sortField = req.query.sortBy || "createdAt";
-  const sortOrder = req.query.order === "asc" ? 1 : -1;
-
-  const products = await Product.find(filter)
-    .populate("category", "name slug")
-    .populate("storeId", "name code city area")
-    .sort({ [sortField]: sortOrder })
-    .limit(limit);
-  res.json(products);
 });
 
 // quick stats for admin
