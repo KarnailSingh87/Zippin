@@ -6,7 +6,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const NAV_GROUPS = [
   {
-    title: "OPERATIONS",
+    title: "OPERATIONS & FULFILLMENT",
     items: [
       {
         href: "/",
@@ -22,7 +22,7 @@ const NAV_GROUPS = [
       {
         href: "/orders",
         label: "Customer Orders",
-        badge: "22 Live",
+        badge: "Live SLA",
         badgeColor: "bg-blue-500/20 text-blue-300",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,42 +31,9 @@ const NAV_GROUPS = [
         ),
       },
       {
-        href: "/hero-management",
-        label: "Hero & Banners",
-        badge: "Homepage",
-        badgeColor: "bg-pink-500/20 text-pink-300",
-        icon: (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-        ),
-      },
-      {
-        href: "/revenue",
-        label: "Revenue & Finance",
-        badge: "₹6,043",
-        badgeColor: "bg-amber-500/20 text-amber-300",
-        icon: (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3M9 13c6.667 0 6.667-10 0-10" />
-          </svg>
-        ),
-      },
-      {
-        href: "/stores",
-        label: "Dark Stores",
-        badge: "6 Hubs",
-        badgeColor: "bg-purple-500/20 text-purple-300",
-        icon: (
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-          </svg>
-        ),
-      },
-      {
-        href: "/delivery-partners",
-        label: "Delivery Fleet",
-        badge: "10 Active",
+        href: "/riders",
+        label: "Delivery Riders",
+        badge: "10 Riders",
         badgeColor: "bg-teal-500/20 text-teal-300",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,19 +41,63 @@ const NAV_GROUPS = [
           </svg>
         ),
       },
-    ],
-  },
-  {
-    title: "CATALOG & STOCKS",
-    items: [
       {
-        href: "/products",
-        label: "Products",
-        badge: "85 Blinkit",
-        badgeColor: "bg-emerald-500/20 text-emerald-300",
+        href: "/pickers",
+        label: "Store Pickers",
+        badge: "6 Pickers",
+        badgeColor: "bg-purple-500/20 text-purple-300",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        ),
+      },
+      {
+        href: "/stores",
+        label: "Dark Stores",
+        badge: "6 Hubs",
+        badgeColor: "bg-amber-500/20 text-amber-300",
+        icon: (
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        ),
+      },
+      {
+        href: "/revenue",
+        label: "Revenue & Finance",
+        badge: "₹ Ledger",
+        badgeColor: "bg-emerald-500/20 text-emerald-300",
+        icon: (
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3M9 13c6.667 0 6.667-10 0-10" />
+          </svg>
+        ),
+      },
+      {
+        href: "/hero-management",
+        label: "Hero & Banners",
+        badge: "Visuals",
+        badgeColor: "bg-pink-500/20 text-pink-300",
+        icon: (
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        ),
+      },
+    ],
+  },
+  {
+    title: "CATALOG & INVENTORY",
+    items: [
+      {
+        href: "/products",
+        label: "Products Catalog",
+        badge: "85 SKUs",
+        badgeColor: "bg-emerald-500/20 text-emerald-300",
+        icon: (
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
           </svg>
         ),
       },
@@ -104,7 +115,7 @@ const NAV_GROUPS = [
       {
         href: "/inventory",
         label: "Inventory Control",
-        badge: "510 Skus",
+        badge: "510 SKUs",
         badgeColor: "bg-cyan-500/20 text-cyan-300",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +126,7 @@ const NAV_GROUPS = [
       {
         href: "/payments",
         label: "Settlement Ledger",
-        badge: "Razorpay",
+        badge: "Escrow",
         badgeColor: "bg-indigo-500/20 text-indigo-300",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

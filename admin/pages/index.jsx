@@ -12,8 +12,10 @@ export default function Dashboard() {
     orders: 0,
     revenue: 0,
     stores: 0,
-    partners: 0,
-    activePartners: 0,
+    riders: 0,
+    activeRiders: 0,
+    pickers: 0,
+    activePickers: 0,
     paymentsCount: 0,
   });
   const [recentOrders, setRecentOrders] = useState([]);
@@ -46,11 +48,17 @@ export default function Dashboard() {
       const categories = catRes.ok ? await catRes.json() : [];
       const orders = ordRes.ok ? await ordRes.json() : [];
       const storeData = storeRes.ok ? await storeRes.json() : [];
-      const partners = partRes.ok ? await partRes.json() : [];
+      const allPartners = partRes.ok ? await partRes.json() : [];
       const payments = payRes.ok ? await payRes.json() : [];
 
+      const riders = allPartners.filter((p) => p.role !== "picker");
+      const pickers = allPartners.filter((p) => p.role === "picker");
+
       const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
-      const activePartners = partners.filter(
+      const activeRiders = riders.filter(
+        (r) => r.status === "available" || r.status === "busy"
+      ).length;
+      const activePickers = pickers.filter(
         (p) => p.status === "available" || p.status === "busy"
       ).length;
 
@@ -60,8 +68,10 @@ export default function Dashboard() {
         orders: orders.length,
         revenue,
         stores: storeData.length,
-        partners: partners.length,
-        activePartners,
+        riders: riders.length,
+        activeRiders,
+        pickers: pickers.length,
+        activePickers,
         paymentsCount: payments.length,
       });
       setRecentOrders(orders.slice(0, 8));
