@@ -6,7 +6,37 @@ import cors from "cors";
 import routes from "./routes/index.js";
 
 const app = express();
-app.use(cors());
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  process.env.FRONTEND_URL,
+  process.env.ADMIN_URL,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(null, false);
+      }
+    },
+    credentials: true,
+  })
+);
+
+// Defensive security headers
+app.use((req, res, next) => {
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  next();
+});
+
 app.use(express.json());
 
 // simple health check
@@ -16,6 +46,18 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api", routes);
+
+// Global Error Handler (Handles Mongoose CastError, ValidationErrors gracefully)
+app.use((err, req, res, next) => {
+  if (err.name === "CastError") {
+    return res.status(400).json({ message: `Invalid resource identifier: ${err.value}` });
+  }
+  if (err.name === "ValidationError") {
+    return res.status(400).json({ message: err.message });
+  }
+  console.error("Unhandled error:", err);
+  res.status(500).json({ message: "Internal server error" });
+});
 
 const PORT = process.env.PORT || 4000;
 

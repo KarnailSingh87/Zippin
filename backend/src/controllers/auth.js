@@ -177,3 +177,41 @@ export async function googleLogin(req, res) {
   }
 }
 
+export async function logout(req, res) {
+  res.json({ message: "Logged out successfully" });
+}
+
+export async function listUsers(req, res) {
+  try {
+    const users = await User.find().select("-passwordHash").sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to list users" });
+  }
+}
+
+export async function toggleBlockUser(req, res) {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    user.isBlocked = !user.isBlocked;
+    await user.save();
+    res.json({ message: `User ${user.isBlocked ? 'blocked' : 'unblocked'} successfully`, isBlocked: user.isBlocked });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update user status" });
+  }
+}
+
+export async function adjustWallet(req, res) {
+  try {
+    const { amount } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    user.walletBalance = (user.walletBalance || 0) + Number(amount || 0);
+    await user.save();
+    res.json({ message: "Wallet adjusted", walletBalance: user.walletBalance });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to adjust wallet" });
+  }
+}
+
