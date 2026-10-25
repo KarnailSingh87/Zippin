@@ -4,5 +4,6 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/category/[slug]": "pages/category/[slug].js",
+  "/checkout": "pages/checkout.js",
   "/partner/franchise": "pages/partner/franchise.js"
 }
