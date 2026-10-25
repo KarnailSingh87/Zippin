@@ -2,7 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/partner/franchise": "pages/partner/franchise.js",
   "/": "pages/index.js",
+  "/partner/franchise": "pages/partner/franchise.js",
   "/category/[slug]": "pages/category/[slug].js"
 }

@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useCart } from "../context/CartContext";
-import { useToast } from "../context/ToastContext";
-import AddToBasket from "@/components/ui/motion-add-to-basket";
 
 export default function ProductModal({ product, onClose }) {
   const { addItem, removeItem, getQty } = useCart();
-  const { showToast } = useToast();
-  const [useMotionView, setUseMotionView] = useState(true);
 
   if (!product) return null;
 
@@ -29,13 +25,13 @@ export default function ProductModal({ product, onClose }) {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center font-bold transition-colors"
+          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center font-bold transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           ✕
         </button>
 
-        {/* Left: Product Image / Motion AddToBasket */}
+        {/* Left: Product Image */}
         <div className="w-full md:w-1/2 p-6 bg-[#F8F9FC] flex flex-col items-center justify-center relative border-b md:border-b-0 md:border-r border-gray-100 min-h-[340px]">
           {discountPercent > 0 && (
             <div className="absolute top-4 left-4 bg-[#256FEF] text-white text-xs font-black px-2.5 py-1 rounded-lg uppercase tracking-tight shadow-xs z-10">
@@ -43,48 +39,22 @@ export default function ProductModal({ product, onClose }) {
             </div>
           )}
 
-          {/* Mode Switcher */}
-          <div className="absolute top-4 left-24 z-10">
-            <button
-              onClick={() => setUseMotionView(!useMotionView)}
-              className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-50 text-[#0C831F] border border-emerald-300 hover:bg-emerald-100 transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
-            >
-              <span>{useMotionView ? "📷 Photo" : "⚡ Motion Add"}</span>
-            </button>
+          <div className="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center p-4">
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={product.title}
+                className="w-full h-full object-contain drop-shadow-sm select-none"
+              />
+            ) : (
+              <span className="text-6xl">🛍️</span>
+            )}
           </div>
 
-          {useMotionView ? (
-            <div className="scale-90 sm:scale-95 py-2 animate-fade-in flex flex-col items-center">
-              <AddToBasket
-                title={product.title}
-                price={`₹${product.price}`}
-                image={imageUrl}
-                buttonText={qty > 0 ? `Add Another (${qty} in cart)` : "Add to Basket"}
-                onAddToCart={() => {
-                  addItem(product);
-                }}
-              />
-            </div>
-          ) : (
-            <>
-              <div className="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center p-4">
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt={product.title}
-                    className="w-full h-full object-contain drop-shadow-sm select-none"
-                  />
-                ) : (
-                  <span className="text-6xl">🛍️</span>
-                )}
-              </div>
-
-              <div className="flex items-center gap-2 mt-2 bg-white px-3 py-1 rounded-full shadow-2xs border border-gray-100 text-xs font-bold text-gray-700">
-                <span className="w-2 h-2 rounded-full bg-[#0C831F] animate-ping" />
-                <span>⚡ Delivery in 8 minutes</span>
-              </div>
-            </>
-          )}
+          <div className="flex items-center gap-2 mt-2 bg-white px-3.5 py-1 rounded-full shadow-xs border border-gray-100 text-xs font-bold text-gray-700">
+            <span className="w-2 h-2 rounded-full bg-[#0C831F] animate-ping" />
+            <span>⚡ Delivery in 8 minutes</span>
+          </div>
         </div>
 
         {/* Right: Details & Add to Cart */}

@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const LocationContext = createContext();
 
 // Single Store Facility - Hamirpur District Hub (Sole Branch)
-export const DISTRICT_DARK_STORES = [
+export const DISTRICT_STORES = [
   {
     id: "str-hmr-501",
     name: "Zippin Store #501 - Hamirpur Hub",
@@ -18,7 +18,7 @@ export const DISTRICT_DARK_STORES = [
     surgeMultiplier: 1.0,
   },
 ];
-export const DISTRICT_STORES = DISTRICT_DARK_STORES;
+export const DISTRICT_DARK_STORES = DISTRICT_STORES;
 
 /**
  * Calculate Great-Circle Distance (in km) using Haversine formula
@@ -62,7 +62,7 @@ export function findOriginStoreForDistrict(districtOrCity = "", state = "", user
 
   // 1. Direct match on District or City
   if (qDist) {
-    const directMatch = DISTRICT_DARK_STORES.find(
+    const directMatch = DISTRICT_STORES.find(
       (s) =>
         s.district.toLowerCase().includes(qDist) ||
         s.city.toLowerCase().includes(qDist) ||
@@ -74,7 +74,7 @@ export function findOriginStoreForDistrict(districtOrCity = "", state = "", user
 
   // 2. Match on State (e.g. Himachal Pradesh -> Hamirpur or Shimla)
   if (qState) {
-    const stateMatch = DISTRICT_DARK_STORES.find(
+    const stateMatch = DISTRICT_STORES.find(
       (s) => s.state.toLowerCase().includes(qState) || qState.includes(s.state.toLowerCase())
     );
     if (stateMatch) return stateMatch;
@@ -82,9 +82,9 @@ export function findOriginStoreForDistrict(districtOrCity = "", state = "", user
 
   // 3. Nearest by GPS Coordinates if available
   if (userCoords && userCoords.lat && userCoords.lng) {
-    let nearest = DISTRICT_DARK_STORES[0];
+    let nearest = DISTRICT_STORES[0];
     let minD = Infinity;
-    for (const store of DISTRICT_DARK_STORES) {
+    for (const store of DISTRICT_STORES) {
       const d = calculateHaversineDistance(
         userCoords.lat,
         userCoords.lng,
@@ -100,7 +100,7 @@ export function findOriginStoreForDistrict(districtOrCity = "", state = "", user
   }
 
   // Default fallback to single Hamirpur store facility
-  return DISTRICT_DARK_STORES[0];
+  return DISTRICT_STORES[0];
 }
 
 export function LocationProvider({ children }) {
@@ -110,7 +110,7 @@ export function LocationProvider({ children }) {
   const [pincode, setPincode] = useState("177001");
   const [distanceKm, setDistanceKm] = useState(2.0);
   const [deliveryMinutes, setDeliveryMinutes] = useState(8);
-  const [originStore, setOriginStore] = useState(DISTRICT_DARK_STORES[0]);
+  const [originStore, setOriginStore] = useState(DISTRICT_STORES[0]);
   const [userCoords, setUserCoords] = useState({ lat: 31.6862, lng: 76.5213 });
   const [isDetecting, setIsDetecting] = useState(false);
   const [locationStatus, setLocationStatus] = useState(null);
