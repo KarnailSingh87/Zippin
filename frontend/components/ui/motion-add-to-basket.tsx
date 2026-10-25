@@ -51,7 +51,7 @@ function controlPoint(
   return { x: x0, y: y0 }
 }
 
-function createArcMixer({
+export function createArcMixer({
   strength = 0.5,
   peak = 0.5,
   direction,
@@ -114,12 +114,12 @@ function createArcMixer({
   }
 }
 
-function BasketIcon() {
+export function BasketIcon({ size = 26, className = "" }: { size?: number; className?: string } = {}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="26"
-      height="26"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -127,6 +127,7 @@ function BasketIcon() {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
+      className={className}
     >
       <path d="m15 11-1 9" />
       <path d="m19 11-4-7" />

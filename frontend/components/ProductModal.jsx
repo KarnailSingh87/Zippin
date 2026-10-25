@@ -6,7 +6,7 @@ import AddToBasket from "@/components/ui/motion-add-to-basket";
 export default function ProductModal({ product, onClose }) {
   const { addItem, removeItem, getQty } = useCart();
   const { showToast } = useToast();
-  const [useMotionView, setUseMotionView] = useState(false);
+  const [useMotionView, setUseMotionView] = useState(true);
 
   if (!product) return null;
 
