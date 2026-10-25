@@ -155,9 +155,9 @@ export default function AdminLayout({ children }) {
         <div className="p-4 border-b border-gray-800/80">
           <div className="bg-white rounded-xl px-3.5 py-2.5 flex items-center justify-between shadow-md">
             <img
-              src="/images/zippin_logo_black_chain_yellow_zip.png"
+              src="/images/zippin_logo_blinkit_colours.png"
               alt="Zippin"
-              className="h-7 w-auto object-contain"
+              className="h-7 md:h-8 w-auto object-contain"
             />
             <span className="text-[10px] font-black bg-[#0C831F] text-white px-2 py-0.5 rounded uppercase tracking-wider">
               OPS HUB

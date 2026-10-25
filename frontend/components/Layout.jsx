@@ -43,7 +43,7 @@ export default function Layout({ children }) {
           <div className="flex items-center gap-3 shrink-0">
             <Link href="/" className="flex items-center group shrink-0">
               <img
-                src="/images/zippin_logo_black_chain_yellow_zip.png"
+                src="/images/zippin_logo_blinkit_colours.png"
                 alt="Zippin"
                 className="h-9 md:h-11 w-auto object-contain transition-transform group-hover:scale-105"
               />
