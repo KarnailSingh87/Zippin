@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getValidAdminToken } from "../lib/adminAuth";
 
 const API = "";
 
@@ -7,13 +8,12 @@ export default function RevenueAnalytics() {
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("all");
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
-
   async function loadRevenue() {
     try {
       setLoading(true);
+      const activeToken = await getValidAdminToken();
       const res = await fetch(`${API}/api/analytics/revenue`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: activeToken ? { Authorization: `Bearer ${activeToken}` } : {},
       });
       if (res.ok) {
         setData(await res.json());

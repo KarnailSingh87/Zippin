@@ -3,7 +3,8 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/settings": "pages/settings.js",
   "/login": "pages/login.js",
-  "/orders": "pages/orders.js"
+  "/orders": "pages/orders.js",
+  "/revenue": "pages/revenue.js",
+  "/customers": "pages/customers.js"
 }

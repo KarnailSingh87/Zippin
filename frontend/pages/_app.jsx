@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "../styles/globals.css";
+import "leaflet/dist/leaflet.css";
 import "../components/ui/motion-add-to-basket-utils/index.css";
 import { AuthProvider } from "../context/AuthContext";
 import { LocationProvider } from "../context/LocationContext";

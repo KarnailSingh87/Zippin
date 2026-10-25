@@ -1,8 +1,19 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
+
+const LiveTrackingMap = dynamic(() => import("../../components/LiveTrackingMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-80 rounded-2xl bg-gray-50 border border-gray-200 animate-pulse flex flex-col items-center justify-center text-gray-400 gap-2">
+      <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className="text-xs font-semibold text-gray-500">Loading Live Leaflet Map...</p>
+    </div>
+  ),
+});
 
 const API = "";
 
@@ -252,27 +263,14 @@ export default function OrderDetailPage() {
 
       {/* Interactive Live Tracking Map with Leaflet / Google Maps Coordinates (TC-4.7.01) */}
       {order.status !== "delivered" && order.status !== "cancelled" && (
-        <div className="bg-white rounded-2xl shadow-card p-5 mb-4 overflow-hidden">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-bold text-gray-800 flex items-center gap-2">
-              <span>🗺️</span> Live Rider GPS Tracking
-            </h2>
-            <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-              Leaflet / Google Maps Coordinates Active
-            </span>
-          </div>
-          <div className="w-full h-44 bg-slate-900 rounded-xl relative overflow-hidden flex flex-col items-center justify-center border border-slate-700 shadow-inner">
-            <div className="absolute inset-0 opacity-30 bg-[radial-gradient(#34d399_1px,transparent_1px)] [background-size:16px_16px]"></div>
-            <div className="relative z-10 text-center space-y-1 p-4">
-              <div className="text-3xl animate-bounce">🛵</div>
-              <p className="text-xs font-bold text-white">
-                Rider Coordinates: {riderLocation.latitude.toFixed(4)}° N, {riderLocation.longitude.toFixed(4)}° E
-              </p>
-              <p className="text-[11px] text-emerald-400 font-medium">
-                Dynamic ETA: {dynamicEta} min ⚡ • Store dispatch radius ~{distanceMatrix.toFixed(1)} km
-              </p>
-            </div>
-          </div>
+        <div className="mb-4">
+          <LiveTrackingMap
+            order={order}
+            riderLocation={riderLocation}
+            storeLocation={storeLocation}
+            dynamicEta={dynamicEta}
+            distanceMatrix={distanceMatrix}
+          />
         </div>
       )}
 

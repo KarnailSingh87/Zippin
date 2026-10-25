@@ -70,8 +70,18 @@ export default function CheckoutPage() {
   }
 
   // Serviceability verification (TC-5.5.01)
-  const SERVICEABLE_PINS = ["122001", "122002", "122008", "110001", "110017", "201301", "201309", "560038", "560034", "400050", "400093"];
-  const isAddressServiceable = !address.pincode || SERVICEABLE_PINS.includes(address.pincode.trim());
+  const SERVICEABLE_PINS = [
+    "177001", "177002", "177005", "177020", "177041", "177042",
+    "122001", "122002", "122008", "110001", "110017", "201301", "201309", "560038", "560034", "400050", "400093"
+  ];
+  const pin = (address.pincode || "").trim();
+  const city = (address.city || "").toLowerCase().trim();
+  const isAddressServiceable =
+    !pin ||
+    SERVICEABLE_PINS.includes(pin) ||
+    pin.startsWith("177") ||
+    city.includes("hamirpur") ||
+    city.includes("himachal");
   const serviceable = isAddressServiceable;
 
   // Wallet and Razorpay Payments (TC-3.7.01, TC-3.7.03)
@@ -310,9 +320,23 @@ export default function CheckoutPage() {
                   />
                 </div>
               </div>
+              {!isAddressServiceable && pin.length >= 6 && (
+                <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 flex items-center gap-2">
+                  <span>⚠️</span>
+                  <span>
+                    Pincode <b>{address.pincode}</b> is currently outside our Hamirpur delivery coverage. Please enter a serviceable pincode (e.g. 177001).
+                  </span>
+                </div>
+              )}
             </div>
             <button
-              onClick={() => setStep(2)}
+              onClick={() => {
+                if (!isAddressServiceable) {
+                  alert("Selected address pincode is currently unserviceable.");
+                  return;
+                }
+                setStep(2);
+              }}
               className="w-full btn-green mt-5 py-3 text-sm"
             >
               Continue to Payment

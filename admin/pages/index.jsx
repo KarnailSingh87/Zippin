@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import OrderInvoiceModal from "../components/OrderInvoiceModal";
+import { getValidAdminToken } from "../lib/adminAuth";
 
 const API = "";
 
@@ -28,7 +29,7 @@ export default function Dashboard() {
   const [invoiceOrder, setInvoiceOrder] = useState(null);
 
   async function loadData() {
-    const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+    const token = await getValidAdminToken();
     if (!token) return;
 
     try {

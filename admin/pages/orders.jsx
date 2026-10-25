@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import OrderInvoiceModal from "../components/OrderInvoiceModal";
+import { getValidAdminToken } from "../lib/adminAuth";
 
 const API = "";
 
@@ -24,9 +25,9 @@ export default function OrdersAdmin() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [invoiceOrder, setInvoiceOrder] = useState(null);
   const [toastMessage, setToastMessage] = useState("");
-
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+  const [token, setToken] = useState(
+    typeof window !== "undefined" ? localStorage.getItem("admin_token") : null
+  );
 
   function showToast(msg) {
     setToastMessage(msg);
@@ -44,7 +45,10 @@ export default function OrdersAdmin() {
   async function loadData() {
     try {
       setLoading(true);
-      const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
+      const activeToken = await getValidAdminToken();
+      if (activeToken) setToken(activeToken);
+      const authHeaders = activeToken ? { Authorization: `Bearer ${activeToken}` } : {};
+
       const [ordRes, storeRes, riderRes, pickerRes] = await Promise.all([
         fetch(`${API}/api/orders/all`, { headers: authHeaders }),
         fetch(`${API}/api/stores`),
@@ -58,6 +62,18 @@ export default function OrdersAdmin() {
           playNotificationSound();
         }
         setOrders(fetchedOrders);
+      } else if (ordRes.status === 401 || ordRes.status === 403) {
+        if (typeof window !== "undefined") localStorage.removeItem("admin_token");
+        const freshToken = await getValidAdminToken();
+        if (freshToken) {
+          setToken(freshToken);
+          const retryRes = await fetch(`${API}/api/orders/all`, {
+            headers: { Authorization: `Bearer ${freshToken}` },
+          });
+          if (retryRes.ok) {
+            setOrders(await retryRes.json());
+          }
+        }
       }
       if (storeRes.ok) setStores(await storeRes.json());
       if (riderRes.ok) setRiders(await riderRes.json());
@@ -203,13 +219,18 @@ export default function OrdersAdmin() {
   // Filtered orders
   const filteredOrders = orders.filter((order) => {
     const matchesTab = activeTab === "all" || order.status === activeTab;
-    const q = searchQuery.toLowerCase();
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return matchesTab;
     const matchesSearch =
-      !searchQuery ||
       order.orderNumber?.toLowerCase().includes(q) ||
+      order._id?.toLowerCase().includes(q) ||
       order.customerName?.toLowerCase().includes(q) ||
       order.customerPhone?.includes(q) ||
-      order.deliveryAddress?.addressLine?.toLowerCase().includes(q);
+      order.deliveryAddress?.street?.toLowerCase().includes(q) ||
+      order.deliveryAddress?.city?.toLowerCase().includes(q) ||
+      order.deliveryAddress?.pincode?.includes(q) ||
+      order.deliveryAddress?.addressLine?.toLowerCase().includes(q) ||
+      order.items?.some((i) => (i.name || i.title || "").toLowerCase().includes(q));
     return matchesTab && matchesSearch;
   });
 

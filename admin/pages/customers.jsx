@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import { getValidAdminToken } from "../lib/adminAuth";
 
 const API = "";
 
@@ -17,9 +18,9 @@ export default function Customers() {
   async function loadUsers() {
     setLoading(true);
     try {
-      const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : null;
+      const token = await getValidAdminToken();
       const res = await fetch(`${API}/api/auth/users`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       if (res.ok) {
         const data = await res.json();
