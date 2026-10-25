@@ -130,7 +130,7 @@ export default function PaymentsAdmin() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Total Transactions
             </div>
             <div className="text-2xl font-black text-gray-900 dark:text-white mt-1 font-outfit">
@@ -147,7 +147,7 @@ export default function PaymentsAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Settled Revenue
             </div>
             <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-outfit">
@@ -164,7 +164,7 @@ export default function PaymentsAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Pending Escrow Settlement
             </div>
             <div className="text-2xl font-black text-amber-500 mt-1 font-outfit flex items-center gap-2">
@@ -185,7 +185,7 @@ export default function PaymentsAdmin() {
       <div className="bg-white dark:bg-[#121212] p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Status Pills */}
         <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mr-1">
+          <span className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400 mr-1">
             Status:
           </span>
           {[
@@ -230,7 +230,7 @@ export default function PaymentsAdmin() {
               placeholder="Search txn, customer, phone..."
               className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
             />
-            <svg className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -241,7 +241,7 @@ export default function PaymentsAdmin() {
       <div className="bg-white dark:bg-[#121212] rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
+            <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
               <tr>
                 <th className="py-3.5 px-5">Transaction ID</th>
                 <th className="py-3.5 px-5">Order Reference</th>
@@ -256,7 +256,7 @@ export default function PaymentsAdmin() {
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800/80 text-xs">
               {filteredPayments.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-12 text-gray-400 dark:text-gray-500 font-medium">
+                  <td colSpan="8" className="text-center py-12 text-gray-500 dark:text-gray-400 font-medium">
                     No payment transactions recorded yet.
                   </td>
                 </tr>
@@ -272,7 +272,7 @@ export default function PaymentsAdmin() {
                         <p className="font-mono font-bold text-gray-900 dark:text-white">
                           {p.transactionId || `PAY-${p._id.slice(-6).toUpperCase()}`}
                         </p>
-                        <p className="text-[10px] text-gray-400 font-mono mt-0.5">
+                        <p className="text-[10px] text-gray-500 dark:text-gray-400 font-mono mt-0.5">
                           ID: {p._id.slice(-6).toUpperCase()}
                         </p>
                       </td>
@@ -289,7 +289,7 @@ export default function PaymentsAdmin() {
                         <p className="font-bold text-gray-900 dark:text-white">
                           {p.customer?.name || "Customer"}
                         </p>
-                        <p className="text-[11px] font-mono text-gray-400 mt-0.5">
+                        <p className="text-[11px] font-mono text-gray-500 dark:text-gray-400 mt-0.5">
                           {p.customer?.phone || ""}
                         </p>
                       </td>

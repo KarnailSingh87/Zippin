@@ -165,9 +165,9 @@ export default function Customers() {
             placeholder="Search customers by name, email, phone number or ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-2.5 pl-10 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#121212] text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+            className="w-full px-4 py-2.5 pl-10 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#121212] text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
           />
-          <svg className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 absolute left-3.5 top-3 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
@@ -187,13 +187,13 @@ export default function Customers() {
       {/* Customers Table */}
       <div className="bg-white dark:bg-[#121212] rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm">
         {loading ? (
-          <div className="p-12 text-center text-xs text-gray-400">Loading customer accounts...</div>
+          <div className="p-12 text-center text-xs text-gray-500 dark:text-gray-400 font-medium">Loading customer accounts...</div>
         ) : filteredUsers.length === 0 ? (
-          <div className="p-12 text-center text-xs text-gray-400">No customers found matching criteria.</div>
+          <div className="p-12 text-center text-xs text-gray-500 dark:text-gray-400 font-medium">No customers found matching criteria.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-gray-50/75 dark:bg-gray-800/50 text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
+              <thead className="bg-gray-50/75 dark:bg-gray-800/50 text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
                 <tr>
                   <th className="px-5 py-3.5">Customer Profile</th>
                   <th className="px-5 py-3.5">Contact Details</th>
@@ -215,7 +215,7 @@ export default function Customers() {
                           <div className="font-bold text-gray-900 dark:text-white">
                             {user.name || "Customer"}
                           </div>
-                          <div className="text-[10px] text-gray-400 font-mono">
+                          <div className="text-[10px] text-gray-500 dark:text-gray-400 font-mono">
                             ID: {user._id.slice(-8)}
                           </div>
                         </div>
@@ -223,7 +223,7 @@ export default function Customers() {
                     </td>
                     <td className="px-5 py-4">
                       <div className="text-gray-900 dark:text-gray-100">{user.email || "No email"}</div>
-                      <div className="text-[11px] text-gray-400">{user.phone || "No phone"}</div>
+                      <div className="text-[11px] text-gray-500 dark:text-gray-400">{user.phone || "No phone"}</div>
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-2">
@@ -297,7 +297,7 @@ export default function Customers() {
                   className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-xs text-gray-900 dark:text-white"
                   required
                 />
-                <p className="text-[10px] text-gray-400 mt-1">Use positive numbers to add credit, negative to deduct.</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium mt-1">Use positive numbers to add credit, negative to deduct.</p>
               </div>
               <div className="flex gap-2">
                 <button

@@ -251,12 +251,12 @@ export default function HeroManagement() {
       {/* Banners Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {loading ? (
-          <div className="col-span-full p-12 text-center text-gray-400 text-sm">
+          <div className="col-span-full p-12 text-center text-gray-500 dark:text-gray-400 text-sm">
             <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
             Loading banner assets...
           </div>
         ) : filteredBanners.length === 0 ? (
-          <div className="col-span-full p-12 text-center text-gray-400 text-sm bg-white dark:bg-[#121212] rounded-2xl border border-gray-200 dark:border-gray-800">
+          <div className="col-span-full p-12 text-center text-gray-500 dark:text-gray-400 text-sm bg-white dark:bg-[#121212] rounded-2xl border border-gray-200 dark:border-gray-800">
             No banners found in this category.
           </div>
         ) : (
@@ -343,7 +343,7 @@ export default function HeroManagement() {
                   </button>
                   <button
                     onClick={() => handleDeleteBanner(banner._id)}
-                    className="p-1 text-gray-400 hover:text-rose-600 rounded-lg cursor-pointer"
+                    className="p-1 text-gray-500 dark:text-gray-400 hover:text-rose-600 rounded-lg cursor-pointer"
                     title="Delete Banner"
                   >
                     🗑️
@@ -369,7 +369,7 @@ export default function HeroManagement() {
               </h2>
               <button
                 onClick={() => setIsEditing(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-bold p-1 cursor-pointer"
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-sm font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
@@ -380,7 +380,7 @@ export default function HeroManagement() {
               {/* Type & Order */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                  <label className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mb-1">
                     Placement Type
                   </label>
                   <select
@@ -394,7 +394,7 @@ export default function HeroManagement() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                  <label className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mb-1">
                     Display Priority Order
                   </label>
                   <input
@@ -409,7 +409,7 @@ export default function HeroManagement() {
               {/* Title & Badge */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-2">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                  <label className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mb-1">
                     Banner Title
                   </label>
                   <input
@@ -423,7 +423,7 @@ export default function HeroManagement() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                  <label className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mb-1">
                     Badge Tag
                   </label>
                   <input
@@ -438,7 +438,7 @@ export default function HeroManagement() {
 
               {/* Subtitle */}
               <div>
-                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                <label className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mb-1">
                   Subtitle Description
                 </label>
                 <input
@@ -452,7 +452,7 @@ export default function HeroManagement() {
 
               {/* Target Redirect Category */}
               <div>
-                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                <label className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mb-1">
                   Target Product Category (Click Redirect)
                 </label>
                 <select
@@ -476,7 +476,7 @@ export default function HeroManagement() {
 
               {/* Image URL with live preview */}
               <div>
-                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                <label className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mb-1">
                   Banner Image URL / Asset Path
                 </label>
                 <input

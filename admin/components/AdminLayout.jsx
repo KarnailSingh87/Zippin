@@ -12,7 +12,7 @@ const NAV_GROUPS = [
         href: "/",
         label: "Overview",
         badge: "Live",
-        badgeColor: "bg-emerald-500/20 text-emerald-300",
+        badgeColor: "bg-emerald-50 dark:bg-emerald-500/20 text-[#0C831F] dark:text-emerald-300 border border-emerald-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -28,7 +28,7 @@ const NAV_GROUPS = [
         href: "/orders",
         label: "Customer Orders",
         badge: "Live SLA",
-        badgeColor: "bg-blue-500/20 text-blue-300",
+        badgeColor: "bg-blue-50 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -39,7 +39,7 @@ const NAV_GROUPS = [
         href: "/riders",
         label: "Delivery Riders",
         badge: "10 Riders",
-        badgeColor: "bg-teal-500/20 text-teal-300",
+        badgeColor: "bg-teal-50 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300 border border-teal-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -50,7 +50,7 @@ const NAV_GROUPS = [
         href: "/pickers",
         label: "Store Pickers",
         badge: "6 Pickers",
-        badgeColor: "bg-amber-500/20 text-amber-300",
+        badgeColor: "bg-amber-50 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -61,7 +61,7 @@ const NAV_GROUPS = [
         href: "/stores",
         label: "Dark Stores",
         badge: "6 Hubs",
-        badgeColor: "bg-purple-500/20 text-purple-300",
+        badgeColor: "bg-purple-50 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -72,7 +72,7 @@ const NAV_GROUPS = [
         href: "/customers",
         label: "Customers CRM",
         badge: "CRM",
-        badgeColor: "bg-blue-500/20 text-blue-300",
+        badgeColor: "bg-blue-50 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -88,7 +88,7 @@ const NAV_GROUPS = [
         href: "/products",
         label: "Products Catalog",
         badge: "85 SKUs",
-        badgeColor: "bg-emerald-500/20 text-emerald-300",
+        badgeColor: "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -99,7 +99,7 @@ const NAV_GROUPS = [
         href: "/categories",
         label: "Categories",
         badge: "17",
-        badgeColor: "bg-gray-500/20 text-gray-300",
+        badgeColor: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
@@ -110,7 +110,7 @@ const NAV_GROUPS = [
         href: "/inventory",
         label: "Inventory Control",
         badge: "510 SKUs",
-        badgeColor: "bg-cyan-500/20 text-cyan-300",
+        badgeColor: "bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -126,7 +126,7 @@ const NAV_GROUPS = [
         href: "/revenue",
         label: "Revenue & Finance",
         badge: "₹ Ledger",
-        badgeColor: "bg-emerald-500/20 text-emerald-300",
+        badgeColor: "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M6 3h12M6 8h12M6 13l8.5 8M6 13h3M9 13c6.667 0 6.667-10 0-10" />
@@ -137,7 +137,7 @@ const NAV_GROUPS = [
         href: "/payments",
         label: "Settlement Ledger",
         badge: "Escrow",
-        badgeColor: "bg-indigo-500/20 text-indigo-300",
+        badgeColor: "bg-indigo-50 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -148,7 +148,7 @@ const NAV_GROUPS = [
         href: "/coupons",
         label: "Coupons & Promos",
         badge: "Offers",
-        badgeColor: "bg-orange-500/20 text-orange-300",
+        badgeColor: "bg-orange-50 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
@@ -159,7 +159,7 @@ const NAV_GROUPS = [
         href: "/notifications",
         label: "Broadcast Center",
         badge: "Push",
-        badgeColor: "bg-purple-500/20 text-purple-300",
+        badgeColor: "bg-purple-50 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
@@ -170,7 +170,7 @@ const NAV_GROUPS = [
         href: "/hero-management",
         label: "Hero & Banners",
         badge: "Visuals",
-        badgeColor: "bg-pink-500/20 text-pink-300",
+        badgeColor: "bg-pink-50 dark:bg-pink-500/20 text-pink-700 dark:text-pink-300 border border-pink-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -186,7 +186,7 @@ const NAV_GROUPS = [
         href: "/settings",
         label: "Platform Settings",
         badge: "Config",
-        badgeColor: "bg-emerald-500/20 text-emerald-300",
+        badgeColor: "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -258,14 +258,14 @@ export default function AdminLayout({ children }) {
 
       {/* Executive Sidebar */}
       <aside
-        className={`fixed lg:static top-0 bottom-0 left-0 z-40 w-64 bg-[#0F141C] dark:bg-[#05070a] border-r border-gray-800/80 dark:border-gray-900 flex flex-col transition-transform duration-300 ease-in-out shrink-0 ${
+        className={`fixed lg:static top-0 bottom-0 left-0 z-40 w-64 bg-white dark:bg-[#0A0D13] border-r border-gray-200/90 dark:border-gray-800/80 flex flex-col transition-colors duration-300 ease-in-out shrink-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         {/* Brand Header */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-gray-800/80 dark:border-gray-900 bg-[#0A0D13] dark:bg-[#000000]">
+        <div className="h-16 flex items-center justify-between px-5 border-b border-gray-200/90 dark:border-gray-800/80 bg-gray-50/80 dark:bg-[#000000] transition-colors duration-300">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center p-1 shadow-sm group-hover:scale-105 transition-transform">
+            <div className="w-8 h-8 rounded-xl bg-white border border-gray-200/80 dark:border-gray-800 flex items-center justify-center p-1 shadow-xs group-hover:scale-105 transition-transform">
               <img
                 src="/images/zippin_favicon_white_512.png"
                 alt="Zippin Logo"
@@ -274,17 +274,17 @@ export default function AdminLayout({ children }) {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-lg tracking-tight text-white">zippin</span>
-                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.2 bg-[#0C831F] text-white rounded">
+                <span className="font-black text-lg tracking-tight text-gray-900 dark:text-white">zippin</span>
+                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.2 bg-[#0C831F] text-white rounded shadow-xs">
                   ADMIN
                 </span>
               </div>
-              <div className="text-[10px] text-gray-400 font-medium">10-Minute Dark Store Ops</div>
+              <div className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">10-Minute Dark Store Ops</div>
             </div>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden text-gray-400 hover:text-white"
+            className="lg:hidden text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
           >
             ✕
           </button>
@@ -294,7 +294,7 @@ export default function AdminLayout({ children }) {
         <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
           {NAV_GROUPS.map((group, idx) => (
             <div key={idx}>
-              <div className="px-3 mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+              <div className="px-3 mb-2 text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 {group.title}
               </div>
               <div className="space-y-0.5">
@@ -308,11 +308,11 @@ export default function AdminLayout({ children }) {
                       className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150 ${
                         isActive
                           ? "bg-[#0C831F] text-white shadow-md shadow-[#0C831F]/30"
-                          : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/60 dark:hover:bg-gray-900/60"
+                          : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/90 dark:hover:bg-gray-900/60"
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className={isActive ? "text-white" : "text-gray-400"}>
+                        <span className={isActive ? "text-white" : "text-gray-500 dark:text-gray-400"}>
                           {item.icon}
                         </span>
                         <span>{item.label}</span>
@@ -335,21 +335,21 @@ export default function AdminLayout({ children }) {
         </div>
 
         {/* Live Operations & User footer */}
-        <div className="p-3 border-t border-gray-800/80 dark:border-gray-900 bg-[#0A0D13] dark:bg-[#000000]">
-          <div className="flex items-center justify-between p-2 rounded-xl bg-gray-900/60 dark:bg-gray-950/60 border border-gray-800 dark:border-gray-800">
+        <div className="p-3 border-t border-gray-200/90 dark:border-gray-800/80 bg-gray-50/80 dark:bg-[#000000] transition-colors duration-300">
+          <div className="flex items-center justify-between p-2 rounded-xl bg-white dark:bg-gray-950/60 border border-gray-200/90 dark:border-gray-800 shadow-2xs">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0C831F] to-emerald-700 flex items-center justify-center text-white text-xs font-black shadow-inner">
                 KS
               </div>
               <div className="leading-tight">
-                <div className="text-xs font-bold text-gray-200">Karnail Singh</div>
-                <div className="text-[10px] text-gray-400">Head of Operations</div>
+                <div className="text-xs font-bold text-gray-900 dark:text-white">Karnail Singh</div>
+                <div className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Head of Operations</div>
               </div>
             </div>
             <button
               onClick={handleLogout}
               title="Logout from Admin"
-              className="p-1.5 text-gray-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
+              className="p-1.5 text-gray-500 dark:text-gray-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -376,9 +376,9 @@ export default function AdminLayout({ children }) {
 
             {/* Breadcrumb path */}
             <div className="hidden sm:flex items-center gap-2 text-xs">
-              <span className="text-gray-400 dark:text-gray-500 font-medium">Zippin Admin</span>
-              <span className="text-gray-300 dark:text-gray-600">/</span>
-              <span className="font-bold text-gray-800 dark:text-gray-200 capitalize">
+              <span className="text-gray-500 dark:text-gray-400 font-medium">Zippin Admin</span>
+              <span className="text-gray-400 dark:text-gray-600">/</span>
+              <span className="font-bold text-gray-900 dark:text-gray-100 capitalize">
                 {router.pathname === "/"
                   ? "Operational Dashboard"
                   : router.pathname.slice(1).replace(/-/g, " ")}
@@ -399,13 +399,13 @@ export default function AdminLayout({ children }) {
             {/* Global Search Button */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200/80 dark:bg-gray-800/80 dark:hover:bg-gray-700/80 border border-gray-200 dark:border-gray-700 text-xs text-gray-600 dark:text-gray-300 transition-colors shadow-2xs"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200/80 dark:bg-gray-800/80 dark:hover:bg-gray-700/80 border border-gray-200 dark:border-gray-700 text-xs text-gray-700 dark:text-gray-200 transition-colors shadow-2xs"
             >
-              <svg className="w-3.5 h-3.5 text-gray-400 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span className="hidden md:inline">Quick search...</span>
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded">
+              <span className="hidden md:inline font-medium">Quick search...</span>
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded">
                 ⌘K
               </kbd>
             </button>

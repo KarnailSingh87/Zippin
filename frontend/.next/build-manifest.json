@@ -36,6 +36,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/download.js"
+    ],
+    "/partner/franchise": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/partner/franchise.js"
     ]
   },
   "ampFirstPages": []

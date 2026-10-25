@@ -150,7 +150,7 @@ export default function CategoriesAdmin() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Total Categories
             </div>
             <div className="text-2xl font-black text-gray-900 dark:text-white mt-1 font-outfit">
@@ -167,7 +167,7 @@ export default function CategoriesAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Active Taxonomy Slugs
             </div>
             <div className="text-2xl font-black text-gray-900 dark:text-white mt-1 font-outfit">
@@ -184,14 +184,14 @@ export default function CategoriesAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Instant Sync Status
             </div>
             <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-outfit flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
               Operational
             </div>
-            <div className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold mt-1">
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-1">
               Synced with Dark Stores
             </div>
           </div>
@@ -211,11 +211,11 @@ export default function CategoriesAdmin() {
             placeholder="Search categories or slugs..."
             className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
           />
-          <svg className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+        <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">
           Showing <span className="font-bold text-gray-900 dark:text-white">{filteredCategories.length}</span> of {categories.length} categories
         </div>
       </div>
@@ -246,12 +246,12 @@ export default function CategoriesAdmin() {
                   {c.name}
                 </h3>
                 {c.sortOrder !== undefined && (
-                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 shrink-0">
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 shrink-0">
                     #{c.sortOrder}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500 truncate mt-0.5 font-mono">
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5 font-mono">
                 /{c.slug}
               </p>
             </div>

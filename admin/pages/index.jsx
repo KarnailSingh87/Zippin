@@ -375,15 +375,15 @@ export default function Dashboard() {
         {/* Live SLA metrics */}
         <div className="flex items-center gap-6 border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-800 pt-3 md:pt-0 md:pl-6 text-xs">
           <div>
-            <div className="text-[10px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Avg Packing Time</div>
+            <div className="text-[10px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Avg Packing Time</div>
             <div className="text-base font-black text-[#0C831F] dark:text-emerald-400 mt-0.5">82s SLA 📦</div>
           </div>
           <div>
-            <div className="text-[10px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Avg Transit Time</div>
+            <div className="text-[10px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Avg Transit Time</div>
             <div className="text-base font-black text-amber-600 dark:text-amber-300 mt-0.5">6.3 mins 🛵</div>
           </div>
           <div>
-            <div className="text-[10px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Active Staff Live</div>
+            <div className="text-[10px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Active Staff Live</div>
             <div className="text-base font-black text-teal-600 dark:text-teal-400 mt-0.5">
               {stats.activeRiders} Riders • {stats.activePickers} Pickers
             </div>
@@ -400,7 +400,7 @@ export default function Dashboard() {
             className="bg-white dark:bg-[#121212] rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm hover:shadow-md hover:border-[#0C831F] dark:hover:border-emerald-500 transition-all duration-200 group"
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">
+              <span className="text-[11px] text-gray-600 dark:text-gray-400 font-extrabold uppercase tracking-wider">
                 {stat.title}
               </span>
               <div
@@ -416,7 +416,7 @@ export default function Dashboard() {
               <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400">
                 {stat.change}
               </span>
-              <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium truncate max-w-[150px]">
+              <span className="text-[10px] text-gray-500 dark:text-gray-400 font-semibold truncate max-w-[150px]">
                 {stat.subtitle}
               </span>
             </div>
@@ -433,7 +433,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Hero & Banners</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Hero & Banners</p>
               <p className="text-lg font-black text-gray-900 dark:text-white mt-1">Homepage</p>
             </div>
             <div className="w-10 h-10 bg-pink-50 dark:bg-pink-950/40 text-pink-600 dark:text-pink-400 rounded-xl flex items-center justify-center font-bold text-lg">
@@ -453,7 +453,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Revenue & Ledger</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Revenue & Ledger</p>
               <p className="text-lg font-black text-[#0C831F] dark:text-emerald-400 mt-1">Settlements</p>
             </div>
             <div className="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/40 text-[#0C831F] dark:text-emerald-400 rounded-xl flex items-center justify-center font-bold text-lg">
@@ -473,7 +473,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Dark Stores</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Dark Stores</p>
               <p className="text-lg font-black text-gray-900 dark:text-white mt-1">{stats.stores} Hubs</p>
             </div>
             <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center font-bold text-lg">
@@ -493,7 +493,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Delivery Fleet</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Delivery Fleet</p>
               <p className="text-lg font-black text-teal-600 dark:text-teal-400 mt-1">{stats.activeRiders} Riders</p>
             </div>
             <div className="w-10 h-10 bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 rounded-xl flex items-center justify-center font-bold text-lg">
@@ -513,7 +513,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-400 dark:text-gray-400 font-bold uppercase tracking-wider">Store Pickers</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Store Pickers</p>
               <p className="text-lg font-black text-purple-600 dark:text-purple-400 mt-1">{stats.activePickers} Pickers</p>
             </div>
             <div className="w-10 h-10 bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center font-bold text-lg">
@@ -537,7 +537,7 @@ export default function Dashboard() {
               </h3>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
             </div>
-            <p className="text-xs text-gray-400 mt-0.5">Real-time fulfillment stream across active dark stores</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Real-time fulfillment stream across active dark stores</p>
           </div>
 
           <div className="flex items-center gap-3">
@@ -551,7 +551,7 @@ export default function Dashboard() {
                 className="w-40 sm:w-56 px-3 py-1.5 pl-8 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:border-[#0C831F]"
               />
               <svg
-                className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2.5"
+                className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400 absolute left-2.5 top-2.5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -571,14 +571,14 @@ export default function Dashboard() {
         </div>
 
         {filteredRecentOrders.length === 0 ? (
-          <div className="text-center py-12 text-gray-400 text-xs">
+          <div className="text-center py-12 text-gray-500 dark:text-gray-400 text-xs">
             No orders matching the current filter
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2">
+                <tr className="text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2">
                   <th className="pb-3">Order ID</th>
                   <th className="pb-3">Customer</th>
                   <th className="pb-3">Dark Store Hub</th>
@@ -605,7 +605,7 @@ export default function Dashboard() {
                       </td>
                       <td className="py-3">
                         <div className="font-semibold text-gray-800 dark:text-gray-200">{custName}</div>
-                        <div className="text-[11px] text-gray-400 truncate max-w-[140px]">
+                        <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium truncate max-w-[140px]">
                           {o.deliveryAddress?.city || "Gurugram"}
                         </div>
                       </td>
@@ -639,7 +639,7 @@ export default function Dashboard() {
                           {o.status.replace(/_/g, " ")}
                         </span>
                       </td>
-                      <td className="py-3 text-gray-400 text-[11px]">
+                      <td className="py-3 text-gray-500 dark:text-gray-400 text-[11px] font-medium">
                         {new Date(o.createdAt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
@@ -670,7 +670,7 @@ export default function Dashboard() {
               <h3 className="font-black text-gray-900 dark:text-white text-sm tracking-tight">
                 Active Fulfillment Network
               </h3>
-              <p className="text-xs text-gray-400 mt-0.5">Instant delivery dispatch hubs</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Instant delivery dispatch hubs</p>
             </div>
             <Link href="/stores" className="text-xs font-bold text-[#0C831F] dark:text-emerald-400 hover:underline">
               View All 6 Hubs →
@@ -694,7 +694,7 @@ export default function Dashboard() {
                   <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate">{s.address}</p>
                 </div>
                 <div className="mt-3 pt-2 border-t border-gray-200/60 dark:border-gray-700/60 flex items-center justify-between text-[11px]">
-                  <span className="text-gray-400">Radius: {s.deliveryRadiusKm || 4.5} km</span>
+                  <span className="text-gray-500 dark:text-gray-400 font-medium">Radius: {s.deliveryRadiusKm || 4.5} km</span>
                   <span className="font-bold text-emerald-700 dark:text-emerald-400">{s.totalOrdersServed || 1200}+ served</span>
                 </div>
               </div>

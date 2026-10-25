@@ -212,7 +212,7 @@ export default function AISearch({ isOpen, onClose }) {
       >
         {/* Search Input Bar */}
         <div className="flex items-center px-4 py-3.5 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-[#0c1017]">
-          <svg className="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-gray-500 dark:text-gray-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
@@ -230,12 +230,12 @@ export default function AISearch({ isOpen, onClose }) {
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 px-1.5 py-0.5 rounded mr-2"
+              className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-1.5 py-0.5 rounded mr-2"
             >
               Clear
             </button>
           )}
-          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[11px] font-semibold text-gray-400 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded">
+          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[11px] font-bold text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded">
             ESC
           </kbd>
         </div>
@@ -243,8 +243,8 @@ export default function AISearch({ isOpen, onClose }) {
         {/* Results List */}
         <div className="max-h-[60vh] overflow-y-auto p-2 divide-y divide-gray-50 dark:divide-gray-800/60">
           {results.length === 0 && query && !loading && (
-            <div className="py-8 text-center text-gray-400 text-sm">
-              No results found for <span className="font-semibold text-gray-600 dark:text-gray-300">"{query}"</span>
+            <div className="py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+              No results found for <span className="font-semibold text-gray-700 dark:text-gray-200">"{query}"</span>
             </div>
           )}
 
@@ -258,7 +258,7 @@ export default function AISearch({ isOpen, onClose }) {
                 className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-colors ${
                   isSelected
                     ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200"
-                    : "hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300"
+                    : "hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-800 dark:text-gray-200"
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
@@ -272,8 +272,8 @@ export default function AISearch({ isOpen, onClose }) {
                     <span className="text-xl flex-shrink-0 w-8 text-center">{item.icon || "🔍"}</span>
                   )}
                   <div className="min-w-0">
-                    <p className="text-xs md:text-sm font-semibold truncate text-gray-800 dark:text-gray-100">{item.label}</p>
-                    {item.sub && <p className="text-[11px] text-gray-400 dark:text-gray-500 truncate">{item.sub}</p>}
+                    <p className="text-xs md:text-sm font-semibold truncate text-gray-900 dark:text-gray-100">{item.label}</p>
+                    {item.sub && <p className="text-[11px] text-gray-600 dark:text-gray-400 truncate">{item.sub}</p>}
                   </div>
                 </div>
 
@@ -291,7 +291,7 @@ export default function AISearch({ isOpen, onClose }) {
                   >
                     {item.badge}
                   </span>
-                  <svg className="w-3.5 h-3.5 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
@@ -301,7 +301,7 @@ export default function AISearch({ isOpen, onClose }) {
         </div>
 
         {/* Footer shortcuts */}
-        <div className="bg-gray-50/70 dark:bg-[#0c1017] px-4 py-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-[11px] text-gray-400 dark:text-gray-500">
+        <div className="bg-gray-50/70 dark:bg-[#0c1017] px-4 py-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
           <div className="flex items-center gap-3">
             <span>↑↓ to navigate</span>
             <span>↵ to select</span>

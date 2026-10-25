@@ -245,7 +245,7 @@ export default function StorePickersAdmin() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Total In-Store Pickers
             </div>
             <div className="text-2xl font-black text-gray-900 dark:text-white mt-1 font-outfit">
@@ -262,14 +262,14 @@ export default function StorePickersAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Active Picking Now
             </div>
             <div className="text-2xl font-black text-amber-500 mt-1 font-outfit flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
               {pickingCount}
             </div>
-            <div className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold mt-1">
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-semibold mt-1">
               Scanning & packing orders
             </div>
           </div>
@@ -280,11 +280,11 @@ export default function StorePickersAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Avg Picking Speed
             </div>
             <div className="text-2xl font-black text-purple-600 dark:text-purple-400 mt-1 font-outfit">
-              {avgSpeed}s <span className="text-xs font-normal text-gray-400">/ bag</span>
+              {avgSpeed}s <span className="text-xs font-normal text-gray-500 dark:text-gray-400">/ bag</span>
             </div>
             <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-1">
               Target SLA &lt; 90 seconds
@@ -297,13 +297,13 @@ export default function StorePickersAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Bags Packed Total
             </div>
             <div className="text-2xl font-black text-blue-600 dark:text-blue-400 mt-1 font-outfit">
               {totalPacked.toLocaleString("en-IN")}
             </div>
-            <div className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold mt-1">
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-semibold mt-1">
               Dispatched to fleet riders
             </div>
           </div>
@@ -317,7 +317,7 @@ export default function StorePickersAdmin() {
       <div className="bg-white dark:bg-[#121212] p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Status Pills */}
         <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mr-1">
+          <span className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400 mr-1">
             Status:
           </span>
           {[
@@ -376,7 +376,7 @@ export default function StorePickersAdmin() {
               placeholder="Search picker name, id..."
               className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
             />
-            <svg className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -387,7 +387,7 @@ export default function StorePickersAdmin() {
       <div className="bg-white dark:bg-[#121212] rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
+            <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
               <tr>
                 <th className="py-3.5 px-5">Picker Associate</th>
                 <th className="py-3.5 px-5">Contact Details</th>
@@ -402,7 +402,7 @@ export default function StorePickersAdmin() {
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800/80 text-xs">
               {filteredPickers.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-12 text-gray-400 dark:text-gray-500 font-medium">
+                  <td colSpan="8" className="text-center py-12 text-gray-500 dark:text-gray-400 font-medium">
                     No store pickers found matching your search.
                   </td>
                 </tr>
@@ -423,7 +423,7 @@ export default function StorePickersAdmin() {
                             <p className="font-bold text-gray-900 dark:text-white">
                               {displayName}
                             </p>
-                            <p className="text-[10px] text-gray-400 font-mono">
+                            <p className="text-[10px] text-gray-500 dark:text-gray-400 font-mono">
                               ID: {p.partnerId || `PCK-${p._id.slice(-6).toUpperCase()}`}
                             </p>
                           </div>
@@ -432,7 +432,7 @@ export default function StorePickersAdmin() {
                       <td className="py-4 px-5 font-mono text-gray-800 dark:text-gray-200">
                         {p.phone}
                         {p.email && (
-                          <p className="font-sans text-[11px] text-gray-400 truncate max-w-xs">
+                          <p className="font-sans text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-xs">
                             {p.email}
                           </p>
                         )}
@@ -441,10 +441,10 @@ export default function StorePickersAdmin() {
                         {p.currentStore?.name ? (
                           <div>
                             <div className="font-semibold text-gray-900 dark:text-white">{p.currentStore.name}</div>
-                            <div className="text-[10px] text-gray-400">{p.currentStore.area || p.currentStore.city}</div>
+                            <div className="text-[10px] text-gray-500 dark:text-gray-400">{p.currentStore.area || p.currentStore.city}</div>
                           </div>
                         ) : (
-                          <span className="text-gray-400 dark:text-gray-500 italic">Unassigned Hub</span>
+                          <span className="text-gray-500 dark:text-gray-400 italic">Unassigned Hub</span>
                         )}
                       </td>
                       <td className="py-4 px-5">
@@ -465,7 +465,7 @@ export default function StorePickersAdmin() {
                         <div className="font-bold text-gray-900 dark:text-white text-xs">
                           {(p.totalOrdersPacked || 420).toLocaleString("en-IN")}
                         </div>
-                        <p className="text-[10px] text-gray-400 mt-0.5">orders processed</p>
+                        <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">orders processed</p>
                       </td>
                       <td className="py-4 px-5">
                         <div className="flex items-center gap-2">

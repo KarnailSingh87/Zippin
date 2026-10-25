@@ -141,7 +141,7 @@ export default function RevenueAnalytics() {
           </div>
           <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold mt-1 flex items-center gap-1">
             <span>↑ 18.4%</span>
-            <span className="text-gray-400 dark:text-gray-500 font-normal">vs previous cycle</span>
+            <span className="text-gray-500 dark:text-gray-400 font-normal">vs previous cycle</span>
           </div>
         </div>
 
@@ -153,7 +153,7 @@ export default function RevenueAnalytics() {
           </div>
           <div className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
             {summary.completedOrders}{" "}
-            <span className="text-xs text-gray-400 font-semibold">/ {summary.totalOrders} total</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400 font-semibold">/ {summary.totalOrders} total</span>
           </div>
           <div className="text-[11px] text-blue-600 dark:text-blue-400 font-bold mt-1">
             100% fulfillment on-time (avg 8.4 mins)
@@ -183,7 +183,7 @@ export default function RevenueAnalytics() {
           <div className="text-2xl md:text-3xl font-black text-[#0C831F] dark:text-emerald-400 tracking-tight">
             ₹{summary.platformMargin?.toLocaleString("en-IN")}
           </div>
-          <div className="text-[11px] text-gray-400 dark:text-gray-500 font-medium mt-1">
+          <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-1">
             Commission + delivery charges
           </div>
         </div>
@@ -194,7 +194,7 @@ export default function RevenueAnalytics() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-base font-extrabold text-gray-900 dark:text-white">7-Day Revenue Velocity</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Daily sales volume across 6 dark stores</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Daily sales volume across 6 dark stores</p>
           </div>
           <div className="text-xs font-bold text-[#0C831F] dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-200/60 dark:border-emerald-800/60">
             Peak: Saturday (₹1,208)
@@ -222,7 +222,7 @@ export default function RevenueAnalytics() {
                 ></div>
                 <div className="mt-2 text-center">
                   <p className="text-[11px] font-bold text-gray-800 dark:text-gray-200">{d.day}</p>
-                  <p className="text-[9px] text-gray-400">{d.date}</p>
+                  <p className="text-[9px] text-gray-500 dark:text-gray-400">{d.date}</p>
                 </div>
               </div>
             );
@@ -236,7 +236,7 @@ export default function RevenueAnalytics() {
         <div className="bg-white dark:bg-[#121212] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4 transition-colors duration-300">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-extrabold text-gray-900 dark:text-white">Payment Gateway Reconciliation</h2>
-            <span className="text-[10px] font-bold text-gray-400 uppercase">Live Gateway</span>
+            <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase">Live Gateway</span>
           </div>
 
           <div className="space-y-3 text-xs">
@@ -249,7 +249,7 @@ export default function RevenueAnalytics() {
               <div className="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
                 <div className="bg-[#0C831F] h-full rounded-full" style={{ width: "65.4%" }}></div>
               </div>
-              <div className="flex justify-between text-[11px] text-gray-400 mt-1">
+              <div className="flex justify-between text-[11px] text-gray-500 dark:text-gray-400 mt-1">
                 <span>15 Transactions</span>
                 <span>₹3,952 Volume</span>
               </div>
@@ -264,7 +264,7 @@ export default function RevenueAnalytics() {
               <div className="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
                 <div className="bg-blue-600 h-full rounded-full" style={{ width: "22.8%" }}></div>
               </div>
-              <div className="flex justify-between text-[11px] text-gray-400 mt-1">
+              <div className="flex justify-between text-[11px] text-gray-500 dark:text-gray-400 mt-1">
                 <span>5 Transactions</span>
                 <span>₹1,378 Volume</span>
               </div>
@@ -279,7 +279,7 @@ export default function RevenueAnalytics() {
               <div className="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
                 <div className="bg-amber-500 h-full rounded-full" style={{ width: "11.8%" }}></div>
               </div>
-              <div className="flex justify-between text-[11px] text-gray-400 mt-1">
+              <div className="flex justify-between text-[11px] text-gray-500 dark:text-gray-400 mt-1">
                 <span>2 Deliveries</span>
                 <span>₹713 Cash Collected</span>
               </div>
@@ -291,12 +291,12 @@ export default function RevenueAnalytics() {
         <div className="bg-white dark:bg-[#121212] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4 transition-colors duration-300">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-extrabold text-gray-900 dark:text-white">Dark Store Revenue Leaders</h2>
-            <span className="text-[10px] font-bold text-gray-400 uppercase">6 Active Hubs</span>
+            <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 uppercase">6 Active Hubs</span>
           </div>
 
           <div className="space-y-2.5 text-xs">
             {storeBreakdown.length === 0 ? (
-              <div className="text-center py-6 text-gray-400">Loading fulfillment centers...</div>
+              <div className="text-center py-6 text-gray-500 dark:text-gray-400 font-medium">Loading fulfillment centers...</div>
             ) : (
               storeBreakdown.map((s, idx) => (
                 <div
@@ -309,7 +309,7 @@ export default function RevenueAnalytics() {
                     </span>
                     <div>
                       <p className="font-extrabold text-gray-900 dark:text-white">{s.name}</p>
-                      <p className="text-[11px] text-gray-400">{s.count} orders fulfilled</p>
+                      <p className="text-[11px] text-gray-500 dark:text-gray-400">{s.count} orders fulfilled</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -330,13 +330,13 @@ export default function RevenueAnalytics() {
             <h2 className="text-base font-extrabold text-gray-900 dark:text-white">
               Product-Wise Financial Performance & Top SKUs
             </h2>
-            <p className="text-xs text-gray-400">Total product revenue: ₹{productRevenue.toLocaleString()}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Total product revenue: ₹{productRevenue.toLocaleString()}</p>
           </div>
           <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Live Catalog Tracking</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-gray-50/75 dark:bg-gray-800/50 text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
+            <thead className="bg-gray-50/75 dark:bg-gray-800/50 text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
               <tr>
                 <th className="px-4 py-3">Product SKU</th>
                 <th className="px-4 py-3">Units Sold</th>
@@ -361,7 +361,7 @@ export default function RevenueAnalytics() {
         <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
           <div>
             <h2 className="text-base font-extrabold text-gray-900 dark:text-white">Settlement Payout Reconciliation</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Official automated daily merchant payouts via Razorpay Route</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Official automated daily merchant payouts via Razorpay Route</p>
           </div>
           <span className="px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-[#0C831F] dark:text-emerald-400 text-xs font-bold border border-emerald-200/70 dark:border-emerald-800">
             Next Settlement: Midnight 00:00
@@ -371,7 +371,7 @@ export default function RevenueAnalytics() {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-gray-50 dark:bg-[#0c1017] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider text-[10px] border-b border-gray-200/80 dark:border-gray-800">
+              <tr className="bg-gray-50 dark:bg-[#0c1017] text-gray-600 dark:text-gray-300 font-extrabold uppercase tracking-wider text-[10px] border-b border-gray-200/80 dark:border-gray-800">
                 <th className="py-3 px-4">Settlement ID</th>
                 <th className="py-3 px-4">Bank UTR Reference</th>
                 <th className="py-3 px-4">Date</th>

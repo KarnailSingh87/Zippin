@@ -202,7 +202,7 @@ export default function NotificationsBroadcast() {
 
         {/* Live Mobile Device Preview */}
         <div className="bg-white dark:bg-[#121212] p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center">
-          <h2 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 self-start">
+          <h2 className="text-xs font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-4 self-start">
             Customer Lock Screen Preview
           </h2>
           <div className="w-64 bg-black rounded-3xl p-3 border-4 border-gray-700 shadow-2xl space-y-3">
@@ -232,11 +232,11 @@ export default function NotificationsBroadcast() {
           <h2 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">
             Past Broadcast Campaigns
           </h2>
-          <span className="text-xs text-gray-500">{campaigns.length} total campaigns</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">{campaigns.length} total campaigns</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-gray-50/75 dark:bg-gray-800/50 text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
+            <thead className="bg-gray-50/75 dark:bg-gray-800/50 text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
               <tr>
                 <th className="px-5 py-3.5">Campaign & Message</th>
                 <th className="px-5 py-3.5">Channel</th>
@@ -251,13 +251,13 @@ export default function NotificationsBroadcast() {
                 <tr key={c.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30">
                   <td className="px-5 py-4 max-w-xs">
                     <div className="font-bold text-gray-900 dark:text-white truncate">{c.title}</div>
-                    <div className="text-[11px] text-gray-500 truncate">{c.body}</div>
+                    <div className="text-[11px] text-gray-500 dark:text-gray-400 truncate">{c.body}</div>
                   </td>
                   <td className="px-5 py-4 font-semibold text-gray-700 dark:text-gray-300">{c.channel}</td>
                   <td className="px-5 py-4 text-gray-600 dark:text-gray-400">{c.targetAudience}</td>
                   <td className="px-5 py-4 font-bold text-emerald-600 dark:text-emerald-400">{c.delivered}</td>
                   <td className="px-5 py-4 font-bold text-blue-600 dark:text-blue-400">{c.clicks}</td>
-                  <td className="px-5 py-4 text-gray-400 text-[11px]">{c.sentAt}</td>
+                  <td className="px-5 py-4 text-gray-500 dark:text-gray-400 text-[11px]">{c.sentAt}</td>
                 </tr>
               ))}
             </tbody>

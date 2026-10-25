@@ -142,7 +142,7 @@ export default function PlatformSettings() {
           <div className="pt-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
             <div>
               <span className="text-xs font-bold text-gray-900 dark:text-white block">Rain & Demand Surge</span>
-              <span className="text-[10px] text-gray-400">Apply surge pricing during heavy rain/rush</span>
+              <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Apply surge pricing during heavy rain/rush</span>
             </div>
             <input
               type="checkbox"
@@ -241,7 +241,7 @@ export default function PlatformSettings() {
             <div className="p-3 bg-gray-50 dark:bg-gray-800/40 rounded-xl flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold text-gray-900 dark:text-white block">Cash on Delivery (COD)</span>
-                <span className="text-[10px] text-gray-400">Accept cash at doorstep</span>
+                <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Accept cash at doorstep</span>
               </div>
               <input
                 type="checkbox"
@@ -254,7 +254,7 @@ export default function PlatformSettings() {
             <div className="p-3 bg-gray-50 dark:bg-gray-800/40 rounded-xl flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold text-gray-900 dark:text-white block">Zippin Wallet</span>
-                <span className="text-[10px] text-gray-400">1-click wallet deductions</span>
+                <span className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">1-click wallet deductions</span>
               </div>
               <input
                 type="checkbox"

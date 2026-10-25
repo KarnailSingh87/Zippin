@@ -229,7 +229,7 @@ export default function DeliveryRidersAdmin() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Total Fleet Riders
             </div>
             <div className="text-2xl font-black text-gray-900 dark:text-white mt-1 font-outfit">
@@ -246,14 +246,14 @@ export default function DeliveryRidersAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Available at Hubs
             </div>
             <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-outfit flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
               {availableCount}
             </div>
-            <div className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold mt-1">
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-1">
               Waiting for order handoff
             </div>
           </div>
@@ -264,14 +264,14 @@ export default function DeliveryRidersAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               On Active Delivery
             </div>
             <div className="text-2xl font-black text-amber-500 mt-1 font-outfit flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
               {busyCount}
             </div>
-            <div className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold mt-1">
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium mt-1">
               Transit SLA in progress
             </div>
           </div>
@@ -282,7 +282,7 @@ export default function DeliveryRidersAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Fleet CSAT Rating
             </div>
             <div className="text-2xl font-black text-purple-600 dark:text-purple-400 mt-1 font-outfit">
@@ -307,7 +307,7 @@ export default function DeliveryRidersAdmin() {
               Live City Fleet Telematics & GPS Map (NCR Dark Stores)
             </h2>
           </div>
-          <span className="text-[11px] text-gray-400 font-medium">Auto-refreshing every 5s • GPS coordinates active</span>
+          <span className="text-[11px] text-gray-500 dark:text-gray-400 font-medium">Auto-refreshing every 5s • GPS coordinates active</span>
         </div>
         <div className="relative w-full h-64 rounded-xl overflow-hidden bg-slate-900 border border-gray-800 flex items-center justify-center">
           <div className="absolute inset-0 bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:16px_16px] opacity-70"></div>
@@ -344,7 +344,7 @@ export default function DeliveryRidersAdmin() {
       <div className="bg-white dark:bg-[#121212] p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Status Pills */}
         <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mr-1">
+          <span className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400 mr-1">
             Status:
           </span>
           {[
@@ -359,7 +359,7 @@ export default function DeliveryRidersAdmin() {
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 filterStatus === st.id
                   ? "bg-[#0C831F] text-white shadow-sm"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
               {st.label}
@@ -373,7 +373,7 @@ export default function DeliveryRidersAdmin() {
             <select
               value={filterCity}
               onChange={(e) => setFilterCity(e.target.value)}
-              className="text-xs bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+              className="text-xs bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-gray-800 dark:text-gray-200 font-semibold focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
             >
               <option value="">All Operating Cities</option>
               {cities.map((c) => (
@@ -392,7 +392,7 @@ export default function DeliveryRidersAdmin() {
               placeholder="Search rider name, phone..."
               className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
             />
-            <svg className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -403,7 +403,7 @@ export default function DeliveryRidersAdmin() {
       <div className="bg-white dark:bg-[#121212] rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
+            <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
               <tr>
                 <th className="py-3.5 px-5">Rider Partner</th>
                 <th className="py-3.5 px-5">Contact Details</th>
@@ -418,7 +418,7 @@ export default function DeliveryRidersAdmin() {
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800/80 text-xs">
               {filteredRiders.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-12 text-gray-400 dark:text-gray-500 font-medium">
+                  <td colSpan="8" className="text-center py-12 text-gray-500 dark:text-gray-400 font-medium">
                     No delivery riders found matching your search.
                   </td>
                 </tr>

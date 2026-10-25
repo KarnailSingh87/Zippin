@@ -458,7 +458,7 @@ export default function ProductsAdmin() {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Total SKUs</div>
+            <div className="text-[11px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Total SKUs</div>
             <div className="text-xl font-black text-gray-900 dark:text-white mt-1">{stats.total}</div>
           </div>
           <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm">
@@ -468,7 +468,7 @@ export default function ProductsAdmin() {
 
         <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Active for Sale</div>
+            <div className="text-[11px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Active for Sale</div>
             <div className="text-xl font-black text-emerald-600 dark:text-emerald-400 mt-1">{stats.active}</div>
           </div>
           <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm">
@@ -478,7 +478,7 @@ export default function ProductsAdmin() {
 
         <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Low Stock (≤10)</div>
+            <div className="text-[11px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Low Stock (≤10)</div>
             <div className="text-xl font-black text-amber-500 dark:text-amber-400 mt-1">{stats.lowStock}</div>
           </div>
           <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-sm">
@@ -488,7 +488,7 @@ export default function ProductsAdmin() {
 
         <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Out of Stock</div>
+            <div className="text-[11px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Out of Stock</div>
             <div className="text-xl font-black text-rose-500 dark:text-rose-400 mt-1">{stats.outOfStock}</div>
           </div>
           <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold text-sm">
@@ -498,7 +498,7 @@ export default function ProductsAdmin() {
 
         <div className="bg-white dark:bg-[#121212] rounded-2xl p-4 border border-gray-100 dark:border-gray-800 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between col-span-2 md:col-span-1 transition-colors">
           <div>
-            <div className="text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider">Featured</div>
+            <div className="text-[11px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Featured</div>
             <div className="text-xl font-black text-purple-600 dark:text-purple-400 mt-1">{stats.featured}</div>
           </div>
           <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-sm">
@@ -513,7 +513,7 @@ export default function ProductsAdmin() {
           {/* Search Input */}
           <div className="md:col-span-4 relative">
             <svg
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400 pointer-events-none"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -528,7 +528,7 @@ export default function ProductsAdmin() {
                 setSearch(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:bg-white dark:focus:bg-gray-900 focus:border-[#0C831F] transition-all"
+              className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:bg-white dark:focus:bg-gray-900 focus:border-[#0C831F] transition-all"
             />
           </div>
 
@@ -687,7 +687,7 @@ export default function ProductsAdmin() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="bg-gray-50/80 dark:bg-[#0c1017] border-b border-gray-100 dark:border-gray-800 text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <tr className="bg-gray-50/80 dark:bg-[#0c1017] border-b border-gray-100 dark:border-gray-800 text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
                   <th className="p-3.5 w-10 text-center">
                     <input
                       type="checkbox"
@@ -744,7 +744,7 @@ export default function ProductsAdmin() {
                                 }}
                               />
                             ) : (
-                              <span className="text-base font-bold text-gray-400">
+                              <span className="text-base font-bold text-gray-500 dark:text-gray-400">
                                 {p.title.charAt(0)}
                               </span>
                             )}
@@ -760,8 +760,8 @@ export default function ProductsAdmin() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex items-center gap-2 text-[11px] text-gray-400 mt-0.5">
-                              <span className="font-mono text-[10px] bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-gray-600 dark:text-gray-300">
+                            <div className="flex items-center gap-2 text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                              <span className="font-mono text-[10px] bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-gray-600 dark:text-gray-300 font-medium">
                                 SKU-{p._id.slice(-4).toUpperCase()}
                               </span>
                               <span>•</span>
@@ -783,7 +783,7 @@ export default function ProductsAdmin() {
                         <div className="font-bold text-gray-900 dark:text-white text-xs">₹{p.price}</div>
                         {p.mrp > p.price && (
                           <div className="flex items-center gap-1.5 text-[10px]">
-                            <span className="line-through text-gray-400">₹{p.mrp}</span>
+                            <span className="line-through text-gray-400 dark:text-gray-500">₹{p.mrp}</span>
                             <span className="text-emerald-600 dark:text-emerald-400 font-bold">
                               {Math.round(((p.mrp - p.price) / p.mrp) * 100)}% OFF
                             </span>
@@ -796,7 +796,7 @@ export default function ProductsAdmin() {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={(e) => adjustStock(p._id, p.stock || 0, -1, e)}
-                            className="w-5 h-5 rounded bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-xs"
+                            className="w-5 h-5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 flex items-center justify-center font-bold text-xs"
                             title="Decrease 1"
                           >
                             -
@@ -804,17 +804,17 @@ export default function ProductsAdmin() {
                           <span
                             className={`px-2 py-0.5 rounded-md font-bold text-[11px] min-w-[36px] text-center ${
                               isOut
-                                ? "bg-rose-100 text-rose-700"
+                                ? "bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300"
                                 : isLow
-                                ? "bg-amber-100 text-amber-700 animate-pulse"
-                                : "bg-emerald-100 text-emerald-800"
+                                ? "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 animate-pulse"
+                                : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
                             }`}
                           >
                             {p.stock || 0}
                           </span>
                           <button
                             onClick={(e) => adjustStock(p._id, p.stock || 0, 5, e)}
-                            className="w-5 h-5 rounded bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-xs"
+                            className="w-5 h-5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 flex items-center justify-center font-bold text-xs"
                             title="Add 5"
                           >
                             +
@@ -827,7 +827,7 @@ export default function ProductsAdmin() {
                         <button
                           onClick={(e) => toggleAvailability(p._id, e)}
                           className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                            p.isAvailable ? "bg-[#0C831F]" : "bg-gray-200"
+                            p.isAvailable ? "bg-[#0C831F]" : "bg-gray-200 dark:bg-gray-700"
                           }`}
                         >
                           <span
@@ -843,7 +843,7 @@ export default function ProductsAdmin() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => openEdit(p)}
-                            className="p-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                            className="p-1.5 rounded-lg text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-colors"
                             title="Edit Product"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -852,7 +852,7 @@ export default function ProductsAdmin() {
                           </button>
                           <button
                             onClick={() => handleDelete(p._id, p.title)}
-                            className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                            className="p-1.5 rounded-lg text-gray-500 dark:text-gray-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
                             title="Delete Product"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -896,7 +896,7 @@ export default function ProductsAdmin() {
                     {p.isAvailable ? "Active" : "Inactive"}
                   </span>
                 </div>
-                <div className="text-[10px] text-gray-400 dark:text-gray-500 font-semibold uppercase">
+                <div className="text-[10px] text-gray-600 dark:text-gray-400 font-extrabold uppercase">
                   {p.category?.name || "General"}
                 </div>
                 <h4 className="font-bold text-xs text-gray-900 dark:text-white truncate mt-0.5">{p.title}</h4>

@@ -144,7 +144,7 @@ export default function InventoryAdmin() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Total SKUs in Hub
             </div>
             <div className="text-2xl font-black text-gray-900 dark:text-white mt-1 font-outfit">
@@ -161,7 +161,7 @@ export default function InventoryAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Low Stock Warnings
             </div>
             <div className="text-2xl font-black text-amber-500 mt-1 font-outfit flex items-center gap-2">
@@ -179,7 +179,7 @@ export default function InventoryAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Fulfillment Location
             </div>
             <div className="text-lg font-black text-gray-900 dark:text-white mt-1 font-outfit truncate max-w-[200px]">
@@ -228,7 +228,7 @@ export default function InventoryAdmin() {
             placeholder="Search SKU by title..."
             className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
           />
-          <svg className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
@@ -241,7 +241,7 @@ export default function InventoryAdmin() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
+              <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
                 <tr>
                   <th className="py-3.5 px-5">Product SKU</th>
                   <th className="py-3.5 px-5">Unit Price</th>
@@ -254,7 +254,7 @@ export default function InventoryAdmin() {
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800/80 text-xs">
                 {filteredInventory.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="text-center py-12 text-gray-400 dark:text-gray-500 font-medium">
+                    <td colSpan="6" className="text-center py-12 text-gray-500 dark:text-gray-400 font-medium">
                       No inventory records found for this dark store.
                     </td>
                   </tr>
@@ -279,7 +279,7 @@ export default function InventoryAdmin() {
                               <p className="font-bold text-gray-900 dark:text-white">
                                 {prod.title || "Unknown Product"}
                               </p>
-                              <p className="text-[11px] text-gray-400 dark:text-gray-500">
+                              <p className="text-[11px] text-gray-500 dark:text-gray-400">
                                 {prod.unit || "unit"}
                               </p>
                             </div>
@@ -298,10 +298,10 @@ export default function InventoryAdmin() {
                                   : "text-gray-900 dark:text-white"
                             }`}
                           >
-                            {item.stock} <span className="text-xs font-normal text-gray-400">units</span>
+                            {item.stock} <span className="text-xs font-normal text-gray-500 dark:text-gray-400">units</span>
                           </span>
                         </td>
-                        <td className="py-4 px-5 font-mono text-gray-500 dark:text-gray-400">
+                        <td className="py-4 px-5 font-mono text-gray-600 dark:text-gray-300">
                           {item.lowStockThreshold || 10} units
                         </td>
                         <td className="py-4 px-5">
@@ -352,7 +352,7 @@ export default function InventoryAdmin() {
                 <h3 className="font-bold text-gray-900 dark:text-white font-outfit">
                   Adjust Inventory
                 </h3>
-                <p className="text-[11px] text-gray-400 dark:text-gray-500 truncate max-w-[200px]">
+                <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-[200px]">
                   {adjustItem.product?.title}
                 </p>
               </div>

@@ -181,11 +181,11 @@ export default function StoresAdmin() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Active Hubs
             </div>
             <div className="text-2xl font-black text-gray-900 dark:text-white mt-1 font-outfit">
-              {activeStoresCount} <span className="text-xs font-normal text-gray-400">/ {stores.length}</span>
+              {activeStoresCount} <span className="text-xs font-normal text-gray-500 dark:text-gray-400">/ {stores.length}</span>
             </div>
             <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mt-1">
               Ready for dispatch
@@ -198,7 +198,7 @@ export default function StoresAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Covered Cities
             </div>
             <div className="text-2xl font-black text-gray-900 dark:text-white mt-1 font-outfit">
@@ -215,13 +215,13 @@ export default function StoresAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Avg SLA Dispatch
             </div>
             <div className="text-2xl font-black text-purple-600 dark:text-purple-400 mt-1 font-outfit">
               8.4 min
             </div>
-            <div className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold mt-1">
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-semibold mt-1">
               Store to rider handoff
             </div>
           </div>
@@ -232,14 +232,14 @@ export default function StoresAdmin() {
 
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
               Network Health
             </div>
             <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-outfit flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
               99.8%
             </div>
-            <div className="text-[11px] text-gray-400 dark:text-gray-500 font-semibold mt-1">
+            <div className="text-[11px] text-gray-500 dark:text-gray-400 font-semibold mt-1">
               All dark stores online
             </div>
           </div>
@@ -253,7 +253,7 @@ export default function StoresAdmin() {
       <div className="bg-white dark:bg-[#121212] p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         {/* City Filter Pills */}
         <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mr-1">
+          <span className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400 mr-1">
             City:
           </span>
           <button
@@ -290,7 +290,7 @@ export default function StoresAdmin() {
             placeholder="Search hub name, code, pin..."
             className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-[#1a1f2c] border border-gray-200 dark:border-gray-700 rounded-xl text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
           />
-          <svg className="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
@@ -300,7 +300,7 @@ export default function StoresAdmin() {
       <div className="bg-white dark:bg-[#121212] rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
+            <thead className="bg-gray-50/80 dark:bg-[#161c27] text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
               <tr>
                 <th className="py-3.5 px-5">Store Hub Code</th>
                 <th className="py-3.5 px-5">Store Facility Name</th>
@@ -314,7 +314,7 @@ export default function StoresAdmin() {
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800/80 text-xs">
               {filteredStores.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="text-center py-12 text-gray-400 dark:text-gray-500 font-medium">
+                  <td colSpan="7" className="text-center py-12 text-gray-500 dark:text-gray-400 font-medium">
                     No dark stores match your filter.
                   </td>
                 </tr>
@@ -329,7 +329,7 @@ export default function StoresAdmin() {
                     <td className="py-4 px-5">
                       <div className="font-bold text-gray-900 dark:text-white">{s.name}</div>
                       {s.address && (
-                        <div className="text-[11px] text-gray-400 dark:text-gray-500 truncate max-w-xs mt-0.5">
+                        <div className="text-[11px] text-gray-500 dark:text-gray-400 truncate max-w-xs mt-0.5">
                           {s.address}
                         </div>
                       )}
@@ -342,7 +342,7 @@ export default function StoresAdmin() {
                     <td className="py-4 px-5">
                       <div className="font-semibold text-gray-800 dark:text-gray-200">{s.area}</div>
                       {s.pincode && (
-                        <div className="text-[11px] text-gray-400 dark:text-gray-500 font-mono">
+                        <div className="text-[11px] text-gray-500 dark:text-gray-400 font-mono">
                           PIN: {s.pincode}
                         </div>
                       )}

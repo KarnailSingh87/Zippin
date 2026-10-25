@@ -196,9 +196,9 @@ export default function Coupons() {
             placeholder="Search coupon code or description..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-2.5 pl-10 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#121212] text-xs text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
+            className="w-full px-4 py-2.5 pl-10 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#121212] text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
           />
-          <svg className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 absolute left-3.5 top-3 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
@@ -247,21 +247,21 @@ export default function Coupons() {
 
             <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 grid grid-cols-2 gap-2 text-xs">
               <div>
-                <span className="text-[10px] text-gray-400 block uppercase">Benefit</span>
+                <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 block uppercase">Benefit</span>
                 <span className="font-bold text-gray-900 dark:text-white">
                   {coupon.discountType === "percentage" ? `${coupon.discountValue}% OFF` : `₹${coupon.discountValue} FLAT`}
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-gray-400 block uppercase">Min Order</span>
+                <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 block uppercase">Min Order</span>
                 <span className="font-bold text-gray-900 dark:text-white">₹{coupon.minOrderValue}</span>
               </div>
               <div>
-                <span className="text-[10px] text-gray-400 block uppercase">Max Cap</span>
+                <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 block uppercase">Max Cap</span>
                 <span className="font-bold text-gray-900 dark:text-white">₹{coupon.maxDiscount}</span>
               </div>
               <div>
-                <span className="text-[10px] text-gray-400 block uppercase">Redemptions</span>
+                <span className="text-[10px] font-extrabold text-gray-500 dark:text-gray-400 block uppercase">Redemptions</span>
                 <span className="font-bold text-gray-900 dark:text-white">
                   {coupon.usedCount} / {coupon.totalUsageLimit}
                 </span>
@@ -269,7 +269,7 @@ export default function Coupons() {
             </div>
 
             <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
-              <span className="text-[11px] text-gray-400">
+              <span className="text-[11px] text-gray-500 dark:text-gray-400 font-medium">
                 Expires {new Date(coupon.expiresAt).toLocaleDateString("en-IN")}
               </span>
               <div className="flex gap-2">

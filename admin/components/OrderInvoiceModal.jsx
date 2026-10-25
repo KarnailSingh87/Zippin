@@ -58,55 +58,55 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
         </div>
 
         {/* Printable Invoice Container */}
-        <div className="p-8 md:p-10 text-gray-800 font-sans print:p-4" id="printable-invoice">
+        <div className="p-8 md:p-10 text-gray-800 dark:text-gray-100 font-sans print:p-4 print:text-black" id="printable-invoice">
           {/* Header */}
-          <div className="flex items-start justify-between border-b border-gray-200 pb-6 mb-6">
+          <div className="flex items-start justify-between border-b border-gray-200 dark:border-gray-800 pb-6 mb-6 print:border-gray-200">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl bg-[#0C831F] flex items-center justify-center p-2 text-white font-black text-2xl shadow-sm">
                 z
               </div>
               <div>
-                <h1 className="text-2xl font-black tracking-tight text-gray-900">zippin</h1>
-                <p className="text-xs text-gray-500 font-medium">Zippin Quick Commerce Pvt. Ltd.</p>
-                <p className="text-[11px] text-gray-400">GSTIN: 07AAECZ9821M1Z5 • FSSAI: 10019011006542</p>
+                <h1 className="text-2xl font-black tracking-tight text-gray-900 dark:text-white print:text-black">zippin</h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium print:text-gray-600">Zippin Quick Commerce Pvt. Ltd.</p>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400 print:text-gray-500">GSTIN: 07AAECZ9821M1Z5 • FSSAI: 10019011006542</p>
               </div>
             </div>
 
             <div className="text-right">
-              <span className="inline-block px-3 py-1 bg-emerald-50 text-[#0C831F] border border-emerald-200 font-black text-xs uppercase tracking-wider rounded-lg mb-1">
+              <span className="inline-block px-3 py-1 bg-emerald-50 dark:bg-emerald-950/60 text-[#0C831F] dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 font-black text-xs uppercase tracking-wider rounded-lg mb-1 print:bg-emerald-50 print:text-[#0C831F]">
                 Original Tax Invoice
               </span>
-              <p className="text-sm font-bold text-gray-800">{invoiceNumber}</p>
-              <p className="text-xs text-gray-500">{orderDate}</p>
+              <p className="text-sm font-bold text-gray-900 dark:text-white print:text-black">{invoiceNumber}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 print:text-gray-600">{orderDate}</p>
             </div>
           </div>
 
           {/* Billing & Fulfillment Info */}
-          <div className="grid grid-cols-2 gap-6 bg-gray-50/80 rounded-2xl p-5 border border-gray-100 mb-6 text-xs">
+          <div className="grid grid-cols-2 gap-6 bg-gray-50/80 dark:bg-gray-800/40 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 mb-6 text-xs print:bg-gray-50 print:border-gray-200">
             <div>
-              <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-1">Delivered To</p>
-              <p className="font-extrabold text-gray-900 text-sm">{order.customerName || "Customer"}</p>
-              <p className="text-gray-600 font-medium mt-0.5">{order.customerPhone || "+91 98765 43210"}</p>
-              <p className="text-gray-500 mt-1 leading-relaxed">
+              <p className="text-[10px] uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider mb-1">Delivered To</p>
+              <p className="font-extrabold text-gray-900 dark:text-white text-sm print:text-black">{order.customerName || "Customer"}</p>
+              <p className="text-gray-700 dark:text-gray-300 font-medium mt-0.5 print:text-gray-600">{order.customerPhone || "+91 98765 43210"}</p>
+              <p className="text-gray-600 dark:text-gray-400 mt-1 leading-relaxed print:text-gray-500">
                 {order.deliveryAddress?.addressLine || "Saket District Centre, Sector 43"}, {order.deliveryAddress?.city || "Gurugram"}, {order.deliveryAddress?.pincode || "122002"}
               </p>
             </div>
 
             <div className="text-right sm:text-left">
-              <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-1">Fulfillment Details</p>
-              <p className="font-bold text-gray-800">
-                Fulfillment Hub: <span className="text-[#0C831F]">{order.store?.name || "Sector 43 Dark Store"}</span>
+              <p className="text-[10px] uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider mb-1">Fulfillment Details</p>
+              <p className="font-bold text-gray-800 dark:text-gray-200 print:text-black">
+                Fulfillment Hub: <span className="text-[#0C831F] dark:text-emerald-400">{order.store?.name || "Sector 43 Dark Store"}</span>
               </p>
-              <p className="text-gray-600 mt-0.5">
-                Delivery Mode: <span className="font-semibold text-gray-800">Superfast (8-10 Mins)</span>
+              <p className="text-gray-700 dark:text-gray-300 mt-0.5 print:text-gray-600">
+                Delivery Mode: <span className="font-semibold text-gray-900 dark:text-white print:text-black">Superfast (8-10 Mins)</span>
               </p>
-              <p className="text-gray-600 mt-0.5">
+              <p className="text-gray-700 dark:text-gray-300 mt-0.5 print:text-gray-600">
                 Payment Method:{" "}
-                <span className="font-bold uppercase text-gray-800">{order.paymentMethod || "UPI"}</span>
+                <span className="font-bold uppercase text-gray-900 dark:text-white print:text-black">{order.paymentMethod || "UPI"}</span>
               </p>
-              <p className="text-gray-600 mt-0.5">
+              <p className="text-gray-700 dark:text-gray-300 mt-0.5 print:text-gray-600">
                 Payment Status:{" "}
-                <span className="font-bold text-emerald-600 uppercase">
+                <span className="font-bold text-emerald-600 dark:text-emerald-400 uppercase">
                   {order.paymentStatus || "COMPLETED"}
                 </span>
               </p>
@@ -114,10 +114,10 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
           </div>
 
           {/* Items Table */}
-          <div className="border border-gray-200 rounded-2xl overflow-hidden mb-6">
+          <div className="border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden mb-6 print:border-gray-200">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-gray-100/80 text-gray-600 font-bold border-b border-gray-200">
+                <tr className="bg-gray-100/80 dark:bg-gray-800/80 text-gray-700 dark:text-gray-300 font-bold border-b border-gray-200 dark:border-gray-800 print:bg-gray-100 print:text-gray-600">
                   <th className="py-2.5 px-4 w-10 text-center">#</th>
                   <th className="py-2.5 px-4">Item Description</th>
                   <th className="py-2.5 px-3">Unit/Pack</th>
@@ -126,26 +126,26 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
                   <th className="py-2.5 px-4 text-right">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100 dark:divide-gray-800 print:divide-gray-100">
                 {(order.items || []).map((item, idx) => (
-                  <tr key={idx} className="hover:bg-gray-50/50">
-                    <td className="py-2.5 px-4 text-center text-gray-400 font-medium">{idx + 1}</td>
+                  <tr key={idx} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/40">
+                    <td className="py-2.5 px-4 text-center text-gray-400 dark:text-gray-500 font-medium">{idx + 1}</td>
                     <td className="py-2.5 px-4">
                       <div className="flex items-center gap-2.5">
                         {item.image && (
                           <img
                             src={item.image}
                             alt=""
-                            className="w-7 h-7 rounded-md object-contain bg-white border border-gray-100 flex-shrink-0"
+                            className="w-7 h-7 rounded-md object-contain bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 flex-shrink-0"
                           />
                         )}
-                        <span className="font-bold text-gray-800">{item.title || item.name}</span>
+                        <span className="font-bold text-gray-900 dark:text-white print:text-black">{item.title || item.name}</span>
                       </div>
                     </td>
-                    <td className="py-2.5 px-3 text-gray-500">{item.unit || "1 pack"}</td>
-                    <td className="py-2.5 px-3 text-right text-gray-600">₹{item.price}</td>
-                    <td className="py-2.5 px-3 text-center font-bold text-gray-800">{item.quantity || item.qty || 1}</td>
-                    <td className="py-2.5 px-4 text-right font-bold text-gray-900">
+                    <td className="py-2.5 px-3 text-gray-600 dark:text-gray-400">{item.unit || "1 pack"}</td>
+                    <td className="py-2.5 px-3 text-right text-gray-700 dark:text-gray-300">₹{item.price}</td>
+                    <td className="py-2.5 px-3 text-center font-bold text-gray-900 dark:text-white print:text-black">{item.quantity || item.qty || 1}</td>
+                    <td className="py-2.5 px-4 text-right font-bold text-gray-900 dark:text-white print:text-black">
                       ₹{item.total || (item.price * (item.quantity || item.qty || 1))}
                     </td>
                   </tr>
@@ -156,46 +156,46 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
 
           {/* Totals Summary */}
           <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
-            <div className="text-xs text-gray-400 max-w-xs">
-              <p className="font-semibold text-gray-500 mb-1">Terms & Conditions:</p>
+            <div className="text-xs text-gray-500 dark:text-gray-400 max-w-xs">
+              <p className="font-semibold text-gray-700 dark:text-gray-300 mb-1">Terms & Conditions:</p>
               <p>Goods once delivered in sealed condition are covered under Zippin 10-Minute Return & Refund policy. For support, contact support@zippin.in</p>
             </div>
 
-            <div className="w-full sm:w-64 bg-gray-50 rounded-2xl p-4 border border-gray-100 space-y-2 text-xs">
-              <div className="flex justify-between text-gray-600">
+            <div className="w-full sm:w-64 bg-gray-50 dark:bg-gray-800/40 rounded-2xl p-4 border border-gray-100 dark:border-gray-800 space-y-2 text-xs print:bg-gray-50 print:border-gray-200">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>Items Subtotal:</span>
-                <span className="font-semibold text-gray-800">₹{subtotal}</span>
+                <span className="font-semibold text-gray-900 dark:text-white print:text-black">₹{subtotal}</span>
               </div>
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>Delivery Charge:</span>
-                <span className="font-semibold text-gray-800">
-                  {deliveryFee === 0 ? <span className="text-emerald-600">FREE</span> : `₹${deliveryFee}`}
+                <span className="font-semibold text-gray-900 dark:text-white print:text-black">
+                  {deliveryFee === 0 ? <span className="text-emerald-600 dark:text-emerald-400">FREE</span> : `₹${deliveryFee}`}
                 </span>
               </div>
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>CGST (2.5%):</span>
-                <span className="font-semibold text-gray-800">₹{(tax / 2).toFixed(2)}</span>
+                <span className="font-semibold text-gray-900 dark:text-white print:text-black">₹{(tax / 2).toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>SGST (2.5%):</span>
-                <span className="font-semibold text-gray-800">₹{(tax / 2).toFixed(2)}</span>
+                <span className="font-semibold text-gray-900 dark:text-white print:text-black">₹{(tax / 2).toFixed(2)}</span>
               </div>
-              <div className="border-t border-gray-200 pt-2 flex justify-between text-sm font-black text-gray-900">
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-2 flex justify-between text-sm font-black text-gray-900 dark:text-white print:text-black">
                 <span>Total Amount Paid:</span>
-                <span className="text-[#0C831F]">₹{total}</span>
+                <span className="text-[#0C831F] dark:text-emerald-400">₹{total}</span>
               </div>
             </div>
           </div>
 
           {/* Footer signature */}
-          <div className="border-t border-gray-200 pt-4 flex items-center justify-between text-[11px] text-gray-400">
+          <div className="border-t border-gray-200 dark:border-gray-800 pt-4 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
             <div>
               <p>This is a computer-generated tax invoice and requires no physical signature.</p>
-              <p className="text-[10px] text-gray-300">Powered by Zippin Dark Store Logistics OS</p>
+              <p className="text-[10px] text-gray-400 dark:text-gray-500">Powered by Zippin Dark Store Logistics OS</p>
             </div>
             <div className="text-right">
-              <div className="font-bold text-[#0C831F]">Zippin Authorized Signatory</div>
-              <div className="text-[10px] text-gray-400">Saket Operations Center</div>
+              <div className="font-bold text-[#0C831F] dark:text-emerald-400">Zippin Authorized Signatory</div>
+              <div className="text-[10px] text-gray-500 dark:text-gray-400">Saket Operations Center</div>
             </div>
           </div>
         </div>

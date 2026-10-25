@@ -282,13 +282,13 @@ export default function OrdersAdmin() {
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 isActive
                   ? "bg-[#0C831F] text-white shadow-sm shadow-[#0C831F]/30"
-                  : "bg-white dark:bg-[#121212] text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200/80 dark:border-gray-800"
+                  : "bg-white dark:bg-[#121212] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200/80 dark:border-gray-800"
               }`}
             >
               <span>{config.label}</span>
               <span
                 className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${
-                  isActive ? "bg-white/20 text-white" : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                  isActive ? "bg-white/20 text-white" : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300"
                 }`}
               >
                 {count}
@@ -300,7 +300,7 @@ export default function OrdersAdmin() {
 
       {/* Search Input Bar */}
       <div className="flex items-center gap-3 bg-white dark:bg-[#121212] p-3 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs transition-colors duration-300">
-        <svg className="w-4 h-4 text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
         <input
@@ -308,12 +308,12 @@ export default function OrdersAdmin() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Filter by Order ID (e.g. ORD-9821), Customer name, phone number, address..."
-          className="w-full text-xs md:text-sm bg-transparent focus:outline-none text-gray-800 dark:text-gray-100 placeholder-gray-400"
+          className="w-full text-xs md:text-sm bg-transparent focus:outline-none text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 font-medium"
         />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery("")}
-            className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 font-bold px-2 py-1 cursor-pointer"
+            className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-bold px-2 py-1 cursor-pointer"
           >
             Clear
           </button>
@@ -323,19 +323,19 @@ export default function OrdersAdmin() {
       {/* Orders Table */}
       <div className="bg-white dark:bg-[#121212] rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs overflow-hidden transition-colors duration-300">
         {loading ? (
-          <div className="p-12 text-center text-gray-400 text-sm">
+          <div className="p-12 text-center text-gray-500 dark:text-gray-400 text-sm">
             <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
             Loading orders pipeline...
           </div>
         ) : filteredOrders.length === 0 ? (
-          <div className="p-12 text-center text-gray-400 text-sm">
+          <div className="p-12 text-center text-gray-500 dark:text-gray-400 text-sm">
             No orders found matching the selected filter.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-gray-50/80 dark:bg-[#0c1017] text-gray-500 dark:text-gray-400 font-bold border-b border-gray-200/80 dark:border-gray-800 uppercase tracking-wider text-[10px]">
+                <tr className="bg-gray-50/80 dark:bg-[#0c1017] text-gray-600 dark:text-gray-300 font-extrabold border-b border-gray-200/80 dark:border-gray-800 uppercase tracking-wider text-[10px]">
                   <th className="py-3 px-4">Order ID & Date</th>
                   <th className="py-3 px-4">Customer & Phone</th>
                   <th className="py-3 px-4">Items / Total</th>
@@ -354,7 +354,7 @@ export default function OrdersAdmin() {
                         <div className="flex items-center gap-1.5">
                           <span className="text-[#0C831F] dark:text-emerald-400 font-black">{ord.orderNumber}</span>
                         </div>
-                        <div className="text-[10px] text-gray-400 font-sans mt-0.5">
+                        <div className="text-[10px] text-gray-500 dark:text-gray-400 font-sans mt-0.5">
                           {new Date(ord.createdAt || Date.now()).toLocaleTimeString("en-IN", {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -366,9 +366,9 @@ export default function OrdersAdmin() {
 
                       {/* Customer */}
                       <td className="py-3.5 px-4">
-                        <div className="font-extrabold text-gray-800 dark:text-gray-200">{ord.customerName || "Customer"}</div>
-                        <div className="text-[11px] text-gray-500 dark:text-gray-400">{ord.customerPhone || "+91 98765 43210"}</div>
-                        <div className="text-[10px] text-gray-400 truncate max-w-[180px]">
+                        <div className="font-extrabold text-gray-900 dark:text-gray-100">{ord.customerName || "Customer"}</div>
+                        <div className="text-[11px] text-gray-600 dark:text-gray-300 font-medium">{ord.customerPhone || "+91 98765 43210"}</div>
+                        <div className="text-[10px] text-gray-500 dark:text-gray-400 truncate max-w-[180px]">
                           {ord.deliveryAddress?.addressLine}
                         </div>
                       </td>
@@ -376,9 +376,9 @@ export default function OrdersAdmin() {
                       {/* Items & Total */}
                       <td className="py-3.5 px-4">
                         <div className="font-black text-gray-900 dark:text-white text-sm">₹{ord.total}</div>
-                        <div className="text-[11px] text-gray-500 dark:text-gray-400">
+                        <div className="text-[11px] text-gray-600 dark:text-gray-300">
                           {(ord.items || []).length} items •{" "}
-                          <span className="uppercase text-[10px] font-bold text-gray-400">
+                          <span className="uppercase text-[10px] font-extrabold text-gray-500 dark:text-gray-400">
                             {ord.paymentMethod || "UPI"}
                           </span>
                         </div>
@@ -386,7 +386,7 @@ export default function OrdersAdmin() {
 
                       {/* Hub & Crew: Picker + Rider */}
                       <td className="py-3.5 px-4">
-                        <div className="font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-1">
+                        <div className="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1">
                           <span>🏬</span>
                           <span>{ord.store?.name || "Sector 43 Hub"}</span>
                         </div>
@@ -472,7 +472,7 @@ export default function OrdersAdmin() {
                     {selectedOrder.status?.toUpperCase()}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400 mt-0.5">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                   Ordered on {new Date(selectedOrder.createdAt).toLocaleString("en-IN")}
                 </p>
               </div>
@@ -489,7 +489,7 @@ export default function OrdersAdmin() {
                 </button>
                 <button
                   onClick={() => setSelectedOrder(null)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+                  className="p-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
                 >
                   ✕
                 </button>
@@ -500,12 +500,12 @@ export default function OrdersAdmin() {
             <div className="flex-1 overflow-y-auto p-5 space-y-5 text-xs">
               {/* Customer info */}
               <div className="bg-gray-50 dark:bg-gray-800/40 rounded-2xl p-4 border border-gray-100 dark:border-gray-800">
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                <p className="text-[10px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-1">
                   Customer & Delivery
                 </p>
                 <p className="font-extrabold text-sm text-gray-900 dark:text-white">{selectedOrder.customerName}</p>
                 <p className="text-gray-600 dark:text-gray-300 font-semibold">{selectedOrder.customerPhone}</p>
-                <p className="text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-gray-600 dark:text-gray-300 mt-1">
                   {selectedOrder.deliveryAddress?.addressLine}, {selectedOrder.deliveryAddress?.city} -{" "}
                   {selectedOrder.deliveryAddress?.pincode}
                 </p>
@@ -513,7 +513,7 @@ export default function OrdersAdmin() {
 
               {/* Order items with Genuine Blinkit Photos */}
               <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                <p className="text-[10px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
                   Ordered Items ({selectedOrder.items?.length || 0})
                 </p>
                 <div className="divide-y divide-gray-100 dark:divide-gray-800 border border-gray-100 dark:border-gray-800 rounded-2xl overflow-hidden">
@@ -529,7 +529,7 @@ export default function OrdersAdmin() {
                         )}
                         <div>
                           <p className="font-extrabold text-gray-900 dark:text-white">{it.title || it.name}</p>
-                          <p className="text-gray-400 text-[11px]">{it.unit} • Qty: {it.quantity || it.qty || 1}</p>
+                          <p className="text-gray-500 dark:text-gray-400 text-[11px] font-medium">{it.unit} • Qty: {it.quantity || it.qty || 1}</p>
                         </div>
                       </div>
                       <div className="font-black text-gray-900 dark:text-white">₹{it.total || it.price}</div>
@@ -540,13 +540,13 @@ export default function OrdersAdmin() {
 
               {/* Hub, Picker & Rider Assignments */}
               <div>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                <p className="text-[10px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
                   Dispatch & Fulfillment Assignment
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {/* Dark Store */}
                   <div className="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
-                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider block mb-1">
                       🏬 Dark Store Hub
                     </label>
                     <select
@@ -565,7 +565,7 @@ export default function OrdersAdmin() {
 
                   {/* Store Picker */}
                   <div className="bg-gray-50 dark:bg-gray-800/40 p-3 rounded-2xl border border-gray-100 dark:border-gray-800">
-                    <label className="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider block mb-1">
+                    <label className="text-[10px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider block mb-1">
                       📦 In-Store Picker
                     </label>
                     <select
