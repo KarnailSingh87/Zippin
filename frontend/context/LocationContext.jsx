@@ -2,11 +2,11 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 const LocationContext = createContext();
 
-// Single Dark Store Hub - Hamirpur District Hub (Sole Branch)
+// Single Store Facility - Hamirpur District Hub (Sole Branch)
 export const DISTRICT_DARK_STORES = [
   {
     id: "str-hmr-501",
-    name: "Zippin Dark Store #501 - Hamirpur District Hub",
+    name: "Zippin Store #501 - Hamirpur Hub",
     district: "Hamirpur",
     city: "Hamirpur",
     state: "Himachal Pradesh",
@@ -18,6 +18,7 @@ export const DISTRICT_DARK_STORES = [
     surgeMultiplier: 1.0,
   },
 ];
+export const DISTRICT_STORES = DISTRICT_DARK_STORES;
 
 /**
  * Calculate Great-Circle Distance (in km) using Haversine formula
@@ -53,7 +54,7 @@ export function calculateEstimatedDeliveryMinutes(distanceKm) {
 }
 
 /**
- * Find the most relevant Dark Store taking the District or City as origin
+ * Find the most relevant Store Facility taking the District or City as origin
  */
 export function findOriginStoreForDistrict(districtOrCity = "", state = "", userCoords = null) {
   const qDist = (districtOrCity || "").toLowerCase().trim();
@@ -98,7 +99,7 @@ export function findOriginStoreForDistrict(districtOrCity = "", state = "", user
     return nearest;
   }
 
-  // Default fallback to first dark store hub
+  // Default fallback to single Hamirpur store facility
   return DISTRICT_DARK_STORES[0];
 }
 
@@ -185,7 +186,7 @@ export function LocationProvider({ children }) {
         store.coordinates.lng
       );
     } else {
-      // Auto-determine distance from Hamirpur Dark Store (Gandhi Chowk Hub)
+      // Auto-determine distance from Hamirpur Store (Gandhi Chowk Hub)
       const locLower = locationName.toLowerCase();
       if (locLower.includes("nit")) {
         calculatedDist = 3.5;
@@ -260,7 +261,7 @@ export function LocationProvider({ children }) {
           try {
             const { latitude, longitude } = pos.coords;
             setUserCoords({ lat: latitude, lng: longitude });
-            setLocationStatus({ type: "loading", message: "Resolving street & dark store zone..." });
+            setLocationStatus({ type: "loading", message: "Resolving street & delivery zone..." });
 
             // Reverse geocode via OpenStreetMap Nominatim
             const res = await fetch(

@@ -5,7 +5,7 @@ import Link from "next/link";
 const FAQS = [
   {
     q: "How does Zippin deliver orders in 8 to 10 minutes?",
-    a: "We maintain automated neighborhood micro-fulfillment centers (dark stores) within 1.5 to 2 km of high-density residential hubs. When you order, our pickers receive item locations on hand-held terminals, pack the bag in under 2 minutes, and hand it to a waiting delivery partner.",
+    a: "We operate an automated central fulfillment store at Gandhi Chowk, Hamirpur. When you order, our pickers receive item locations on hand-held terminals, pack the bag in under 2 minutes, and hand it to a waiting delivery partner.",
   },
   {
     q: "What should I do if an item in my order is missing or damaged?",
@@ -21,7 +21,7 @@ const FAQS = [
   },
   {
     q: "Can I cancel my order after placing it?",
-    a: "Because our dark store teams begin picking immediately upon order placement, cancellations are permitted within the first 60 seconds directly from the live tracking screen.",
+    a: "Because our store team begins picking immediately upon order placement, cancellations are permitted within the first 60 seconds directly from the live tracking screen.",
   },
 ];
 

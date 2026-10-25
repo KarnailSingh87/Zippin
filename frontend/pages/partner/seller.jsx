@@ -66,7 +66,7 @@ export default function SellerPage() {
           <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-xs space-y-6">
             <div>
               <h2 className="text-xl font-black text-gray-900">Register Your Brand</h2>
-              <p className="text-xs text-gray-500 mt-1">Submit your brand details and start listing in our dark stores.</p>
+              <p className="text-xs text-gray-500 mt-1">Submit your brand details and start listing in our Hamirpur store.</p>
             </div>
 
             {submitted ? (

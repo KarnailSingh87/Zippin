@@ -44,7 +44,7 @@ export default function Layout({ children }) {
     setLocationStatus({ type: "loading", message: "Acquiring GPS satellite fix..." });
     const res = await detectLocation();
 
-    // Verify dark store coverage against active dark stores
+    // Verify store coverage against active Hamirpur store
     const isServiceable = stores.some((s) =>
       s.district.toLowerCase().includes((district || "").toLowerCase()) ||
       s.city.toLowerCase().includes((district || "").toLowerCase()) ||
@@ -96,7 +96,7 @@ export default function Layout({ children }) {
   const POPULAR_HUBS = [
     {
       name: "Hamirpur, Gandhi Chowk / Main Bazaar, HP",
-      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      hub: "Zippin Store #501 - Hamirpur Hub",
       city: "Hamirpur",
       district: "Hamirpur",
       state: "Himachal Pradesh",
@@ -106,7 +106,7 @@ export default function Layout({ children }) {
     },
     {
       name: "Hamirpur, NIT Hamirpur Campus, Anu, HP",
-      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      hub: "Zippin Store #501 - Hamirpur Hub",
       city: "Hamirpur",
       district: "Hamirpur",
       state: "Himachal Pradesh",
@@ -116,7 +116,7 @@ export default function Layout({ children }) {
     },
     {
       name: "Hamirpur, Anu Chowk & Salasi, HP",
-      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      hub: "Zippin Store #501 - Hamirpur Hub",
       city: "Hamirpur",
       district: "Hamirpur",
       state: "Himachal Pradesh",
@@ -126,7 +126,7 @@ export default function Layout({ children }) {
     },
     {
       name: "Hamirpur, Mattan Sidh / Bypass Road, HP",
-      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      hub: "Zippin Store #501 - Hamirpur Hub",
       city: "Hamirpur",
       district: "Hamirpur",
       state: "Himachal Pradesh",
@@ -136,7 +136,7 @@ export default function Layout({ children }) {
     },
     {
       name: "Hamirpur, Pucca Bharo & Nadaun Road, HP",
-      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      hub: "Zippin Store #501 - Hamirpur Hub",
       city: "Hamirpur",
       district: "Hamirpur",
       state: "Himachal Pradesh",
@@ -146,7 +146,7 @@ export default function Layout({ children }) {
     },
     {
       name: "Hamirpur, Bhota Road & Outer Hub, HP",
-      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      hub: "Zippin Store #501 - Hamirpur Hub",
       city: "Hamirpur",
       district: "Hamirpur",
       state: "Himachal Pradesh",
@@ -156,7 +156,7 @@ export default function Layout({ children }) {
     },
     {
       name: "Hamirpur, Dosarka Chowk & Entry Road, HP",
-      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      hub: "Zippin Store #501 - Hamirpur Hub",
       city: "Hamirpur",
       district: "Hamirpur",
       state: "Himachal Pradesh",
@@ -382,7 +382,7 @@ export default function Layout({ children }) {
                   </span>
                 </div>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Exclusive Hamirpur District Dark Store — deliveries calculated dynamically from Gandhi Chowk
+                  Exclusive Hamirpur Store Facility — deliveries calculated dynamically from Gandhi Chowk
                 </p>
               </div>
             </div>
@@ -475,7 +475,7 @@ export default function Layout({ children }) {
                       {locationSearch}
                     </div>
                     <div className="text-[11px] text-gray-600 font-medium mt-0.5">
-                      Origin: Zippin Dark Store #501 - Hamirpur District Hub
+                      Origin: Zippin Store #501 - Hamirpur Hub
                     </div>
                     <div className="text-[10px] text-gray-400">
                       Near Main Bus Stand & Gandhi Chowk, Hamirpur (PIN: 177001)
@@ -690,7 +690,7 @@ export default function Layout({ children }) {
               <div>
                 <h4 className="font-bold text-gray-900 text-sm">Superfast 10-Min Delivery</h4>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Get your order delivered to your doorstep in minutes from dark stores nearby.
+                  Get your order delivered to your doorstep in minutes from our Hamirpur store.
                 </p>
               </div>
             </div>

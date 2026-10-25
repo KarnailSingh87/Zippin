@@ -20,7 +20,7 @@ async function migrate() {
   if (!hamirpurStore) {
     hamirpurStore = await Store.create({
       code: "STR-HMR-501",
-      name: "Zippin Dark Store - Hamirpur District Hub",
+      name: "Zippin Store #501 - Hamirpur Hub",
       address: "Near Main Bus Stand & Gandhi Chowk, Hamirpur",
       area: "Gandhi Chowk / District Center",
       city: "Hamirpur",
@@ -47,7 +47,7 @@ async function migrate() {
     });
     console.log("Created Hamirpur store:", hamirpurStore._id);
   } else {
-    hamirpurStore.name = "Zippin Dark Store - Hamirpur District Hub";
+    hamirpurStore.name = "Zippin Store #501 - Hamirpur Hub";
     hamirpurStore.address = "Near Main Bus Stand & Gandhi Chowk, Hamirpur";
     hamirpurStore.area = "Gandhi Chowk / District Center";
     hamirpurStore.city = "Hamirpur";

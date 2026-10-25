@@ -444,61 +444,19 @@ async function seed() {
     });
   }
 
-  // Seed Dark Stores / Warehouses (ER Model: store)
+  // Seed Store Facility (Single Hamirpur Branch)
   const storesToInsert = [
     {
-      name: "Blinkit Dark Store #101 - Cyber Hub",
-      code: "STORE-GGN-101",
-      city: "Gurugram",
-      area: "DLF Cyber City",
-      address: "Building 10B, DLF Cyber Hub, Sector 24",
-      pincode: "122002",
-      phone: "0124-4112233",
+      name: "Zippin Store #501 - Hamirpur Hub",
+      code: "STR-HMR-501",
+      city: "Hamirpur",
+      area: "Hamirpur District Center",
+      address: "Main Bazaar, Near Gandhi Chowk, Hamirpur, HP - 177001",
+      pincode: "177001",
+      phone: "+91 98110 09911",
       isActive: true,
-      createdAt: new Date(),
-    },
-    {
-      name: "Blinkit Dark Store #102 - Sector 56",
-      code: "STORE-GGN-102",
-      city: "Gurugram",
-      area: "Golf Course Road",
-      address: "Shop 14-16, Huda Market, Sector 56",
-      pincode: "122011",
-      phone: "0124-4556677",
-      isActive: true,
-      createdAt: new Date(),
-    },
-    {
-      name: "Blinkit Dark Store #103 - Saket",
-      code: "STORE-DEL-103",
-      city: "New Delhi",
-      area: "Saket District Centre",
-      address: "Plot 3, Community Center, Saket",
-      pincode: "110017",
-      phone: "011-26554433",
-      isActive: true,
-      createdAt: new Date(),
-    },
-    {
-      name: "Blinkit Dark Store #104 - Indiranagar",
-      code: "STORE-BLR-104",
-      city: "Bengaluru",
-      area: "Indiranagar 100ft Road",
-      address: "420, 100 Feet Rd, HAL 2nd Stage, Indiranagar",
-      pincode: "560038",
-      phone: "080-4998877",
-      isActive: true,
-      createdAt: new Date(),
-    },
-    {
-      name: "Blinkit Dark Store #105 - Koramangala",
-      code: "STORE-BLR-105",
-      city: "Bengaluru",
-      area: "Koramangala 4th Block",
-      address: "88, 80 Feet Rd, 4th Block, Koramangala",
-      pincode: "560034",
-      phone: "080-4112345",
-      isActive: true,
+      deliveryRadiusKm: 8.0,
+      surgeMultiplier: 1.0,
       createdAt: new Date(),
     },
   ];
@@ -506,7 +464,7 @@ async function seed() {
   await db.collection("stores").deleteMany({});
   const storeResult = await db.collection("stores").insertMany(storesToInsert);
   const primaryStoreId = storeResult.insertedIds[0];
-  console.log(`Successfully seeded ${storeResult.insertedCount} Blinkit Dark Stores!`);
+  console.log(`Successfully seeded Hamirpur Store Facility (${storeResult.insertedCount} Store)!`);
 
   // Seed Delivery Partners (ER Model: delivery_partner)
   const partnersToInsert = [

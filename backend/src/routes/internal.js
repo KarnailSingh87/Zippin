@@ -906,7 +906,7 @@ router.post("/seed", async (req, res) => {
     let primaryStore = null;
     if (storeCount === 0) {
       primaryStore = await Store.create({
-        name: "Zippin Dark Store - Hamirpur District Hub",
+        name: "Zippin Store #501 - Hamirpur Hub",
         code: "STR-HMR-501",
         city: "Hamirpur",
         state: "Himachal Pradesh",

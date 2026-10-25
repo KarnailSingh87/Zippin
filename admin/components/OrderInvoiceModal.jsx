@@ -95,7 +95,7 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
             <div className="text-right sm:text-left">
               <p className="text-[10px] uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider mb-1">Fulfillment Details</p>
               <p className="font-bold text-gray-800 dark:text-gray-200 print:text-black">
-                Fulfillment Hub: <span className="text-[#0C831F] dark:text-emerald-400">{order.store?.name || "Hamirpur District Dark Store"}</span>
+                Fulfillment Store: <span className="text-[#0C831F] dark:text-emerald-400">{order.store?.name || "Zippin Store #501 - Hamirpur Hub"}</span>
               </p>
               <p className="text-gray-700 dark:text-gray-300 mt-0.5 print:text-gray-600">
                 Delivery Mode: <span className="font-semibold text-gray-900 dark:text-white print:text-black">Superfast (8-10 Mins)</span>
@@ -191,11 +191,11 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
           <div className="border-t border-gray-200 dark:border-gray-800 pt-4 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
             <div>
               <p>This is a computer-generated tax invoice and requires no physical signature.</p>
-              <p className="text-[10px] text-gray-400 dark:text-gray-500">Powered by Zippin Dark Store Logistics OS</p>
+              <p className="text-[10px] text-gray-400 dark:text-gray-500">Powered by Zippin Store Logistics OS</p>
             </div>
             <div className="text-right">
               <div className="font-bold text-[#0C831F] dark:text-emerald-400">Zippin Authorized Signatory</div>
-              <div className="text-[10px] text-gray-500 dark:text-gray-400">Saket Operations Center</div>
+              <div className="text-[10px] text-gray-500 dark:text-gray-400">Hamirpur Operations Center</div>
             </div>
           </div>
         </div>

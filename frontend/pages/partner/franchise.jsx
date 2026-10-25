@@ -18,10 +18,10 @@ export default function FranchisePage() {
   return (
     <>
       <Head>
-        <title>Franchise Opportunities | Partner with Zippin Dark Store Network</title>
+        <title>Franchise Opportunities | Partner with Zippin Store Network</title>
         <meta
           name="description"
-          content="Own and operate a high-yield Zippin dark store micro-fulfillment franchise in your city."
+          content="Own and operate a high-yield Zippin store micro-fulfillment franchise in your city."
         />
       </Head>
 
@@ -38,7 +38,7 @@ export default function FranchisePage() {
               High Growth Franchise
             </span>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
-              Own a Zippin Neighborhood Dark Store.
+              Own a Zippin Neighborhood Store Facility.
             </h1>
             <p className="text-xs sm:text-sm text-amber-50 font-medium leading-relaxed max-w-xl">
               Partner with India's fastest growing 10-minute grocery network. Generate predictable monthly returns powered by our proprietary picking technology and guaranteed demand.

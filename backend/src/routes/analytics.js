@@ -66,7 +66,7 @@ router.get("/revenue", authenticate, requireAdmin, async (req, res) => {
       paymentMethods[method].amount += amt;
 
       // Store breakdown
-      const storeName = ord.store?.name || "Sector 43 Dark Store";
+      const storeName = ord.store?.name || "Zippin Store #501 - Hamirpur Hub";
       if (!storeRevenueMap[storeName]) {
         storeRevenueMap[storeName] = { name: storeName, count: 0, revenue: 0 };
       }

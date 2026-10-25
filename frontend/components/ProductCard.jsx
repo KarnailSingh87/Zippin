@@ -42,7 +42,6 @@ export default function ProductCard({ product }) {
 
     if (!img || !basket) {
       addItem(product);
-      if (showToast) showToast(`Added to cart: ${product.title}`);
       return;
     }
 
@@ -77,7 +76,6 @@ export default function ProductCard({ product }) {
     });
 
     addItem(product);
-    if (showToast) showToast(`Added to cart: ${product.title}`);
 
     // Squash & spring bounce on basket receiving item
     if (basket) {

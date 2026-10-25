@@ -34,7 +34,7 @@ export default function AboutPage() {
                 Everything delivered in 8–10 minutes.
               </h1>
               <p className="text-sm sm:text-base text-emerald-100 font-medium leading-relaxed">
-                Zippin is pioneering the future of quick commerce in India. We combine deep neighborhood dark store networks, state-of-the-art predictive inventory tech, and an empowered delivery fleet to bring you what you need, right when you need it.
+                Zippin is pioneering the future of quick commerce in India. We combine local store fulfillment, state-of-the-art predictive inventory tech, and an empowered delivery fleet to bring you what you need, right when you need it.
               </p>
             </div>
             <div className="absolute right-0 bottom-0 opacity-15 translate-x-10 translate-y-10 pointer-events-none">
@@ -53,8 +53,8 @@ export default function AboutPage() {
               <div className="text-xs font-bold text-gray-500 mt-1 uppercase tracking-wide">Products Available</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-xs text-center">
-              <div className="text-3xl sm:text-4xl font-black text-gray-900">6</div>
-              <div className="text-xs font-bold text-gray-500 mt-1 uppercase tracking-wide">Dark Stores Across NCR & BLR</div>
+              <div className="text-3xl sm:text-4xl font-black text-gray-900">1</div>
+              <div className="text-xs font-bold text-gray-500 mt-1 uppercase tracking-wide">Hamirpur Store Branch</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-xs text-center">
               <div className="text-3xl sm:text-4xl font-black text-[#0C831F]">99.4%</div>
@@ -72,9 +72,9 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-5 rounded-2xl bg-emerald-50/60 border border-emerald-100 space-y-2">
                 <span className="text-3xl">🏬</span>
-                <h3 className="font-bold text-base text-gray-900">Neighborhood Dark Stores</h3>
+                <h3 className="font-bold text-base text-gray-900">Hamirpur Store Facility</h3>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  We position automated micro-fulfillment centers within 2 km of your home. Orders are packed in under 2 minutes by our trained picking team.
+                  Our central Gandhi Chowk store facility fulfills every order across Hamirpur with items packed in under 2 minutes by our trained picking team.
                 </p>
               </div>
 
@@ -90,7 +90,7 @@ export default function AboutPage() {
                 <span className="text-3xl">🛵</span>
                 <h3 className="font-bold text-base text-gray-900">Rider Safety & Well-being</h3>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Our delivery partners never speed. Superfast delivery happens because the dark store is around your block, not because drivers rush.
+                  Our delivery partners never speed. Superfast delivery happens because our store is centrally located at Gandhi Chowk, not because drivers rush.
                 </p>
               </div>
             </div>

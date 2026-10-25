@@ -46,7 +46,7 @@ const OrderSchema = new mongoose.Schema({
   },
   statusHistory: [StatusHistorySchema],
   store: { type: mongoose.Schema.Types.ObjectId, ref: "Store" },
-  picker: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" }, // Assigned dark store picker/packer
+  picker: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" }, // Assigned store picker/packer
   partner: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" },
   otp: { type: String, default: () => Math.floor(1000 + Math.random() * 9000).toString() },
   deliveryOtp: { type: String, default: "1234" },

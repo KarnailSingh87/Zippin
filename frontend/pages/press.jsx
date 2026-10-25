@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const RELEASES = [
   {
-    title: "Zippin Expands Dark Store Network Across 6 Strategic Micro-Hubs in NCR & Bengaluru",
+    title: "Zippin Launches High-Speed Quick Commerce Store Facility in Hamirpur",
     outlet: "The Economic Times",
     date: "October 2026",
     link: "#",

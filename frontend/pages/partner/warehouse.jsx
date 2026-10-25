@@ -18,7 +18,7 @@ export default function WarehousePage() {
   return (
     <>
       <Head>
-        <title>Warehouse & Property Partner | Lease Dark Stores to Zippin</title>
+        <title>Warehouse & Property Partner | Lease Store Facilities to Zippin</title>
         <meta
           name="description"
           content="Monetize your commercial real estate. Lease 2,000–4,000 sq ft properties to Zippin for long-term rental income."

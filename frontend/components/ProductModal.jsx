@@ -62,7 +62,6 @@ export default function ProductModal({ product, onClose }) {
                 buttonText={qty > 0 ? `Add Another (${qty} in cart)` : "Add to Basket"}
                 onAddToCart={() => {
                   addItem(product);
-                  if (showToast) showToast(`Added to cart: ${product.title}`);
                 }}
               />
             </div>
@@ -167,7 +166,6 @@ export default function ProductModal({ product, onClose }) {
               <button
                 onClick={() => {
                   addItem(product);
-                  if (showToast) showToast(`Added to cart: ${product.title}`);
                 }}
                 className="flex-1 bg-[#0C831F] hover:bg-[#0a701b] text-white py-3 px-6 rounded-xl font-black text-sm uppercase shadow-md active:scale-95 transition-all text-center"
               >

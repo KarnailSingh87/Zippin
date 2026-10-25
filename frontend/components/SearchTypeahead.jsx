@@ -255,7 +255,6 @@ export default function SearchTypeahead({ mobile = false, onClose, className = "
                     <button
                       onClick={() => {
                         addItem(p);
-                        if (showToast) showToast(`Added to cart — ${p.title}`);
                       }}
                       className="text-xs bg-[#0C831F] hover:bg-[#0a701b] text-white px-3 py-1 rounded-lg font-bold transition-transform active:scale-95"
                     >

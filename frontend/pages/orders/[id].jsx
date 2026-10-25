@@ -269,7 +269,7 @@ export default function OrderDetailPage() {
                 Rider Coordinates: {riderLocation.latitude.toFixed(4)}° N, {riderLocation.longitude.toFixed(4)}° E
               </p>
               <p className="text-[11px] text-emerald-400 font-medium">
-                Dynamic ETA: {dynamicEta} min ⚡ • Dark store dispatch radius ~{distanceMatrix.toFixed(1)} km
+                Dynamic ETA: {dynamicEta} min ⚡ • Store dispatch radius ~{distanceMatrix.toFixed(1)} km
               </p>
             </div>
           </div>
@@ -382,13 +382,13 @@ export default function OrderDetailPage() {
             </div>
           )}
 
-          {/* Fulfillment Dark Store */}
+          {/* Fulfillment Store */}
           {order.store && (
             <div className="flex items-start gap-2 text-xs text-gray-600">
               <span className="text-sm">🏬</span>
               <div>
                 <p className="font-semibold text-gray-800">
-                  Fulfillment Hub: {order.store.name}
+                  Fulfillment Store: {order.store.name}
                 </p>
                 <p className="text-gray-400">
                   {order.store.area}, {order.store.city} {order.store.pincode ? `(${order.store.pincode})` : ""}
