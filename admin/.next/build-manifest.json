@@ -32,15 +32,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/login.js"
     ],
-    "/orders": [
+    "/riders": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/orders.js"
-    ],
-    "/revenue": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/revenue.js"
+      "static/chunks/pages/riders.js"
     ]
   },
   "ampFirstPages": []

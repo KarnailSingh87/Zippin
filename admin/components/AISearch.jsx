@@ -39,7 +39,6 @@ export default function AISearch({ isOpen, onClose }) {
         { type: "action", label: "Store Pickers & Packers (6 In-Store Pickers)", path: "/pickers", badge: "SLA Velocity", icon: "📦" },
         { type: "action", label: "Manage Homepage Banners & Posters", path: "/hero-management", badge: "Hero Editor", icon: "🖼️" },
         { type: "action", label: "Live Customer Orders & Fulfillment", path: "/orders", badge: "Orders", icon: "📋" },
-        { type: "action", label: "Hamirpur Store Facility & Ops", path: "/stores", badge: "Store", icon: "🏬" },
         { type: "action", label: "Revenue & Settlements Analytics", path: "/revenue", badge: "Finance", icon: "💰" },
       ]);
       setSelectedIndex(0);

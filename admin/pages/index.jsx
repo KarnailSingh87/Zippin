@@ -195,14 +195,14 @@ export default function Dashboard() {
       shadow: "shadow-purple-500/20",
     },
     {
-      title: "Store Facility",
-      value: "Hamirpur Hub",
-      change: "Operational",
-      subtitle: "Main Bazaar, Gandhi Chowk",
-      link: "/stores",
+      title: "Inventory Control",
+      value: "510 SKUs",
+      change: "In Stock",
+      subtitle: "Hamirpur Fulfillment Hub",
+      link: "/inventory",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
         </svg>
       ),
       color: "from-indigo-500 to-indigo-600",
@@ -467,22 +467,22 @@ export default function Dashboard() {
           </p>
         </Link>
 
-        {/* Store Facility Card */}
+        {/* Inventory Management Card */}
         <Link
-          href="/stores"
+          href="/inventory"
           className="bg-white dark:bg-[#121212] hover:border-indigo-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Store Facility</p>
-              <p className="text-lg font-black text-gray-900 dark:text-white mt-1">Hamirpur Branch</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Inventory</p>
+              <p className="text-lg font-black text-gray-900 dark:text-white mt-1">Stock Control</p>
             </div>
             <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center font-bold text-lg">
-              🏬
+              📦
             </div>
           </div>
           <p className="text-[11px] text-indigo-600 dark:text-indigo-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Store Branch</span>
+            <span>Manage Stock</span>
             <span>→</span>
           </p>
         </Link>
@@ -673,8 +673,8 @@ export default function Dashboard() {
               </h3>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Exclusive fulfillment store branch for Hamirpur District</p>
             </div>
-            <Link href="/stores" className="text-xs font-bold text-[#0C831F] dark:text-emerald-400 hover:underline">
-              Manage Store Facility →
+            <Link href="/orders" className="text-xs font-bold text-[#0C831F] dark:text-emerald-400 hover:underline">
+              View Store Orders →
             </Link>
           </div>
 
