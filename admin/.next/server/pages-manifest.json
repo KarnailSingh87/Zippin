@@ -3,7 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/inventory": "pages/inventory.js",
-  "/riders": "pages/riders.js",
-  "/settings": "pages/settings.js"
+  "/settings": "pages/settings.js",
+  "/orders": "pages/orders.js",
+  "/riders": "pages/riders.js"
 }
