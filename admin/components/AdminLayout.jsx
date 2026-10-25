@@ -22,12 +22,12 @@ const NAV_GROUPS = [
     ],
   },
   {
-    title: "OPERATIONS & DISPATCH",
+    title: "OPERATIONS",
     items: [
       {
         href: "/orders",
-        label: "Customer Orders",
-        badge: "Live SLA",
+        label: "Orders",
+        badge: "Live",
         badgeColor: "bg-blue-50 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,8 +37,8 @@ const NAV_GROUPS = [
       },
       {
         href: "/riders",
-        label: "Delivery Riders",
-        badge: "10 Riders",
+        label: "Riders",
+        badge: "10",
         badgeColor: "bg-teal-50 dark:bg-teal-500/20 text-teal-700 dark:text-teal-300 border border-teal-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,8 +48,8 @@ const NAV_GROUPS = [
       },
       {
         href: "/pickers",
-        label: "Store Pickers",
-        badge: "6 Pickers",
+        label: "Pickers",
+        badge: "6",
         badgeColor: "bg-amber-50 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,11 +57,10 @@ const NAV_GROUPS = [
           </svg>
         ),
       },
-
       {
         href: "/customers",
-        label: "Customers CRM",
-        badge: "CRM",
+        label: "Customers",
+        badge: "Users",
         badgeColor: "bg-blue-50 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,12 +71,12 @@ const NAV_GROUPS = [
     ],
   },
   {
-    title: "CATALOG & INVENTORY",
+    title: "CATALOG & STOCK",
     items: [
       {
         href: "/products",
-        label: "Products Catalog",
-        badge: "85 SKUs",
+        label: "Products",
+        badge: "85",
         badgeColor: "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,8 +97,8 @@ const NAV_GROUPS = [
       },
       {
         href: "/inventory",
-        label: "Inventory Control",
-        badge: "510 SKUs",
+        label: "Stock",
+        badge: "510",
         badgeColor: "bg-cyan-50 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,12 +109,12 @@ const NAV_GROUPS = [
     ],
   },
   {
-    title: "FINANCE & MARKETING",
+    title: "FINANCE & PROMOS",
     items: [
       {
         href: "/revenue",
-        label: "Revenue & Finance",
-        badge: "₹ Ledger",
+        label: "Revenue",
+        badge: "₹",
         badgeColor: "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,8 +124,8 @@ const NAV_GROUPS = [
       },
       {
         href: "/payments",
-        label: "Settlement Ledger",
-        badge: "Escrow",
+        label: "Payments",
+        badge: "Ledger",
         badgeColor: "bg-indigo-50 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-transparent",
         icon: (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,7 +135,7 @@ const NAV_GROUPS = [
       },
       {
         href: "/coupons",
-        label: "Coupons & Promos",
+        label: "Coupons",
         badge: "Offers",
         badgeColor: "bg-orange-50 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-200/80 dark:border-transparent",
         icon: (
@@ -147,7 +146,7 @@ const NAV_GROUPS = [
       },
       {
         href: "/notifications",
-        label: "Broadcast Center",
+        label: "Notifications",
         badge: "Push",
         badgeColor: "bg-purple-50 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200/80 dark:border-transparent",
         icon: (
@@ -158,7 +157,7 @@ const NAV_GROUPS = [
       },
       {
         href: "/hero-management",
-        label: "Hero & Banners",
+        label: "Banners",
         badge: "Visuals",
         badgeColor: "bg-pink-50 dark:bg-pink-500/20 text-pink-700 dark:text-pink-300 border border-pink-200/80 dark:border-transparent",
         icon: (
@@ -170,11 +169,11 @@ const NAV_GROUPS = [
     ],
   },
   {
-    title: "SYSTEM & CONFIGURATION",
+    title: "SETTINGS",
     items: [
       {
         href: "/settings",
-        label: "Platform Settings",
+        label: "Settings",
         badge: "Config",
         badgeColor: "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-transparent",
         icon: (
@@ -269,7 +268,7 @@ export default function AdminLayout({ children }) {
                   ADMIN
                 </span>
               </div>
-              <div className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Hamirpur Store Operations</div>
+              <div className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">Hamirpur Store</div>
             </div>
           </Link>
           <button
@@ -370,7 +369,7 @@ export default function AdminLayout({ children }) {
               <span className="text-gray-300 dark:text-gray-600">/</span>
               <span className="font-bold text-gray-900 dark:text-white capitalize tracking-tight">
                 {router.pathname === "/"
-                  ? "Operational Dashboard"
+                  ? "Dashboard"
                   : router.pathname.slice(1).replace(/-/g, " ")}
               </span>
             </div>

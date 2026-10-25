@@ -102,18 +102,18 @@ export default function Dashboard() {
   function handleExportOverview() {
     const rows = [
       ["Metric", "Value"],
-      ["Gross Merchandise Value (GMV)", `₹${stats.revenue}`],
-      ["Total Completed Orders", stats.orders],
-      ["Live Catalog SKUs", stats.products],
-      ["Active Categories", stats.categories],
-      ["Store Facility", "Hamirpur Hub"],
-      ["Active Fleet Riders", `${stats.activePartners}/${stats.partners}`],
-      ["Export Date", new Date().toLocaleString("en-IN")],
+      ["Total Sales", `₹${stats.revenue}`],
+      ["Total Orders", stats.orders],
+      ["Products", stats.products],
+      ["Categories", stats.categories],
+      ["Store", "Hamirpur"],
+      ["Riders", `${stats.activeRiders}/${stats.riders}`],
+      ["Date", new Date().toLocaleString("en-IN")],
     ];
     const csvContent = "data:text/csv;charset=utf-8," + rows.map((e) => e.join(",")).join("\n");
     const link = document.createElement("a");
     link.setAttribute("href", encodeURI(csvContent));
-    link.setAttribute("download", `Zippin_Dashboard_Summary_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute("download", `Zippin_Dashboard_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -150,13 +150,12 @@ export default function Dashboard() {
     );
   }
 
-  // WBD styled 8-stat grid definition
   const statCards = [
     {
-      title: "Gross Merchandise Value",
+      title: "Total Sales",
       value: `₹${stats.revenue.toLocaleString()}`,
-      change: "+18.4%",
-      subtitle: "vs yesterday • AOV ₹275",
+      change: "+18%",
+      subtitle: "All orders total",
       link: "/revenue",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,10 +166,10 @@ export default function Dashboard() {
       shadow: "shadow-emerald-500/20",
     },
     {
-      title: "Completed Orders",
+      title: "Orders",
       value: stats.orders.toLocaleString(),
-      change: "+8.2%",
-      subtitle: "22 Settled • 100% verified",
+      change: "+8%",
+      subtitle: "Total placed",
       link: "/orders",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,10 +180,10 @@ export default function Dashboard() {
       shadow: "shadow-blue-500/20",
     },
     {
-      title: "Live Catalog SKUs",
+      title: "Products",
       value: stats.products.toLocaleString(),
-      change: "+5.1%",
-      subtitle: `Across ${stats.categories} Categories`,
+      change: `${stats.categories} categories`,
+      subtitle: "Available items",
       link: "/products",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -195,10 +194,10 @@ export default function Dashboard() {
       shadow: "shadow-purple-500/20",
     },
     {
-      title: "Inventory Control",
-      value: "510 SKUs",
+      title: "Stock",
+      value: "510 items",
       change: "In Stock",
-      subtitle: "Hamirpur Fulfillment Hub",
+      subtitle: "Hamirpur store",
       link: "/inventory",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -209,10 +208,10 @@ export default function Dashboard() {
       shadow: "shadow-indigo-500/20",
     },
     {
-      title: "Registered Customers",
+      title: "Customers",
       value: `${stats.customersCount || 0}`,
-      change: "+14% Active",
-      subtitle: "Verified user accounts",
+      change: "Active",
+      subtitle: "Registered users",
       link: "/customers",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -223,10 +222,10 @@ export default function Dashboard() {
       shadow: "shadow-blue-500/20",
     },
     {
-      title: "Delivery Fleet Riders",
+      title: "Riders",
       value: `${stats.activeRiders}/${stats.riders}`,
-      change: "8.4 min ETA",
-      subtitle: "Riders on-road in NCR",
+      change: "Active",
+      subtitle: "Delivery team",
       link: "/riders",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -237,10 +236,10 @@ export default function Dashboard() {
       shadow: "shadow-teal-500/20",
     },
     {
-      title: "Store Pickers & Packers",
+      title: "Pickers",
       value: `${stats.activePickers}/${stats.pickers}`,
-      change: "82s SLA",
-      subtitle: "In-store bag assembly",
+      change: "Active",
+      subtitle: "Packing team",
       link: "/pickers",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -251,10 +250,10 @@ export default function Dashboard() {
       shadow: "shadow-purple-500/20",
     },
     {
-      title: "Settlement Ledger",
+      title: "Payments",
       value: `₹${stats.revenue.toLocaleString()}`,
       change: "Razorpay",
-      subtitle: "Instant auto-payout active",
+      subtitle: "Online & COD",
       link: "/revenue",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -264,41 +263,27 @@ export default function Dashboard() {
       color: "from-pink-500 to-rose-600",
       shadow: "shadow-pink-500/20",
     },
-    {
-      title: "Fulfillment CSAT",
-      value: "4.9 ★",
-      change: "2.4k Reviews",
-      subtitle: "99.8% on-time delivery rate",
-      link: "/orders",
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-        </svg>
-      ),
-      color: "from-yellow-400 to-amber-500",
-      shadow: "shadow-yellow-500/20",
-    },
   ];
 
   return (
     <div className="space-y-6">
       <Head>
-        <title>Dashboard | Zippin Admin Console</title>
+        <title>Dashboard | Zippin Admin</title>
       </Head>
 
-      {/* Header with Title, Period Filters, Refresh, and Export (WBD style) */}
+      {/* Header with Title, Period Filters, Refresh, and Export */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm transition-colors duration-300">
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white tracking-tight">
-              Operational Analytics Dashboard
+              Dashboard
             </h1>
             <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-[#0C831F] dark:text-emerald-400 text-[10px] font-black uppercase tracking-wide">
-              Live Operations
+              Live
             </span>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Real-time fulfillment metrics, financial audits, and fleet telematics for Hamirpur store
+            Store overview and live updates.
           </p>
         </div>
 
@@ -323,7 +308,7 @@ export default function Dashboard() {
           {/* Refresh Button */}
           <button
             onClick={handleRefresh}
-            title="Refresh metrics"
+            title="Refresh"
             className="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 transition-colors cursor-pointer"
           >
             <svg
@@ -349,7 +334,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* SLA & Hyperlocal Velocity Pulse Banner */}
+      {/* Store Banner */}
       <div className="bg-white dark:bg-gradient-to-r dark:from-gray-900 dark:via-slate-900 dark:to-black text-gray-900 dark:text-white rounded-2xl p-5 shadow-sm dark:shadow-lg border border-gray-200/90 dark:border-gray-800 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors duration-300">
         <div className="flex items-center gap-3.5">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0C831F] to-emerald-700 text-white flex items-center justify-center font-bold shadow-md shadow-emerald-700/20 dark:shadow-emerald-900/50 shrink-0">
@@ -360,31 +345,31 @@ export default function Dashboard() {
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-black text-gray-900 dark:text-white tracking-tight">
-                Zippin 10-Minute Hyperlocal Operations
+                Hamirpur Store
               </h2>
               <span className="flex items-center gap-1 text-[11px] bg-emerald-50 dark:bg-emerald-500/20 text-[#0C831F] dark:text-emerald-400 font-bold px-2.5 py-0.5 rounded-full border border-emerald-200/80 dark:border-emerald-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#0C831F] dark:bg-emerald-400 animate-pulse"></span>
-                LIVE SLA 99.2%
+                Open
               </span>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              Instant grocery fulfillment from Zippin Hamirpur Store Facility
+              10-minute grocery delivery
             </p>
           </div>
         </div>
 
-        {/* Live SLA metrics */}
+        {/* Live Metrics */}
         <div className="flex items-center gap-6 border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-800 pt-3 md:pt-0 md:pl-6 text-xs">
           <div>
-            <div className="text-[10px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Avg Packing Time</div>
-            <div className="text-base font-black text-[#0C831F] dark:text-emerald-400 mt-0.5">82s SLA 📦</div>
+            <div className="text-[10px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Packing</div>
+            <div className="text-base font-black text-[#0C831F] dark:text-emerald-400 mt-0.5">82s 📦</div>
           </div>
           <div>
-            <div className="text-[10px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Avg Transit Time</div>
-            <div className="text-base font-black text-amber-600 dark:text-amber-300 mt-0.5">6.3 mins 🛵</div>
+            <div className="text-[10px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Delivery</div>
+            <div className="text-base font-black text-amber-600 dark:text-amber-300 mt-0.5">6 mins 🛵</div>
           </div>
           <div>
-            <div className="text-[10px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Active Staff Live</div>
+            <div className="text-[10px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Staff</div>
             <div className="text-base font-black text-teal-600 dark:text-teal-400 mt-0.5">
               {stats.activeRiders} Riders • {stats.activePickers} Pickers
             </div>
@@ -392,7 +377,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* 8 WBD-Style High-Impact Metric Cards */}
+      {/* 8 Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((stat, idx) => (
           <Link
@@ -425,120 +410,120 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Quick Action Navigation Tiles */}
+      {/* Quick Actions */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {/* Hero & Banners Card */}
+        {/* Banners */}
         <Link
           href="/hero-management"
           className="bg-white dark:bg-[#121212] hover:border-pink-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Hero & Banners</p>
-              <p className="text-lg font-black text-gray-900 dark:text-white mt-1">Homepage</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Banners</p>
+              <p className="text-lg font-black text-gray-900 dark:text-white mt-1">Home Banners</p>
             </div>
             <div className="w-10 h-10 bg-pink-50 dark:bg-pink-950/40 text-pink-600 dark:text-pink-400 rounded-xl flex items-center justify-center font-bold text-lg">
               🖼️
             </div>
           </div>
           <p className="text-[11px] text-pink-600 dark:text-pink-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Edit Banners</span>
+            <span>Edit</span>
             <span>→</span>
           </p>
         </Link>
 
-        {/* Revenue Analytics Card */}
+        {/* Revenue */}
         <Link
           href="/revenue"
           className="bg-white dark:bg-[#121212] hover:border-[#0C831F] rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Revenue & Ledger</p>
-              <p className="text-lg font-black text-[#0C831F] dark:text-emerald-400 mt-1">Settlements</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Revenue</p>
+              <p className="text-lg font-black text-[#0C831F] dark:text-emerald-400 mt-1">Sales & Cash</p>
             </div>
             <div className="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/40 text-[#0C831F] dark:text-emerald-400 rounded-xl flex items-center justify-center font-bold text-lg">
               💰
             </div>
           </div>
           <p className="text-[11px] text-[#0C831F] dark:text-emerald-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Financial Audit</span>
+            <span>View</span>
             <span>→</span>
           </p>
         </Link>
 
-        {/* Inventory Management Card */}
+        {/* Stock */}
         <Link
           href="/inventory"
           className="bg-white dark:bg-[#121212] hover:border-indigo-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Inventory</p>
-              <p className="text-lg font-black text-gray-900 dark:text-white mt-1">Stock Control</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Stock</p>
+              <p className="text-lg font-black text-gray-900 dark:text-white mt-1">Item Stock</p>
             </div>
             <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center font-bold text-lg">
               📦
             </div>
           </div>
           <p className="text-[11px] text-indigo-600 dark:text-indigo-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Manage Stock</span>
+            <span>Manage</span>
             <span>→</span>
           </p>
         </Link>
 
-        {/* Delivery Riders Card */}
+        {/* Riders */}
         <Link
           href="/riders"
           className="bg-white dark:bg-[#121212] hover:border-teal-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Delivery Fleet</p>
-              <p className="text-lg font-black text-teal-600 dark:text-teal-400 mt-1">{stats.activeRiders} Riders</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Riders</p>
+              <p className="text-lg font-black text-teal-600 dark:text-teal-400 mt-1">{stats.activeRiders} Active</p>
             </div>
             <div className="w-10 h-10 bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 rounded-xl flex items-center justify-center font-bold text-lg">
               🛵
             </div>
           </div>
           <p className="text-[11px] text-teal-600 dark:text-teal-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Fleet Riders</span>
+            <span>View</span>
             <span>→</span>
           </p>
         </Link>
 
-        {/* Store Pickers Card */}
+        {/* Pickers */}
         <Link
           href="/pickers"
           className="bg-white dark:bg-[#121212] hover:border-purple-500 rounded-2xl p-5 border border-gray-200/80 dark:border-gray-800 shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Store Pickers</p>
-              <p className="text-lg font-black text-purple-600 dark:text-purple-400 mt-1">{stats.activePickers} Pickers</p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400 font-extrabold uppercase tracking-wider">Pickers</p>
+              <p className="text-lg font-black text-purple-600 dark:text-purple-400 mt-1">{stats.activePickers} Active</p>
             </div>
             <div className="w-10 h-10 bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center font-bold text-lg">
               📦
             </div>
           </div>
           <p className="text-[11px] text-purple-600 dark:text-purple-400 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Store Pickers</span>
+            <span>View</span>
             <span>→</span>
           </p>
         </Link>
       </div>
 
-      {/* Live Customer Orders Feed */}
+      {/* Recent Orders */}
       <div className="bg-white dark:bg-[#121212] rounded-2xl shadow-sm border border-gray-200/80 dark:border-gray-800 p-5 transition-colors duration-300">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800 gap-3 mb-4">
           <div>
             <div className="flex items-center gap-2">
               <h3 className="font-black text-gray-900 dark:text-white text-sm tracking-tight">
-                Recent Customer Dispatches
+                Recent Orders
               </h3>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Real-time fulfillment stream from Hamirpur Store</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Latest customer orders</p>
           </div>
 
           <div className="flex items-center gap-3">
@@ -546,7 +531,7 @@ export default function Dashboard() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Filter orders..."
+                placeholder="Search orders..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-40 sm:w-56 px-3 py-1.5 pl-8 rounded-xl bg-gray-50 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 text-xs text-gray-800 dark:text-gray-200 focus:outline-none focus:border-[#0C831F]"
@@ -573,31 +558,31 @@ export default function Dashboard() {
 
         {filteredRecentOrders.length === 0 ? (
           <div className="text-center py-12 text-gray-500 dark:text-gray-400 text-xs">
-            No orders matching the current filter
+            No orders found
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
                 <tr className="text-[11px] font-extrabold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800 pb-2">
-                  <th className="pb-3">Order ID</th>
+                  <th className="pb-3">Order</th>
                   <th className="pb-3">Customer</th>
-                  <th className="pb-3">Fulfillment Store</th>
-                  <th className="pb-3">Fulfillment Crew</th>
-                  <th className="pb-3">Total Amount</th>
+                  <th className="pb-3">Store</th>
+                  <th className="pb-3">Staff</th>
+                  <th className="pb-3">Amount</th>
                   <th className="pb-3">Status</th>
-                  <th className="pb-3">Placed Time</th>
+                  <th className="pb-3">Time</th>
                   <th className="pb-3 text-right">Invoice</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {filteredRecentOrders.map((o) => {
                   const custName = o.customerName || o.user?.name || "Customer";
-                  const storeName = o.store?.name || "Zippin Cyber Hub";
+                  const storeName = o.store?.name || "Hamirpur Hub";
                   const partnerName = o.partner?.name || (o.partner?.firstName
                     ? `${o.partner.firstName} ${o.partner.lastName || ""}`
-                    : "Assigned Rider");
-                  const pickerName = o.picker?.name || "Assigned Picker";
+                    : "Rider");
+                  const pickerName = o.picker?.name || "Picker";
 
                   return (
                     <tr key={o._id} className="hover:bg-gray-50/70 dark:hover:bg-gray-800/40 transition-colors">
@@ -607,7 +592,7 @@ export default function Dashboard() {
                       <td className="py-3">
                         <div className="font-semibold text-gray-800 dark:text-gray-200">{custName}</div>
                         <div className="text-[11px] text-gray-500 dark:text-gray-400 font-medium truncate max-w-[140px]">
-                          {o.deliveryAddress?.city || "Gurugram"}
+                          {o.deliveryAddress?.city || "Hamirpur"}
                         </div>
                       </td>
                       <td className="py-3">
@@ -663,18 +648,18 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Active Store Facility Overview */}
+      {/* Store Details */}
       {stores.length > 0 && (
         <div className="bg-white dark:bg-[#121212] rounded-2xl shadow-sm border border-gray-200/80 dark:border-gray-800 p-5 transition-colors duration-300">
           <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800 mb-4">
             <div>
               <h3 className="font-black text-gray-900 dark:text-white text-sm tracking-tight">
-                Hamirpur Store Facility Details
+                Store Details
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Exclusive fulfillment store branch for Hamirpur District</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Hamirpur branch</p>
             </div>
             <Link href="/orders" className="text-xs font-bold text-[#0C831F] dark:text-emerald-400 hover:underline">
-              View Store Orders →
+              View Orders →
             </Link>
           </div>
 
@@ -696,7 +681,7 @@ export default function Dashboard() {
                 </div>
                 <div className="mt-3 pt-2 border-t border-gray-200/60 dark:border-gray-700/60 flex items-center justify-between text-[11px]">
                   <span className="text-gray-500 dark:text-gray-400 font-medium">Radius: {s.deliveryRadiusKm || 4.5} km</span>
-                  <span className="font-bold text-emerald-700 dark:text-emerald-400">{s.totalOrdersServed || 1200}+ served</span>
+                  <span className="font-bold text-emerald-700 dark:text-emerald-400">{s.totalOrdersServed || 1200}+ orders</span>
                 </div>
               </div>
             ))}
