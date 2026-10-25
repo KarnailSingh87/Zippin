@@ -45,7 +45,7 @@ export default function AdminLogin() {
       </div>
 
       <div className="w-full max-w-md relative z-10">
-        <div className="bg-white/80 dark:bg-[#0c1017]/85 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 sm:p-10 border border-gray-100 dark:border-gray-800">
+        <div className="bg-white/90 dark:bg-[#0c1017] backdrop-blur-2xl rounded-3xl shadow-2xl p-8 sm:p-10 border border-gray-100 dark:border-gray-800">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
               <img

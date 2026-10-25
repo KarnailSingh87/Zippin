@@ -362,11 +362,11 @@ export default function AdminLayout({ children }) {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Modern Top bar with ThemeToggle */}
-        <header className="bg-white/80 dark:bg-[#0c1017]/85 backdrop-blur-xl border-b border-gray-200/80 dark:border-gray-800 px-4 lg:px-6 py-2.5 flex items-center justify-between sticky top-0 z-30 shadow-xs transition-colors duration-300">
+        <header className="bg-white dark:bg-[#0A0D13] border-b border-gray-200 dark:border-gray-800/80 px-4 lg:px-6 py-2.5 flex items-center justify-between sticky top-0 z-30 shadow-xs transition-colors duration-300">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               aria-label="Open Sidebar"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -377,8 +377,8 @@ export default function AdminLayout({ children }) {
             {/* Breadcrumb path */}
             <div className="hidden sm:flex items-center gap-2 text-xs">
               <span className="text-gray-500 dark:text-gray-400 font-medium">Zippin Admin</span>
-              <span className="text-gray-400 dark:text-gray-600">/</span>
-              <span className="font-bold text-gray-900 dark:text-gray-100 capitalize">
+              <span className="text-gray-300 dark:text-gray-600">/</span>
+              <span className="font-bold text-gray-900 dark:text-white capitalize tracking-tight">
                 {router.pathname === "/"
                   ? "Operational Dashboard"
                   : router.pathname.slice(1).replace(/-/g, " ")}
@@ -386,8 +386,11 @@ export default function AdminLayout({ children }) {
             </div>
 
             {/* Live Operations Pulse Indicator */}
-            <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/60 text-[11px] font-bold text-emerald-800 dark:text-emerald-300">
-              <span className="w-2 h-2 rounded-full bg-[#0C831F] animate-ping"></span>
+            <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/80 dark:border-emerald-800/70 text-[11px] font-bold text-emerald-800 dark:text-emerald-300 transition-colors">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0C831F] dark:bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0C831F] dark:bg-emerald-400"></span>
+              </span>
               <span>Hubs Live</span>
               <span className="text-emerald-400 dark:text-emerald-500">•</span>
               <span className="font-mono text-emerald-700 dark:text-emerald-400">{currentTime || "11:42 AM"}</span>
@@ -399,13 +402,13 @@ export default function AdminLayout({ children }) {
             {/* Global Search Button */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200/80 dark:bg-gray-800/80 dark:hover:bg-gray-700/80 border border-gray-200 dark:border-gray-700 text-xs text-gray-700 dark:text-gray-200 transition-colors shadow-2xs"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200/80 dark:bg-[#161B22] dark:hover:bg-[#1F242C] border border-gray-200 dark:border-gray-800 text-xs text-gray-700 dark:text-gray-200 transition-colors shadow-2xs cursor-pointer"
             >
               <svg className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <span className="hidden md:inline font-medium">Quick search...</span>
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded">
+              <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold text-gray-600 dark:text-gray-300 bg-white dark:bg-[#0A0D13] border border-gray-200 dark:border-gray-700 rounded shadow-2xs">
                 ⌘K
               </kbd>
             </button>
@@ -415,7 +418,7 @@ export default function AdminLayout({ children }) {
               href="http://localhost:3000"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-[#0C831F] dark:text-emerald-400 border border-emerald-200/70 dark:border-emerald-800/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-[#0C831F] dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-800/70 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-colors shadow-2xs"
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -430,24 +433,24 @@ export default function AdminLayout({ children }) {
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 relative transition-colors"
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 relative transition-colors cursor-pointer"
                 aria-label="Notifications"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-gray-900"></span>
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-[#0A0D13]"></span>
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-[#161b22] rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 p-3 z-50 text-xs animate-fade-in">
-                  <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800 font-bold text-gray-800 dark:text-gray-100">
+                <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-[#161B22] rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 p-3 z-50 text-xs animate-fade-in">
+                  <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800 font-bold text-gray-800 dark:text-white">
                     <span>Live Operations Feed</span>
                     <span className="text-[10px] bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 px-2 py-0.5 rounded-full font-bold">
                       3 New
                     </span>
                   </div>
-                  <div className="divide-y divide-gray-50 dark:divide-gray-800 mt-2">
+                  <div className="divide-y divide-gray-50 dark:divide-gray-800/80 mt-2">
                     <div className="py-2">
                       <p className="font-semibold text-gray-800 dark:text-gray-200">🛵 Order #ORD-9841 Dispatched</p>
                       <p className="text-gray-500 dark:text-gray-400 text-[11px]">Rider Rahul Verma en-route to DLF Cyber City (ETA 7 min)</p>
