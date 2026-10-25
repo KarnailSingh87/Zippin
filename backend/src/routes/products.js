@@ -62,6 +62,9 @@ router.patch("/:id/stock", authenticate, requireAdmin, async (req, res) => {
     { stock: Number(stock) },
     { new: true }
   );
+  if (!p) return res.status(404).json({ message: "Not found" });
+  res.json(p);
+});
 // bulk operations
 router.post("/bulk", authenticate, requireAdmin, async (req, res) => {
   const { action, ids } = req.body;
