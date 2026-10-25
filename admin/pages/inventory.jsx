@@ -7,7 +7,7 @@ export default function InventoryAdmin() {
   const [selectedStore, setSelectedStore] = useState("");
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filterLowStock, setFilterLowStock] = useState(false);
+  const [filterMode, setFilterMode] = useState("all"); // "all" | "low" | "critical" | "out"
   const [searchQuery, setSearchQuery] = useState("");
   const [adjustItem, setAdjustItem] = useState(null);
   const [adjustAmount, setAdjustAmount] = useState("");
@@ -35,9 +35,7 @@ export default function InventoryAdmin() {
     if (!selectedStore) return;
     setLoading(true);
     try {
-      const url = filterLowStock
-        ? `${API}/api/inventory?storeId=${selectedStore}&lowStock=true`
-        : `${API}/api/inventory?storeId=${selectedStore}`;
+      const url = `${API}/api/inventory?storeId=${selectedStore}`;
       const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -58,7 +56,7 @@ export default function InventoryAdmin() {
     if (selectedStore) {
       loadInventory();
     }
-  }, [selectedStore, filterLowStock]);
+  }, [selectedStore]);
 
   async function handleSaveStock(e) {
     if (e) e.preventDefault();
@@ -90,13 +88,22 @@ export default function InventoryAdmin() {
   }
 
   const currentStoreObj = stores.find((s) => s._id === selectedStore);
+  const criticalStockCount = inventory.filter(
+    (i) => i.stock > 0 && i.stock <= 3
+  ).length;
+  const outOfStockCount = inventory.filter((i) => i.stock <= 0).length;
   const lowStockCount = inventory.filter(
     (i) => i.stock <= (i.lowStockThreshold || 10)
   ).length;
 
   const filteredInventory = inventory.filter((item) => {
     const title = item.product?.title || "";
-    return title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase());
+    if (!matchesSearch) return false;
+    if (filterMode === "low") return item.stock <= (item.lowStockThreshold || 10);
+    if (filterMode === "critical") return item.stock > 0 && item.stock <= 3;
+    if (filterMode === "out") return item.stock <= 0;
+    return true;
   });
 
   return (
@@ -112,10 +119,10 @@ export default function InventoryAdmin() {
             </div>
             <div>
               <h1 className="text-xl font-black text-gray-900 dark:text-white font-outfit">
-                Store Inventory & SKUs
+                Store Inventory & Stock Urgency
               </h1>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Real-time Hamirpur store stock counts, restock thresholds & rapid shelf adjustment
+                Real-time Hamirpur store stock counts, critical restock alerts (≤ 3 left) & rapid shelf adjustment
               </p>
             </div>
           </div>
@@ -141,7 +148,7 @@ export default function InventoryAdmin() {
       </div>
 
       {/* KPI Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
             <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
@@ -162,18 +169,36 @@ export default function InventoryAdmin() {
         <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
           <div>
             <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
-              Low Stock Warnings
+              Critical Alerts (≤ 3 left)
+            </div>
+            <div className="text-2xl font-black text-rose-600 mt-1 font-outfit flex items-center gap-2">
+              {criticalStockCount > 0 && <span className="w-2.5 h-2.5 rounded-full bg-rose-600 animate-ping" />}
+              {criticalStockCount}
+            </div>
+            <div className="text-[11px] text-rose-600 dark:text-rose-400 font-semibold mt-1">
+              {criticalStockCount > 0 ? "Immediate restock required" : "No critical items"}
+            </div>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center text-white text-xl shadow-md shadow-rose-500/20">
+            🚨
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
+          <div>
+            <div className="text-[11px] font-extrabold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+              Selling Fast / Low Stock
             </div>
             <div className="text-2xl font-black text-amber-500 mt-1 font-outfit flex items-center gap-2">
               {lowStockCount > 0 && <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />}
               {lowStockCount}
             </div>
             <div className="text-[11px] text-amber-600 dark:text-amber-400 font-semibold mt-1">
-              {lowStockCount > 0 ? "Requires restock shipment" : "Inventory levels healthy"}
+              High sales velocity items
             </div>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-white text-xl shadow-md shadow-amber-500/20">
-            ⚠️
+            🔥
           </div>
         </div>
 
@@ -186,7 +211,7 @@ export default function InventoryAdmin() {
               {currentStoreObj?.area || "Warehouse"}
             </div>
             <div className="text-[11px] text-blue-600 dark:text-blue-400 font-semibold mt-1">
-              {currentStoreObj?.city || "Active Catchment Zone"}
+              {currentStoreObj?.city || "Active Zone"}
             </div>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-500 to-indigo-400 flex items-center justify-center text-white text-xl shadow-md shadow-blue-500/20">
@@ -197,26 +222,49 @@ export default function InventoryAdmin() {
 
       {/* Filter and Search Bar */}
       <div className="bg-white dark:bg-[#121212] p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
-            onClick={() => setFilterLowStock(false)}
+            onClick={() => setFilterMode("all")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-              !filterLowStock
+              filterMode === "all"
                 ? "bg-[#0C831F] text-white shadow-sm"
                 : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
-            All Products ({inventory.length})
+            All SKUs ({inventory.length})
           </button>
           <button
-            onClick={() => setFilterLowStock(true)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-              filterLowStock
+            onClick={() => setFilterMode("critical")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              filterMode === "critical"
+                ? "bg-rose-600 text-white shadow-sm"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+            }`}
+          >
+            <span>⚠️ Critical (≤ 3)</span>
+            <span className="font-mono">({criticalStockCount})</span>
+          </button>
+          <button
+            onClick={() => setFilterMode("low")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              filterMode === "low"
                 ? "bg-amber-600 text-white shadow-sm"
                 : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
-            Low Stock Only ({lowStockCount})
+            <span>🔥 Selling Fast / Low</span>
+            <span className="font-mono">({lowStockCount})</span>
+          </button>
+          <button
+            onClick={() => setFilterMode("out")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              filterMode === "out"
+                ? "bg-gray-800 text-white shadow-sm"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+            }`}
+          >
+            <span>Out of Stock</span>
+            <span className="font-mono">({outOfStockCount})</span>
           </button>
         </div>
 
@@ -255,14 +303,15 @@ export default function InventoryAdmin() {
                 {filteredInventory.length === 0 ? (
                   <tr>
                     <td colSpan="6" className="text-center py-12 text-gray-500 dark:text-gray-400 font-medium">
-                      No inventory records found for this store facility.
+                      No inventory records found matching your filter.
                     </td>
                   </tr>
                 ) : (
                   filteredInventory.map((item) => {
                     const prod = item.product || {};
-                    const isLow = item.stock <= (item.lowStockThreshold || 10);
                     const isOut = item.stock <= 0;
+                    const isCritical = item.stock > 0 && item.stock <= 3;
+                    const isLow = item.stock > 3 && item.stock <= (item.lowStockThreshold || 10);
 
                     return (
                       <tr key={item._id} className="hover:bg-gray-50/60 dark:hover:bg-[#1a1f2c]/50 transition-colors">
@@ -293,9 +342,11 @@ export default function InventoryAdmin() {
                             className={`font-mono font-bold text-sm ${
                               isOut
                                 ? "text-rose-600 dark:text-rose-400"
+                                : isCritical
+                                ? "text-rose-600 dark:text-rose-400 font-black"
                                 : isLow
-                                  ? "text-amber-500"
-                                  : "text-gray-900 dark:text-white"
+                                ? "text-amber-500"
+                                : "text-gray-900 dark:text-white"
                             }`}
                           >
                             {item.stock} <span className="text-xs font-normal text-gray-500 dark:text-gray-400">units</span>
@@ -308,12 +359,17 @@ export default function InventoryAdmin() {
                           {isOut ? (
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50">
                               <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                              Out of Stock
+                              Out of Stock • Coming Soon
+                            </span>
+                          ) : isCritical ? (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-800 animate-pulse">
+                              <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-ping" />
+                              ⚠️ Critical: Only {item.stock} Left!
                             </span>
                           ) : isLow ? (
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900/50">
                               <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                              Low Stock
+                              🔥 Selling Fast • Low Stock
                             </span>
                           ) : (
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40">

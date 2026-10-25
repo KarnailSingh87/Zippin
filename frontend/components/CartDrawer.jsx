@@ -176,9 +176,14 @@ export default function CartDrawer() {
                         <h4 className="text-xs font-bold text-gray-900 truncate">
                           {title}
                         </h4>
-                        <p className="text-[11px] text-gray-500">
-                          {unit}
-                        </p>
+                        <div className="flex items-center gap-1.5 text-[11px] text-gray-500">
+                          <span>{unit}</span>
+                          {item.stock > 0 && item.stock <= 3 && (
+                            <span className="text-[10px] font-black text-rose-600 bg-rose-50 px-1 rounded border border-rose-200">
+                              Only {item.stock} left
+                            </span>
+                          )}
+                        </div>
                         <div className="text-xs font-black text-gray-900 mt-1">
                           ₹{price * qty}
                           {qty > 1 && (
@@ -202,7 +207,7 @@ export default function CartDrawer() {
                           {qty}
                         </span>
                         <button
-                          onClick={() => addItem(prod._id ? prod : { _id: pId, title, price, unit })}
+                          onClick={() => addItem(prod._id ? { ...prod, stock: item.stock } : { _id: pId, title, price, unit, stock: item.stock })}
                           className="w-6 h-6 flex items-center justify-center hover:bg-[#0a6b19] font-black text-xs transition-colors cursor-pointer"
                           aria-label="Increase"
                         >

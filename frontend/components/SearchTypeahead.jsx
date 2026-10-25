@@ -245,21 +245,42 @@ export default function SearchTypeahead({ mobile = false, onClose, className = "
                       className="flex-1 min-w-0 cursor-pointer"
                       onClick={() => submitSearch(p.title)}
                     >
-                      <div className="text-xs font-bold text-gray-800 truncate">
-                        {p.title}
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-gray-800 truncate">
+                          {p.title}
+                        </span>
+                        {p.stock > 0 && p.stock <= 3 && (
+                          <span className="text-[9px] font-black text-rose-600 bg-rose-50 px-1 py-0.2 rounded border border-rose-200 shrink-0">
+                            Only {p.stock} left
+                          </span>
+                        )}
+                        {p.stock > 3 && p.stock <= 8 && (
+                          <span className="text-[9px] font-black text-amber-700 bg-amber-50 px-1 py-0.2 rounded shrink-0">
+                            🔥 Fast
+                          </span>
+                        )}
                       </div>
                       <div className="text-[11px] text-gray-400">
                         ₹{p.price} {p.unit && <span>• {p.unit}</span>}
                       </div>
                     </div>
-                    <button
-                      onClick={() => {
-                        addItem(p);
-                      }}
-                      className="text-xs bg-[#0C831F] hover:bg-[#0a701b] text-white px-3 py-1 rounded-lg font-bold transition-transform active:scale-95"
-                    >
-                      ADD
-                    </button>
+                    {p.stock <= 0 || p.isAvailable === false ? (
+                      <button
+                        disabled
+                        className="text-[10px] bg-gray-100 text-gray-400 px-2 py-1 rounded-lg font-bold border border-gray-200 cursor-not-allowed select-none"
+                      >
+                        Coming Soon
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          addItem(p);
+                        }}
+                        className="text-xs bg-[#0C831F] hover:bg-[#0a701b] text-white px-3 py-1 rounded-lg font-bold transition-transform active:scale-95 cursor-pointer"
+                      >
+                        ADD
+                      </button>
+                    )}
                   </div>
                 );
               })}

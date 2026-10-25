@@ -5,6 +5,7 @@ import DeliveryPartner from "../models/DeliveryPartner.js";
 import Payment from "../models/Payment.js";
 import Delivery from "../models/Delivery.js";
 import User from "../models/User.js";
+import Inventory from "../models/Inventory.js";
 
 export async function placeOrder(req, res) {
   try {
@@ -33,11 +34,25 @@ export async function placeOrder(req, res) {
           await Product.findByIdAndUpdate(alreadyDeducted.product, {
             $inc: { stock: alreadyDeducted.qty },
           });
+          await Inventory.updateMany(
+            { product: alreadyDeducted.product },
+            { $inc: { stock: alreadyDeducted.qty } }
+          ).catch(() => {});
         }
         return res.status(400).json({
           message: "One or more items are out of stock or have insufficient quantity",
         });
       }
+
+      // Keep Store Inventory records strictly in sync
+      await Inventory.updateMany(
+        { product: pId },
+        { $inc: { stock: -qty } }
+      ).catch(() => {});
+      await Inventory.updateMany(
+        { product: pId, stock: { $lt: 0 } },
+        { $set: { stock: 0 } }
+      ).catch(() => {});
 
       subtotal += product.price * qty;
       orderItems.push({
@@ -283,6 +298,7 @@ export async function updateOrderStatus(req, res) {
       const qty = Number(it.qty || it.quantity || 1);
       if (pId) {
         await Product.findByIdAndUpdate(pId, { $inc: { stock: qty } });
+        await Inventory.updateMany({ product: pId }, { $inc: { stock: qty } }).catch(() => {});
       }
     }
     const partnerId = order.partner || order.rider;
@@ -459,6 +475,7 @@ export async function cancelOrder(req, res) {
     const q = Number(it.qty || it.quantity || 1);
     if (pId) {
       await Product.findByIdAndUpdate(pId, { $inc: { stock: q } });
+      await Inventory.updateMany({ product: pId }, { $inc: { stock: q } }).catch(() => {});
     }
   }
 

@@ -449,9 +449,14 @@ export default function CheckoutPage() {
                     <p className="text-sm text-gray-800 truncate">
                       {item.name}
                     </p>
-                    <p className="text-xs text-gray-400">
-                      {item.unit} × {item.qty}
-                    </p>
+                    <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                      <span>{item.unit} × {item.qty}</span>
+                      {item.stock > 0 && item.stock <= 3 && (
+                        <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200">
+                          ⚠️ Only {item.stock} left
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <span className="text-sm font-bold">
                     ₹{item.price * item.qty}

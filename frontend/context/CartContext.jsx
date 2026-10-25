@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
+import { useToast } from "./ToastContext";
 
 const CartContext = createContext({});
 const MAX_QTY = 10; // Maximum quantity allowed per item (TC-3.5.02)
@@ -12,6 +13,8 @@ const MAX_QTY = 10; // Maximum quantity allowed per item (TC-3.5.02)
 export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const toastCtx = useToast();
+  const showToast = toastCtx?.showToast;
 
   useEffect(() => {
     try {
@@ -33,23 +36,71 @@ export function CartProvider({ children }) {
 
   function addItem(product) {
     const id = product._id || product.productId || (product.product && product.product._id);
+    const availableStock =
+      typeof product.stock === "number"
+        ? product.stock
+        : product.product && typeof product.product.stock === "number"
+        ? product.product.stock
+        : 999;
+
+    // Check if out of stock or unavailable
+    if (product.isAvailable === false || availableStock <= 0) {
+      const msg = "This item is currently out of stock / coming soon!";
+      if (showToast) showToast(msg, { type: "error" });
+      else if (typeof alert !== "undefined") alert(msg);
+      return;
+    }
+
     setItems((prev) => {
       const existing = prev.find((i) => i.productId === id);
       if (existing) {
-        if (existing.qty >= 10 || existing.qty >= MAX_QTY) {
-          alert("Maximum quantity limit (10 units) reached for this product.");
+        const currentQty = existing.qty || existing.quantity || 1;
+        if (currentQty >= availableStock) {
+          const msg = `Only ${availableStock} item(s) available in stock. You have reached the limit.`;
+          if (showToast) showToast(msg, { type: "warning" });
+          else if (typeof alert !== "undefined") alert(msg);
           return prev;
         }
+        if (currentQty >= 10 || currentQty >= MAX_QTY) {
+          const msg = "Maximum quantity limit (10 units) reached for this product.";
+          if (showToast) showToast(msg, { type: "warning" });
+          else if (typeof alert !== "undefined") alert(msg);
+          return prev;
+        }
+
+        const nextQty = Math.min(MAX_QTY, availableStock, currentQty + 1);
+
+        // Low stock urgency notification when <= 3 items
+        if (availableStock <= 3) {
+          const remaining = availableStock - nextQty;
+          const msg =
+            remaining === 0
+              ? `⚠️ You've added all ${availableStock} units in stock!`
+              : `⚠️ Hurry! Only ${remaining} more item(s) left in stock.`;
+          if (showToast) showToast(msg, { type: "warning" });
+        }
+
         return prev.map((i) =>
           i.productId === id
             ? {
                 ...i,
-                qty: Math.min(MAX_QTY, i.qty + 1),
-                quantity: Math.min(MAX_QTY, i.qty + 1),
+                qty: nextQty,
+                quantity: nextQty,
+                stock: availableStock,
               }
             : i
         );
       }
+
+      // First unit added: if <= 3 items in stock, alert user
+      if (availableStock <= 3) {
+        const msg =
+          availableStock === 1
+            ? "⚠️ Hurry! Only 1 item left in stock!"
+            : `⚠️ Hurry! Only ${availableStock} items left in stock. Order before it sells out!`;
+        if (showToast) showToast(msg, { type: "warning" });
+      }
+
       const newItem = {
         productId: id,
         product: {
@@ -59,12 +110,14 @@ export function CartProvider({ children }) {
           price: product.price,
           mrp: product.mrp || product.price,
           images: product.images || [{ url: product.image || "" }],
+          stock: availableStock,
         },
         name: product.title || product.name,
         price: product.price,
         mrp: product.mrp || product.price,
         unit: product.unit || "",
         image: product.images?.[0]?.url || product.image || "",
+        stock: availableStock,
         qty: 1,
         quantity: 1,
       };
@@ -90,13 +143,13 @@ export function CartProvider({ children }) {
     if (qty <= 0) {
       setItems((prev) => prev.filter((i) => i.productId !== productId));
     } else {
-      const capped = Math.min(MAX_QTY, qty);
       setItems((prev) =>
-        prev.map((i) =>
-          i.productId === productId
-            ? { ...i, qty: capped, quantity: capped }
-            : i
-        )
+        prev.map((i) => {
+          if (i.productId !== productId) return i;
+          const limit = Math.min(MAX_QTY, i.stock || MAX_QTY);
+          const capped = Math.min(limit, qty);
+          return { ...i, qty: capped, quantity: capped };
+        })
       );
     }
   }

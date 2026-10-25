@@ -11,7 +11,10 @@ export default function ProductCard({ product }) {
   const { showToast } = useToast();
   const [showModal, setShowModal] = useState(false);
   const qty = getQty(product._id);
-  const isOutOfStock = product.stock === 0 || product.isAvailable === false;
+  const stock = typeof product.stock === "number" ? product.stock : 999;
+  const isOutOfStock = stock <= 0 || product.isAvailable === false;
+  const isCriticalLow = !isOutOfStock && stock <= 3;
+  const isSellingFast = !isOutOfStock && stock > 3 && (stock <= 8 || product.isTrending);
   const hasDiscount = product.mrp && product.mrp > product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.mrp - product.price) / product.mrp) * 100)
@@ -35,6 +38,10 @@ export default function ProductCard({ product }) {
   const handleMotionAdd = async (e) => {
     if (e) e.stopPropagation();
     if (isFlying || isOutOfStock) return;
+    if (qty >= stock) {
+      showToast(`Only ${stock} unit(s) available in stock.`, { type: "warning" });
+      return;
+    }
 
     const img = imgRef.current;
     const basket = basketRef.current;
@@ -104,6 +111,10 @@ export default function ProductCard({ product }) {
 
   const handleIncrement = (e) => {
     if (e) e.stopPropagation();
+    if (qty >= stock) {
+      showToast(`Only ${stock} unit(s) available in stock.`, { type: "warning" });
+      return;
+    }
     addItem(product);
     if (basketRef.current) {
       animateElement(
@@ -133,9 +144,23 @@ export default function ProductCard({ product }) {
         onClick={() => setShowModal(true)}
         className="bg-white rounded-2xl border border-gray-200/80 p-3 hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-all duration-200 flex flex-col justify-between group relative cursor-pointer overflow-visible select-none h-full"
       >
-        {/* Top row: Discount & Delivery Time */}
+        {/* Top row: Discount / Stock Urgency / Delivery Time */}
         <div className="flex items-center justify-between gap-1 mb-1 min-h-[22px]">
-          {discountPercent > 0 ? (
+          {isOutOfStock ? (
+            <span className="bg-rose-100 text-rose-700 text-[10px] font-black px-1.5 py-0.5 rounded-md tracking-tight uppercase shadow-xs">
+              Coming Soon
+            </span>
+          ) : isCriticalLow ? (
+            <span className="bg-rose-50 border border-rose-300 text-rose-700 text-[10px] font-black px-1.5 py-0.5 rounded-md tracking-tight uppercase shadow-xs flex items-center gap-1 animate-pulse">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0" />
+              Only {stock} Left!
+            </span>
+          ) : isSellingFast ? (
+            <span className="bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-md tracking-tight uppercase shadow-xs flex items-center gap-0.5">
+              <span>🔥</span>
+              <span>Selling Fast</span>
+            </span>
+          ) : discountPercent > 0 ? (
             <span className="bg-[#256FEF] text-white text-[10px] font-black px-1.5 py-0.5 rounded-md tracking-tight uppercase shadow-xs">
               {discountPercent}% OFF
             </span>
@@ -160,13 +185,29 @@ export default function ProductCard({ product }) {
               ref={imgRef}
               src={imageUrl}
               alt={product.title}
-              className="w-full h-full object-contain group-hover:scale-108 transition-transform duration-300 select-none"
+              className={`w-full h-full object-contain group-hover:scale-108 transition-transform duration-300 select-none ${
+                isOutOfStock ? "opacity-40 grayscale-[50%]" : ""
+              }`}
               loading="lazy"
               onError={() => setImgError(true)}
             />
           ) : (
-            <div ref={imgRef} className="w-full h-full flex items-center justify-center bg-gray-50 rounded-xl text-3xl">
+            <div
+              ref={imgRef}
+              className={`w-full h-full flex items-center justify-center bg-gray-50 rounded-xl text-3xl ${
+                isOutOfStock ? "opacity-40" : ""
+              }`}
+            >
               🛍️
+            </div>
+          )}
+
+          {/* Coming Soon / Out of Stock Frosted Glass Overlay */}
+          {isOutOfStock && (
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px] rounded-xl flex items-center justify-center p-2 z-10 pointer-events-none select-none">
+              <div className="bg-white/95 text-gray-900 text-[10px] sm:text-[11px] font-black uppercase px-2.5 py-1 rounded-lg shadow-md border border-gray-200 tracking-wider text-center">
+                Coming Soon
+              </div>
             </div>
           )}
 
@@ -198,9 +239,27 @@ export default function ProductCard({ product }) {
             {product.title}
           </h3>
 
-          <div className="text-[11px] font-medium text-gray-500 mt-1 mb-2 line-clamp-1 min-h-[16px]">
-            {product.unit || "1 unit"}
+          <div className="flex items-center justify-between text-[11px] font-medium text-gray-500 mt-1 mb-1 line-clamp-1 min-h-[16px]">
+            <span>{product.unit || "1 unit"}</span>
+            {isCriticalLow && (
+              <span className="text-[10px] font-extrabold text-rose-600">
+                Only {stock} left
+              </span>
+            )}
           </div>
+
+          {/* Urgency Alert Message for Low Stock & High Demand */}
+          {isCriticalLow ? (
+            <div className="text-[10px] font-extrabold text-rose-700 bg-rose-50 border border-rose-200/80 px-2 py-0.5 rounded-md inline-flex items-center gap-1 w-full mb-1.5 animate-pulse">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+              <span className="truncate">Hurry! Only {stock} left in stock</span>
+            </div>
+          ) : isSellingFast ? (
+            <div className="text-[10px] font-bold text-amber-800 bg-amber-50/90 border border-amber-200/70 px-2 py-0.5 rounded-md inline-flex items-center gap-1 w-full mb-1.5">
+              <span>🔥</span>
+              <span className="truncate">Selling fast • High demand</span>
+            </div>
+          ) : null}
 
           {/* Pricing & Motion Add Button */}
           <div className="mt-auto pt-2 flex items-center justify-between gap-1.5 border-t border-gray-100">
@@ -221,12 +280,12 @@ export default function ProductCard({ product }) {
 
             {/* ADD / Quantity Counter Button with Motion Basket */}
             <div onClick={(e) => e.stopPropagation()} className="relative">
-              {product.stock === 0 || isOutOfStock ? (
+              {isOutOfStock ? (
                 <button
                   disabled
-                  className="border border-gray-300 text-gray-400 bg-gray-100 font-bold text-[11px] uppercase px-2.5 py-1.5 rounded-lg cursor-not-allowed"
+                  className="border border-gray-200 text-gray-400 bg-gray-100/90 font-bold text-[10px] sm:text-[11px] uppercase px-2.5 py-1.5 rounded-lg cursor-not-allowed select-none shadow-none"
                 >
-                  out of stock
+                  Coming Soon
                 </button>
               ) : qty === 0 ? (
                 <div className="relative inline-flex items-center">
