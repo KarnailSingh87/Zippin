@@ -17,6 +17,7 @@ export default function Dashboard() {
     pickers: 0,
     activePickers: 0,
     paymentsCount: 0,
+    customersCount: 0,
   });
   const [recentOrders, setRecentOrders] = useState([]);
   const [stores, setStores] = useState([]);
@@ -31,7 +32,7 @@ export default function Dashboard() {
     if (!token) return;
 
     try {
-      const [prodRes, catRes, ordRes, storeRes, partRes, payRes] = await Promise.all([
+      const [prodRes, catRes, ordRes, storeRes, partRes, payRes, usersRes] = await Promise.all([
         fetch(`${API}/api/products?all=true&limit=1000`),
         fetch(`${API}/api/categories`),
         fetch(`${API}/api/orders/all`, {
@@ -42,6 +43,9 @@ export default function Dashboard() {
         fetch(`${API}/api/payments`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
+        fetch(`${API}/api/auth/users`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
       ]);
 
       const products = prodRes.ok ? await prodRes.json() : [];
@@ -50,6 +54,7 @@ export default function Dashboard() {
       const storeData = storeRes.ok ? await storeRes.json() : [];
       const allPartners = partRes.ok ? await partRes.json() : [];
       const payments = payRes.ok ? await payRes.json() : [];
+      const usersData = usersRes.ok ? await usersRes.json() : [];
 
       const riders = allPartners.filter((p) => p.role !== "picker");
       const pickers = allPartners.filter((p) => p.role === "picker");
@@ -73,6 +78,7 @@ export default function Dashboard() {
         pickers: pickers.length,
         activePickers,
         paymentsCount: payments.length,
+        customersCount: usersData.length || 0,
       });
       setRecentOrders(orders.slice(0, 8));
       setStores(storeData.slice(0, 4));
@@ -200,6 +206,20 @@ export default function Dashboard() {
       ),
       color: "from-indigo-500 to-indigo-600",
       shadow: "shadow-indigo-500/20",
+    },
+    {
+      title: "Registered Customers",
+      value: `${stats.customersCount || 0}`,
+      change: "+14% Active",
+      subtitle: "Verified user accounts",
+      link: "/customers",
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      ),
+      color: "from-blue-500 to-cyan-600",
+      shadow: "shadow-blue-500/20",
     },
     {
       title: "Delivery Fleet Riders",

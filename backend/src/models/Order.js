@@ -48,6 +48,9 @@ const OrderSchema = new mongoose.Schema({
   store: { type: mongoose.Schema.Types.ObjectId, ref: "Store" },
   picker: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" }, // Assigned dark store picker/packer
   partner: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" },
+  otp: { type: String, default: () => Math.floor(1000 + Math.random() * 9000).toString() },
+  deliveryOtp: { type: String, default: "1234" },
+  proofOfDelivery: String,
   rider: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPartner" }, // backwards-compatible alias
   paymentRecord: { type: mongoose.Schema.Types.ObjectId, ref: "Payment" },
   deliveryRecord: { type: mongoose.Schema.Types.ObjectId, ref: "Delivery" },

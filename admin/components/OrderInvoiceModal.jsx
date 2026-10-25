@@ -173,8 +173,12 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
                 </span>
               </div>
               <div className="flex justify-between text-gray-600">
-                <span>Handling & Taxes (5%):</span>
-                <span className="font-semibold text-gray-800">₹{tax}</span>
+                <span>CGST (2.5%):</span>
+                <span className="font-semibold text-gray-800">₹{(tax / 2).toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-gray-600">
+                <span>SGST (2.5%):</span>
+                <span className="font-semibold text-gray-800">₹{(tax / 2).toFixed(2)}</span>
               </div>
               <div className="border-t border-gray-200 pt-2 flex justify-between text-sm font-black text-gray-900">
                 <span>Total Amount Paid:</span>

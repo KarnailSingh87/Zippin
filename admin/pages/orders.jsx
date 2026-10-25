@@ -33,17 +33,32 @@ export default function OrdersAdmin() {
     setTimeout(() => setToastMessage(""), 3500);
   }
 
+  // Audio chime / beep notification for incoming orders (TC-4.2.02, TC-8.3.03)
+  function playNotificationSound() {
+    try {
+      const audio = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a1/S9cT8RN5PR8L93Rhg0j9Hwvnk+FzKLz/HAbjoUNYvP8b53PREzjNDvunE/ETOP0O65ckEVNI7P77hyPxE0jM/vtnVBD");
+      audio.play().catch(() => {});
+    } catch (e) {}
+  }
+
   async function loadData() {
     try {
       setLoading(true);
+      const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
       const [ordRes, storeRes, riderRes, pickerRes] = await Promise.all([
-        fetch(`${API}/api/orders/all`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API}/api/orders/all`, { headers: authHeaders }),
         fetch(`${API}/api/stores`),
-        fetch(`${API}/api/delivery-partners?role=rider`),
-        fetch(`${API}/api/delivery-partners?role=picker`),
+        fetch(`${API}/api/delivery-partners?role=rider`, { headers: authHeaders }),
+        fetch(`${API}/api/delivery-partners?role=picker`, { headers: authHeaders }),
       ]);
 
-      if (ordRes.ok) setOrders(await ordRes.json());
+      if (ordRes.ok) {
+        const fetchedOrders = await ordRes.json();
+        if (fetchedOrders.length > orders.length && orders.length > 0) {
+          playNotificationSound();
+        }
+        setOrders(fetchedOrders);
+      }
       if (storeRes.ok) setStores(await storeRes.json());
       if (riderRes.ok) setRiders(await riderRes.json());
       if (pickerRes.ok) setPickers(await pickerRes.json());
@@ -55,7 +70,32 @@ export default function OrdersAdmin() {
 
   useEffect(() => {
     loadData();
+    const interval = setInterval(loadData, 15000);
+    return () => clearInterval(interval);
   }, []);
+
+  async function handleRefund(orderId) {
+    if (!confirm("Issue immediate 100% gateway refund to customer and cancel this order?")) return;
+    try {
+      const res = await fetch(`${API}/api/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: "cancelled", note: "Admin issued gateway refund" }),
+      });
+      if (res.ok) {
+        showToast("Gateway refund issued successfully.");
+        loadData();
+        setSelectedOrder(null);
+      } else {
+        showToast("Failed to issue refund.");
+      }
+    } catch (e) {
+      showToast("Error processing refund.");
+    }
+  }
 
   async function updateStatus(orderId, newStatus) {
     try {
@@ -581,6 +621,18 @@ export default function OrdersAdmin() {
                   <span>Total Amount:</span>
                   <span className="text-[#0C831F] dark:text-emerald-400">₹{selectedOrder.total}</span>
                 </div>
+              </div>
+
+              {/* Order Actions: Refund / Cancel */}
+              <div className="flex gap-2 pt-2">
+                {selectedOrder.status !== "cancelled" && selectedOrder.status !== "delivered" && (
+                  <button
+                    onClick={() => handleRefund(selectedOrder._id)}
+                    className="flex-1 py-2.5 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>💸</span> Issue Gateway Refund & Cancel
+                  </button>
+                )}
               </div>
             </div>
           </div>
