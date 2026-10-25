@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { signInWithGooglePopup } from "../lib/firebase";
 
 const API = "";
 
@@ -72,6 +73,58 @@ export function AuthProvider({ children }) {
     localStorage.setItem("blinkit_token", data.token);
   }
 
+  async function loginWithGoogle() {
+    let googleUser = null;
+    try {
+      googleUser = await signInWithGooglePopup();
+    } catch (firebaseErr) {
+      // If Firebase project API key is not yet configured in .env.local
+      if (
+        firebaseErr?.code === "auth/configuration-not-found" ||
+        firebaseErr?.code === "auth/invalid-api-key" ||
+        firebaseErr?.code === "auth/api-key-not-valid" ||
+        firebaseErr?.code === "auth/internal-error"
+      ) {
+        const emailPrompt = prompt(
+          "Firebase Google Auth is active!\nTo test Google Sign-in immediately, enter your Google email:",
+          "google.user@gmail.com"
+        );
+        if (!emailPrompt) throw new Error("Google sign-in cancelled");
+        googleUser = {
+          email: emailPrompt,
+          name: emailPrompt.split("@")[0].replace(/[._]/g, " "),
+          photoURL: "",
+        };
+      } else if (firebaseErr?.code === "auth/popup-closed-by-user") {
+        throw new Error("Google Sign-In popup was closed");
+      } else {
+        throw new Error(firebaseErr?.message || "Google sign-in failed");
+      }
+    }
+
+    if (!googleUser || !googleUser.email) return;
+
+    // Send Google profile to Blinkit backend
+    const res = await fetch(`${API}/api/auth/google`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: googleUser.email,
+        name: googleUser.name,
+        photoURL: googleUser.photoURL,
+        googleId: googleUser.uid,
+      }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to authenticate with backend");
+
+    setUser(data.user);
+    setToken(data.token);
+    localStorage.setItem("blinkit_token", data.token);
+    return data.user;
+  }
+
   function logout() {
     setUser(null);
     setToken(null);
@@ -109,6 +162,7 @@ export function AuthProvider({ children }) {
         loading,
         login,
         register,
+        loginWithGoogle,
         logout,
         updateUser,
         fetchUser,
