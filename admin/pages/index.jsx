@@ -648,46 +648,6 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Store Details */}
-      {stores.length > 0 && (
-        <div className="bg-white dark:bg-[#121212] rounded-2xl shadow-sm border border-gray-200/80 dark:border-gray-800 p-5 transition-colors duration-300">
-          <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-800 mb-4">
-            <div>
-              <h3 className="font-black text-gray-900 dark:text-white text-sm tracking-tight">
-                Store Details
-              </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Hamirpur branch</p>
-            </div>
-            <Link href="/orders" className="text-xs font-bold text-[#0C831F] dark:text-emerald-400 hover:underline">
-              View Orders →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-            {stores.map((s) => (
-              <div
-                key={s._id}
-                className="p-3.5 rounded-xl bg-gray-50/80 dark:bg-gray-800/40 border border-gray-200/60 dark:border-gray-700/60 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] bg-white dark:bg-gray-900 px-2 py-0.5 rounded font-bold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-800">
-                      {s.code}
-                    </span>
-                    <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  </div>
-                  <h4 className="font-bold text-xs text-gray-900 dark:text-white mt-2 truncate">{s.name}</h4>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate">{s.address}</p>
-                </div>
-                <div className="mt-3 pt-2 border-t border-gray-200/60 dark:border-gray-700/60 flex items-center justify-between text-[11px]">
-                  <span className="text-gray-500 dark:text-gray-400 font-medium">Radius: {s.deliveryRadiusKm || 4.5} km</span>
-                  <span className="font-bold text-emerald-700 dark:text-emerald-400">{s.totalOrdersServed || 1200}+ orders</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Invoice Modal */}
       <OrderInvoiceModal
