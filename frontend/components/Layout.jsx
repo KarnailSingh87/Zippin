@@ -3,151 +3,70 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { useLocation, DISTRICT_DARK_STORES } from "../context/LocationContext";
 import CartDrawer from "./CartDrawer";
 import SearchTypeahead from "./SearchTypeahead";
 
 export default function Layout({ children }) {
   const { totalItems, totalPrice, totalSavings, isOpen, setIsOpen } = useCart();
   const { user, logout } = useAuth();
+  const {
+    currentLocation,
+    district,
+    stateName,
+    distanceKm,
+    deliveryMinutes,
+    originStore,
+    isDetecting,
+    locationStatus,
+    setLocationStatus,
+    detectLocation,
+    setManualLocation,
+    updateDistance,
+    stores,
+  } = useLocation();
+
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState("Gurugram, Sector 43, Haryana, India");
-  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
-  const [locationStatus, setLocationStatus] = useState(null);
   const [locationSearch, setLocationSearch] = useState("");
+  const [customDistance, setCustomDistance] = useState(distanceKm || 2.0);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const router = useRouter();
   const menuRef = useRef(null);
 
-  // Load saved location on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("zippin_user_location");
-      if (saved) setCurrentLocation(saved);
-    }
-  }, []);
+    if (distanceKm) setCustomDistance(distanceKm);
+  }, [distanceKm]);
 
-  // Automatic GPS Geolocation & Reverse Geocoding
+  // Automatic GPS Geolocation & Reverse Geocoding with district origin cross-reference
   async function detectUserLocation() {
     if (typeof window === "undefined") return;
-    if (!navigator.geolocation) {
-      setLocationStatus({ type: "error", message: "GPS not supported on this browser" });
-      return;
-    }
-
-    setIsDetectingLocation(true);
     setLocationStatus({ type: "loading", message: "Acquiring GPS satellite fix..." });
+    const res = await detectLocation();
 
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        try {
-          const { latitude, longitude } = pos.coords;
-          setLocationStatus({ type: "loading", message: "Resolving street & dark store zone..." });
-
-          // Reverse geocode via OpenStreetMap Nominatim
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=jsonv2&addressdetails=1`,
-            { headers: { "Accept-Language": "en" } }
-          );
-
-          if (res.ok) {
-            const data = await res.json();
-            const addr = data.address || {};
-            const locality =
-              addr.neighbourhood ||
-              addr.suburb ||
-              addr.residential ||
-              addr.road ||
-              addr.commercial ||
-              addr.village ||
-              "";
-            const city =
-              addr.city ||
-              addr.town ||
-              addr.state_district ||
-              addr.county ||
-              "";
-            const state = addr.state || "";
-            const postcode = addr.postcode || "";
-
-            const parts = [locality, city, state, postcode].filter(Boolean);
-            const formatted =
-              parts.length > 0
-                ? parts.join(", ")
-                : (data.display_name ? data.display_name.split(",").slice(0, 3).join(", ") : "Detected Location");
-
-            setCurrentLocation(formatted);
-            localStorage.setItem("zippin_user_location", formatted);
-            if (city) localStorage.setItem("zippin_user_city", city);
-            if (postcode) localStorage.setItem("zippin_user_pincode", postcode);
-            localStorage.setItem(
-              "zippin_user_coords",
-              JSON.stringify({ lat: latitude, lng: longitude })
-            );
-
-            const isServiceable = ["gurugram", "delhi", "noida", "bengaluru", "mumbai"].some(
-              (c) => (city || "").toLowerCase().includes(c) || (state || "").toLowerCase().includes(c)
-            );
-
-            if (isServiceable) {
-              setLocationStatus({
-                type: "success",
-                message: "Location detected successfully! ⚡ 8-min delivery",
-              });
-            } else {
-              setLocationStatus({
-                type: "error",
-                message: "Area is currently not serviceable. Coming soon to your city! ⚡",
-              });
-            }
-
-            setTimeout(() => {
-              setShowLocationModal(false);
-              setLocationStatus(null);
-            }, 1200);
-          } else {
-            throw new Error("Geocoding failed");
-          }
-        } catch (err) {
-          console.warn("Reverse geocode fallback to IP:", err);
-          try {
-            const ipRes = await fetch("https://ipapi.co/json/");
-            if (ipRes.ok) {
-              const ipData = await ipRes.json();
-              const formatted = `${ipData.city || "Gurugram"}, ${ipData.region || "Haryana"}, ${ipData.postal || "122001"}`;
-              setCurrentLocation(formatted);
-              localStorage.setItem("zippin_user_location", formatted);
-              setLocationStatus({ type: "success", message: `Pinpointed to ${ipData.city || "your city"}` });
-              setTimeout(() => {
-                setShowLocationModal(false);
-                setLocationStatus(null);
-              }, 800);
-            } else {
-              setLocationStatus({ type: "error", message: "Unable to detect exact address. Please pick below." });
-            }
-          } catch {
-            setLocationStatus({ type: "error", message: "Unable to detect GPS. Please pick below." });
-          }
-        } finally {
-          setIsDetectingLocation(false);
-        }
-      },
-      (err) => {
-        setIsDetectingLocation(false);
-        if (err.code === 1) {
-          setLocationStatus({
-            type: "error",
-            message: "Location permission denied. Please allow GPS access or choose a city below.",
-          });
-        } else {
-          setLocationStatus({
-            type: "error",
-            message: "GPS signal timed out. Please select your neighborhood below.",
-          });
-        }
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    // Verify dark store coverage against active dark stores
+    const isServiceable = stores.some((s) =>
+      s.district.toLowerCase().includes((district || "").toLowerCase()) ||
+      s.city.toLowerCase().includes((district || "").toLowerCase()) ||
+      ["hamirpur", "gurugram", "delhi", "noida", "bengaluru", "mumbai", "shimla"].some((c) =>
+        (currentLocation || "").toLowerCase().includes(c)
+      )
     );
+
+    if (isServiceable) {
+      setLocationStatus({
+        type: "success",
+        message: `Location detected successfully! ⚡ ${deliveryMinutes}-min delivery (${distanceKm} km from ${district} store)`,
+      });
+      setTimeout(() => {
+        setShowLocationModal(false);
+      }, 1200);
+    } else {
+      setLocationStatus({
+        type: "error",
+        message: "Area is currently not serviceable. Coming soon to your city! ⚡",
+      });
+    }
   }
 
   useEffect(() => {
@@ -160,14 +79,67 @@ export default function Layout({ children }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const matchedOriginStore =
+    stores.find(
+      (s) =>
+        (locationSearch && (
+          s.district.toLowerCase().includes(locationSearch.toLowerCase()) ||
+          s.city.toLowerCase().includes(locationSearch.toLowerCase()) ||
+          locationSearch.toLowerCase().includes(s.district.toLowerCase()) ||
+          locationSearch.toLowerCase().includes(s.city.toLowerCase())
+        ))
+    ) || originStore;
+
+  const dynamicEta = Math.max(5, Math.round(3 + (customDistance || 2.0) * 2.5));
+
+  const POPULAR_HUBS = [
+    {
+      name: "Hamirpur, Gandhi Chowk / District Center, HP, India",
+      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      city: "Hamirpur",
+      district: "Hamirpur",
+      state: "Himachal Pradesh",
+      pin: "177001",
+      defaultDist: 2.0,
+      eta: 8,
+    },
+    {
+      name: "Hamirpur, NIT Hamirpur Campus, HP, India",
+      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      city: "Hamirpur",
+      district: "Hamirpur",
+      state: "Himachal Pradesh",
+      pin: "177005",
+      defaultDist: 3.5,
+      eta: 12,
+    },
+    {
+      name: "Hamirpur, Anu Chowk / Salasi, HP, India",
+      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      city: "Hamirpur",
+      district: "Hamirpur",
+      state: "Himachal Pradesh",
+      pin: "177001",
+      defaultDist: 1.2,
+      eta: 6,
+    },
+    { name: "Gurugram, Sector 43, Haryana, India", hub: "Cyber City Hub #101", city: "Gurugram", district: "Gurugram", pin: "122002", defaultDist: 2.0, eta: 8 },
+    { name: "Gurugram, DLF Phase 2, Haryana, India", hub: "Golf Course Hub #102", city: "Gurugram", district: "Gurugram", pin: "122008", defaultDist: 1.8, eta: 8 },
+    { name: "New Delhi, Connaught Place, Delhi, India", hub: "CP Central Hub #201", city: "New Delhi", district: "New Delhi", pin: "110001", defaultDist: 2.0, eta: 8 },
+    { name: "New Delhi, Saket / South Delhi, Delhi, India", hub: "Saket Metro Hub #202", city: "New Delhi", district: "South Delhi", pin: "110017", defaultDist: 2.2, eta: 8 },
+    { name: "Noida, Sector 62, Uttar Pradesh, India", hub: "Electronic City Hub #301", city: "Noida", district: "Gautam Buddha Nagar", pin: "201309", defaultDist: 2.5, eta: 9 },
+    { name: "Noida, Sector 18, Uttar Pradesh, India", hub: "Atta Market Hub #302", city: "Noida", district: "Gautam Buddha Nagar", pin: "201301", defaultDist: 2.0, eta: 8 },
+    { name: "Bengaluru, Indiranagar, Karnataka, India", hub: "100ft Road Hub #401", city: "Bengaluru", district: "Bengaluru Urban", pin: "560038", defaultDist: 2.0, eta: 8 },
+    { name: "Bengaluru, Koramangala, Karnataka, India", hub: "Sony Signal Hub #402", city: "Bengaluru", district: "Bengaluru Urban", pin: "560034", defaultDist: 2.0, eta: 8 },
+    { name: "Mumbai, Bandra West, Maharashtra, India", hub: "Hill Road Hub #501", city: "Mumbai", district: "Mumbai Suburban", pin: "400050", defaultDist: 2.0, eta: 8 },
+    { name: "Mumbai, Andheri East, Maharashtra, India", hub: "MIDC Tech Hub #502", city: "Mumbai", district: "Mumbai Suburban", pin: "400093", defaultDist: 2.5, eta: 9 },
+  ];
+
   return (
     <div className="min-h-screen bg-[#F4F6FB] flex flex-col font-sans">
       {/* Top delivery promotional announcement strip */}
-      <div className="bg-[#F8CB46] text-[#1C1C1C] text-center py-1.5 px-4 text-xs font-bold tracking-wide flex items-center justify-center gap-2 border-b border-yellow-400">
-        <span className="bg-white/80 text-[#0C831F] text-[10px] uppercase font-black px-2 py-0.5 rounded-full shadow-xs">
-          FASTEST
-        </span>
-        <span>⚡ Superfast Delivery in 8-10 Minutes | Free Delivery on orders above ₹199</span>
+      <div className="bg-[#F8CB46] text-[#1C1C1C] text-center py-1.5 px-4 text-xs font-bold tracking-wide flex items-center justify-center border-b border-yellow-400">
+        <span>Superfast Delivery in {deliveryMinutes} Minutes | Free Delivery on orders above ₹199</span>
       </div>
 
       {/* Main Header */}
@@ -198,9 +170,9 @@ export default function Layout({ children }) {
               </div>
               <div className="leading-tight">
                 <div className="text-xs font-black text-gray-900 flex items-center gap-1">
-                  Delivery in 8 minutes
+                  Delivery in {deliveryMinutes} minutes
                 </div>
-                <div className="text-[11px] text-gray-500 font-medium truncate max-w-[140px] md:max-w-[200px]">
+                <div className="text-[11px] text-gray-500 font-medium truncate max-w-[150px] md:max-w-[220px]">
                   {currentLocation}
                 </div>
               </div>
@@ -244,7 +216,7 @@ export default function Layout({ children }) {
                   <span className="hidden lg:inline text-sm">
                     {user.name?.split(" ")[0] || "Account"}
                   </span>
-                  <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -323,6 +295,30 @@ export default function Layout({ children }) {
             <SearchTypeahead mobile onClose={() => setShowMobileSearch(false)} />
           </div>
         )}
+
+        {/* Mobile App Bar Location Strip */}
+        <div className="sm:hidden px-4 py-2 bg-gradient-to-r from-emerald-50 to-amber-50 border-t border-gray-200/60 flex items-center justify-between text-xs">
+          <button
+            onClick={() => setShowLocationModal(true)}
+            className="flex items-center gap-2 text-left truncate flex-1 min-w-0"
+          >
+            <span className="text-base shrink-0">⚡</span>
+            <div className="truncate">
+              <div className="font-black text-gray-900 text-xs">
+                Delivery in {deliveryMinutes} minutes
+              </div>
+              <div className="text-[11px] text-gray-600 truncate">
+                {currentLocation} ({distanceKm} km away)
+              </div>
+            </div>
+          </button>
+          <button
+            onClick={() => setShowLocationModal(true)}
+            className="text-xs font-bold text-[#0C831F] bg-white px-2.5 py-1 rounded-lg border border-emerald-200 shadow-xs shrink-0 ml-2"
+          >
+            Change
+          </button>
+        </div>
       </header>
 
       {/* Location Modal */}
@@ -333,8 +329,9 @@ export default function Layout({ children }) {
               onClick={() => {
                 setShowLocationModal(false);
                 setLocationStatus(null);
+                setLocationSearch("");
               }}
-              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-900 absolute top-5 right-5 flex items-center justify-center font-bold text-sm transition-colors"
+              className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-900 absolute top-5 right-5 flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
             >
               ✕
             </button>
@@ -348,20 +345,22 @@ export default function Layout({ children }) {
               </div>
               <div>
                 <h3 className="font-black text-gray-900 text-lg tracking-tight">Select Delivery Location</h3>
-                <p className="text-xs text-gray-500 mt-0.5">Instant 8-minute delivery enabled in your neighborhood</p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Origin-calculated delivery time from your District Dark Store
+                </p>
               </div>
             </div>
 
-            {/* GPS Auto Detect Button (Primary Action) */}
+            {/* GPS Auto Detect Button */}
             <div className="mb-4">
               <button
                 onClick={detectUserLocation}
-                disabled={isDetectingLocation}
-                className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-[#0C831F] hover:from-emerald-600 hover:to-[#0a731b] text-white flex items-center justify-between shadow-md shadow-emerald-900/20 active:scale-[0.99] transition-all group"
+                disabled={isDetecting}
+                className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-[#0C831F] hover:from-emerald-600 hover:to-[#0a731b] text-white flex items-center justify-between shadow-md shadow-emerald-900/20 active:scale-[0.99] transition-all group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-white">
-                    {isDetectingLocation ? (
+                    {isDetecting ? (
                       <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -379,12 +378,12 @@ export default function Layout({ children }) {
                       <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded font-bold uppercase">GPS</span>
                     </div>
                     <div className="text-[11px] text-emerald-100 font-medium">
-                      {isDetectingLocation ? "Locating doorstep via satellite..." : "Automatically fetch address via browser GPS"}
+                      {isDetecting ? "Locating doorstep via satellite..." : "Automatically fetch address via browser GPS"}
                     </div>
                   </div>
                 </div>
                 <div className="text-xs font-bold bg-white text-[#0C831F] px-2.5 py-1 rounded-xl shadow-xs">
-                  {isDetectingLocation ? "Locating..." : "Auto Fetch"}
+                  {isDetecting ? "Locating..." : "Auto Fetch"}
                 </div>
               </button>
 
@@ -407,13 +406,13 @@ export default function Layout({ children }) {
               )}
             </div>
 
-            {/* Search Input */}
+            {/* Manual Type Location Search Input */}
             <div className="relative mb-3">
               <input
                 type="text"
                 value={locationSearch}
                 onChange={(e) => setLocationSearch(e.target.value)}
-                placeholder="Search area, landmark or pincode..."
+                placeholder="Type district, city, landmark or pincode (e.g. Hamirpur, Gurugram)..."
                 className="w-full pl-9 pr-8 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
               />
               <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -422,12 +421,120 @@ export default function Layout({ children }) {
               {locationSearch && (
                 <button
                   onClick={() => setLocationSearch("")}
-                  className="absolute right-3 top-2.5 text-xs text-gray-400 hover:text-gray-600 font-bold"
+                  className="absolute right-3 top-2.5 text-xs text-gray-400 hover:text-gray-600 font-bold cursor-pointer"
                 >
                   ✕
                 </button>
               )}
             </div>
+
+            {/* Interactive District Store Origin & Distance Time Calculator */}
+            {locationSearch && (
+              <div className="mb-4 p-4 rounded-2xl bg-gradient-to-br from-emerald-50 via-teal-50 to-white border border-emerald-200 shadow-sm space-y-3 animate-fade-in">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-[#0C831F] text-[10px] font-black uppercase">
+                      <span>🏪</span> District Store Origin
+                    </div>
+                    <div className="font-black text-gray-900 text-sm mt-1">
+                      {locationSearch}
+                    </div>
+                    <div className="text-[11px] text-gray-600 font-medium mt-0.5">
+                      Origin: {matchedOriginStore?.name || "Zippin District Hub"}
+                    </div>
+                    <div className="text-[10px] text-gray-400">
+                      {matchedOriginStore?.address || "District Fulfillment Center"}
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="text-xs font-black text-[#0C831F] bg-white px-3 py-1.5 rounded-xl shadow-xs border border-emerald-200">
+                      ⚡ {dynamicEta} MINS
+                    </div>
+                    <div className="text-[10px] text-gray-500 font-semibold mt-1">
+                      {customDistance} km away
+                    </div>
+                  </div>
+                </div>
+
+                {/* Distance Selector Buttons */}
+                <div className="pt-2 border-t border-emerald-200/60">
+                  <div className="text-[10px] font-bold text-gray-600 mb-1.5 flex items-center justify-between">
+                    <span>Distance from {matchedOriginStore?.district || "District"} Store:</span>
+                    <span className="font-black text-[#0C831F]">{customDistance} km ({dynamicEta} mins delivery)</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {[
+                      { dist: 0.5, eta: 5 },
+                      { dist: 1.0, eta: 6 },
+                      { dist: 2.0, eta: 8 }, // 2 km = 8 mins!
+                      { dist: 3.5, eta: 12 },
+                      { dist: 5.0, eta: 16 },
+                      { dist: 8.0, eta: 23 },
+                    ].map((item) => (
+                      <button
+                        key={item.dist}
+                        type="button"
+                        onClick={() => {
+                          setCustomDistance(item.dist);
+                          updateDistance(item.dist);
+                        }}
+                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          customDistance === item.dist
+                            ? "bg-[#0C831F] text-white shadow-sm scale-105"
+                            : "bg-white text-gray-700 border border-gray-200 hover:border-emerald-300"
+                        }`}
+                      >
+                        {item.dist} km • ⚡ {item.eta}m
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Range Slider for granular distance */}
+                <div className="space-y-1">
+                  <div className="flex justify-between text-[10px] text-gray-400 font-medium">
+                    <span>0.5 km (5m)</span>
+                    <span className="font-bold text-emerald-700">2.0 km (8m)</span>
+                    <span>5.0 km (16m)</span>
+                    <span>10.0 km (28m)</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0.5"
+                    max="10.0"
+                    step="0.5"
+                    value={customDistance}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      setCustomDistance(val);
+                      updateDistance(val);
+                    }}
+                    className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#0C831F]"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const fullLoc =
+                      locationSearch.toLowerCase().includes("hamirpur") &&
+                      !locationSearch.toLowerCase().includes("himachal")
+                        ? `${locationSearch}, Himachal Pradesh, India`
+                        : locationSearch;
+                    setManualLocation(fullLoc, customDistance);
+                    setShowLocationModal(false);
+                    setLocationSearch("");
+                    setLocationStatus({
+                      type: "success",
+                      message: `Location set to ${fullLoc}! Delivery in ${dynamicEta} mins ⚡`,
+                    });
+                  }}
+                  className="w-full py-2.5 rounded-xl bg-[#0C831F] hover:bg-[#0a731b] text-white font-bold text-xs uppercase tracking-wide transition-all shadow-md shadow-emerald-900/20 active:scale-95 cursor-pointer"
+                >
+                  Deliver Here in {dynamicEta} Minutes
+                </button>
+              </div>
+            )}
 
             {/* Popular / Saved Delivery Hubs */}
             <div>
@@ -435,38 +542,26 @@ export default function Layout({ children }) {
                 Fast Delivery Available In:
               </div>
               <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
-                {[
-                  { name: "Gurugram, Sector 43, Haryana, India", hub: "Cyber City Hub #101", city: "Gurugram", pin: "122002" },
-                  { name: "Gurugram, DLF Phase 2, Haryana, India", hub: "Golf Course Hub #102", city: "Gurugram", pin: "122008" },
-                  { name: "New Delhi, Connaught Place, Delhi, India", hub: "CP Central Hub #201", city: "New Delhi", pin: "110001" },
-                  { name: "New Delhi, Saket / South Delhi, Delhi, India", hub: "Saket Metro Hub #202", city: "New Delhi", pin: "110017" },
-                  { name: "Noida, Sector 62, Uttar Pradesh, India", hub: "Electronic City Hub #301", city: "Noida", pin: "201309" },
-                  { name: "Noida, Sector 18, Uttar Pradesh, India", hub: "Atta Market Hub #302", city: "Noida", pin: "201301" },
-                  { name: "Bengaluru, Indiranagar, Karnataka, India", hub: "100ft Road Hub #401", city: "Bengaluru", pin: "560038" },
-                  { name: "Bengaluru, Koramangala, Karnataka, India", hub: "Sony Signal Hub #402", city: "Bengaluru", pin: "560034" },
-                  { name: "Mumbai, Bandra West, Maharashtra, India", hub: "Hill Road Hub #501", city: "Mumbai", pin: "400050" },
-                  { name: "Mumbai, Andheri East, Maharashtra, India", hub: "MIDC Tech Hub #502", city: "Mumbai", pin: "400093" },
-                ]
+                {POPULAR_HUBS
                   .filter((item) =>
                     !locationSearch ||
                     item.name.toLowerCase().includes(locationSearch.toLowerCase()) ||
                     item.pin.includes(locationSearch) ||
-                    item.hub.toLowerCase().includes(locationSearch.toLowerCase())
+                    item.hub.toLowerCase().includes(locationSearch.toLowerCase()) ||
+                    item.city.toLowerCase().includes(locationSearch.toLowerCase()) ||
+                    item.district.toLowerCase().includes(locationSearch.toLowerCase())
                   )
                   .map((loc, i) => {
-                    const isSelected = currentLocation === loc.name;
+                    const isSelected = currentLocation.toLowerCase().includes(loc.district.toLowerCase()) || currentLocation === loc.name;
                     return (
                       <button
                         key={i}
                         onClick={() => {
-                          setCurrentLocation(loc.name);
-                          localStorage.setItem("zippin_user_location", loc.name);
-                          localStorage.setItem("zippin_user_city", loc.city);
-                          localStorage.setItem("zippin_user_pincode", loc.pin);
+                          setManualLocation(loc.name, loc.defaultDist);
                           setShowLocationModal(false);
                           setLocationStatus(null);
                         }}
-                        className={`w-full text-left p-3 rounded-2xl border text-xs font-medium transition-all flex items-center justify-between ${
+                        className={`w-full text-left p-3 rounded-2xl border text-xs font-medium transition-all flex items-center justify-between cursor-pointer ${
                           isSelected
                             ? "border-[#0C831F] bg-emerald-50/70 text-[#0C831F] font-bold shadow-xs"
                             : "border-gray-100 hover:border-gray-300 text-gray-700 hover:bg-gray-50"
@@ -483,7 +578,7 @@ export default function Layout({ children }) {
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
                           <span className="text-[10px] font-bold text-[#0C831F] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                            ⚡ 8 min
+                            ⚡ {loc.eta} min ({loc.defaultDist} km)
                           </span>
                           {isSelected && <span className="text-xs font-black text-[#0C831F]">✓</span>}
                         </div>
@@ -491,22 +586,13 @@ export default function Layout({ children }) {
                     );
                   })}
                 {locationSearch &&
-                  ![
-                    { name: "Gurugram, Sector 43, Haryana, India", hub: "Cyber City Hub #101", city: "Gurugram", pin: "122002" },
-                    { name: "Gurugram, DLF Phase 2, Haryana, India", hub: "Golf Course Hub #102", city: "Gurugram", pin: "122008" },
-                    { name: "New Delhi, Connaught Place, Delhi, India", hub: "CP Central Hub #201", city: "New Delhi", pin: "110001" },
-                    { name: "New Delhi, Saket / South Delhi, Delhi, India", hub: "Saket Metro Hub #202", city: "New Delhi", pin: "110017" },
-                    { name: "Noida, Sector 62, Uttar Pradesh, India", hub: "Electronic City Hub #301", city: "Noida", pin: "201309" },
-                    { name: "Noida, Sector 18, Uttar Pradesh, India", hub: "Atta Market Hub #302", city: "Noida", pin: "201301" },
-                    { name: "Bengaluru, Indiranagar, Karnataka, India", hub: "100ft Road Hub #401", city: "Bengaluru", pin: "560038" },
-                    { name: "Bengaluru, Koramangala, Karnataka, India", hub: "Sony Signal Hub #402", city: "Bengaluru", pin: "560034" },
-                    { name: "Mumbai, Bandra West, Maharashtra, India", hub: "Hill Road Hub #501", city: "Mumbai", pin: "400050" },
-                    { name: "Mumbai, Andheri East, Maharashtra, India", hub: "MIDC Tech Hub #502", city: "Mumbai", pin: "400093" },
-                  ].some(
+                  !POPULAR_HUBS.some(
                     (item) =>
                       item.name.toLowerCase().includes(locationSearch.toLowerCase()) ||
                       item.pin.includes(locationSearch) ||
-                      item.hub.toLowerCase().includes(locationSearch.toLowerCase())
+                      item.hub.toLowerCase().includes(locationSearch.toLowerCase()) ||
+                      item.city.toLowerCase().includes(locationSearch.toLowerCase()) ||
+                      item.district.toLowerCase().includes(locationSearch.toLowerCase())
                   ) && (
                     <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-center space-y-1">
                       <span className="text-xl">📍</span>

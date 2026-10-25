@@ -18,18 +18,6 @@ const DEFAULT_BANNERS = [
     isActive: true,
   },
   {
-    title: "Instant Groceries in 8-10 Minutes",
-    subtitle: "Farm fresh vegetables, fruits & daily dairy essentials",
-    badge: "Instant 10 Mins",
-    image: "/images/banner-hero.jpg",
-    fallback: "/images/banner-paan.webp",
-    link: "/category/vegetables-fruits",
-    categorySlug: "vegetables-fruits",
-    type: "hero",
-    order: 2,
-    isActive: true,
-  },
-  {
     title: "Pharmacy & Wellness",
     subtitle: "Over-the-counter medicines & health care essentials",
     badge: "Pharmacy in 10 mins",

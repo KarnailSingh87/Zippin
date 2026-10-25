@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "../styles/globals.css";
 import { AuthProvider } from "../context/AuthContext";
+import { LocationProvider } from "../context/LocationContext";
 import { CartProvider } from "../context/CartContext";
 import { ToastProvider } from "../context/ToastContext";
 import Layout from "../components/Layout";
@@ -15,8 +16,9 @@ export default function App({ Component, pageProps }) {
 
   return (
     <AuthProvider>
-      <CartProvider>
-        <ToastProvider>
+      <LocationProvider>
+        <CartProvider>
+          <ToastProvider>
           <Head>
             <title>Zippin - Everything delivered in 8-10 minutes</title>
             <meta
@@ -40,6 +42,7 @@ export default function App({ Component, pageProps }) {
           <Toast />
         </ToastProvider>
       </CartProvider>
-    </AuthProvider>
+    </LocationProvider>
+  </AuthProvider>
   );
 }

@@ -12,13 +12,6 @@ const HERO_SLIDES = [
     title: "Paan Corner & Refreshments",
     link: "/category/paan-corner",
   },
-  {
-    id: "grocery",
-    image: "/images/banner-hero.jpg",
-    fallback: "/images/banner-paan.webp",
-    title: "Instant Groceries in 8-10 Minutes",
-    link: "/category/vegetables-fruits",
-  },
 ];
 
 function ShelfCarousel({ title, subtitle, products, slug }) {
@@ -131,7 +124,19 @@ export default function Home() {
           const fetchedBanners = await bannerRes.json();
           const heroes = fetchedBanners.filter((b) => b.type === "hero");
           const tiles = fetchedBanners.filter((b) => b.type === "promo_tile");
-          if (heroes.length > 0) setHeroSlides(heroes);
+          if (heroes.length > 0) {
+            // Keep unique hero banners (only 1 Paan corner banner)
+            const uniqueHeroes = [];
+            const seen = new Set();
+            for (const h of heroes) {
+              const key = h.image || h.title;
+              if (!seen.has(key)) {
+                seen.add(key);
+                uniqueHeroes.push(h);
+              }
+            }
+            setHeroSlides(uniqueHeroes.slice(0, 1));
+          }
           if (tiles.length > 0) setLifestyleTiles(tiles);
         }
       } catch (e) {
@@ -142,13 +147,14 @@ export default function Home() {
     load();
   }, []);
 
-  // Auto advance banner slide
+  // Auto advance banner slide only when there are multiple slides
   useEffect(() => {
+    if (!heroSlides || heroSlides.length <= 1) return;
     const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % (heroSlides.length || 1));
+      setActiveSlide((prev) => (prev + 1) % heroSlides.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, [heroSlides.length]);
+  }, [heroSlides?.length]);
 
   // Filter products by slug or keyword
   const getProductsByCatSlug = (slugKeywords) => {
