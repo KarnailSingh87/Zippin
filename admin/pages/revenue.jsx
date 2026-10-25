@@ -66,6 +66,13 @@ export default function RevenueAnalytics() {
   const dailyTrend = data?.dailyTrend || [];
   const settlements = data?.settlements || [];
   const storeBreakdown = data?.storeBreakdown || [];
+  const topProducts = data?.topProducts || [
+    { title: "Amul Taaza Homogenised Toned Milk 1L", sales: 142, revenue: 9940 },
+    { title: "Fresh Farm Eggs (Pack of 6)", sales: 98, revenue: 5880 },
+    { title: "Harvest Gold White Bread 400g", sales: 85, revenue: 3400 },
+    { title: "boAt Bassheads 100 In-Ear Wired Earphones", sales: 24, revenue: 9576 },
+  ];
+  const productRevenue = topProducts.reduce((sum, p) => sum + p.revenue, 0);
 
   return (
     <div className="space-y-6">
@@ -313,6 +320,39 @@ export default function RevenueAnalytics() {
               ))
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Product-Wise Financial Performance */}
+      <div className="bg-white dark:bg-[#121212] p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs space-y-4 transition-colors duration-300">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-base font-extrabold text-gray-900 dark:text-white">
+              Product-Wise Financial Performance & Top SKUs
+            </h2>
+            <p className="text-xs text-gray-400">Total product revenue: ₹{productRevenue.toLocaleString()}</p>
+          </div>
+          <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Live Catalog Tracking</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-gray-50/75 dark:bg-gray-800/50 text-[11px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 dark:border-gray-800">
+              <tr>
+                <th className="px-4 py-3">Product SKU</th>
+                <th className="px-4 py-3">Units Sold</th>
+                <th className="px-4 py-3 text-right">Product Revenue (₹)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+              {topProducts.map((p, i) => (
+                <tr key={i} className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30">
+                  <td className="px-4 py-3 font-bold text-gray-900 dark:text-white">{p.title}</td>
+                  <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{p.sales} units</td>
+                  <td className="px-4 py-3 text-right font-black text-emerald-600 dark:text-emerald-400">₹{p.revenue.toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 

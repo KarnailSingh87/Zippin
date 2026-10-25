@@ -92,6 +92,15 @@ export const cacheManager = {
           }
         }
         sessionStorage.clear();
+        if (typeof window !== "undefined" && "caches" in window) {
+          window.caches.keys().then((names) => {
+            names.forEach((name) => {
+              if (name.includes("blinkit") || name.includes("temp") || name.includes("catalog")) {
+                window.caches.delete(name);
+              }
+            });
+          }).catch(() => {});
+        }
         console.log("⚡ Website refreshed: Transient cache memory successfully evicted.");
       }
     } catch (e) {

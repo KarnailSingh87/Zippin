@@ -3,6 +3,11 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/orders": "pages/orders.js",
-  "/pickers": "pages/pickers.js"
+  "/products": "pages/products.js",
+  "/customers": "pages/customers.js",
+  "/inventory": "pages/inventory.js",
+  "/coupons": "pages/coupons.js",
+  "/settings": "pages/settings.js",
+  "/notifications": "pages/notifications.js",
+  "/login": "pages/login.js"
 }

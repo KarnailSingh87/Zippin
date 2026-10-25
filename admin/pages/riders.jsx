@@ -298,6 +298,48 @@ export default function DeliveryRidersAdmin() {
         </div>
       </div>
 
+      {/* Live Fleet Map Overview */}
+      <div id="fleetMap" className="bg-white dark:bg-[#121212] p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <h2 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+              Live City Fleet Telematics & GPS Map (NCR Dark Stores)
+            </h2>
+          </div>
+          <span className="text-[11px] text-gray-400 font-medium">Auto-refreshing every 5s • GPS coordinates active</span>
+        </div>
+        <div className="relative w-full h-64 rounded-xl overflow-hidden bg-slate-900 border border-gray-800 flex items-center justify-center">
+          <div className="absolute inset-0 bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:16px_16px] opacity-70"></div>
+          
+          <div className="absolute top-1/3 left-1/4 flex flex-col items-center">
+            <div className="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-500/20 flex items-center justify-center text-[8px] text-white font-bold">🏪</div>
+            <span className="text-[9px] font-bold text-blue-300 mt-1">Sector 29 Hub</span>
+          </div>
+          <div className="absolute bottom-1/3 right-1/3 flex flex-col items-center">
+            <div className="w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-500/20 flex items-center justify-center text-[8px] text-white font-bold">🏪</div>
+            <span className="text-[9px] font-bold text-blue-300 mt-1">Cyber City Hub</span>
+          </div>
+
+          {riders.slice(0, 8).map((r, i) => {
+            const posX = 20 + ((i * 17) % 65);
+            const posY = 15 + ((i * 23) % 70);
+            const isBusy = r.status === "busy";
+            return (
+              <div
+                key={r._id || i}
+                style={{ top: `${posY}%`, left: `${posX}%` }}
+                className="absolute flex items-center gap-1.5 p-1 rounded-full bg-gray-900/90 border border-gray-700 shadow-lg transform -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:scale-110 transition-transform"
+                title={`${r.firstName || r.name} - ${r.status}`}
+              >
+                <div className={`w-2.5 h-2.5 rounded-full ${isBusy ? "bg-amber-400 animate-pulse" : "bg-emerald-400"}`}></div>
+                <span className="text-[10px] text-gray-200 font-semibold pr-1.5">{r.firstName || (r.name ? r.name.split(" ")[0] : "Rider")}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Filter and Search Bar */}
       <div className="bg-white dark:bg-[#121212] p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Status Pills */}

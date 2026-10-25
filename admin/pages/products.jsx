@@ -356,6 +356,48 @@ export default function ProductsAdmin() {
     document.body.removeChild(link);
   }
 
+  // Import from CSV
+  async function handleImportCSV(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const text = event.target?.result;
+        if (!text) return;
+        const lines = text.split("\n").filter((l) => l.trim().length > 0);
+        if (lines.length <= 1) return alert("CSV file is empty or only has headers");
+        const token = localStorage.getItem("admin_token");
+        let imported = 0;
+        for (let i = 1; i < lines.length; i++) {
+          const cols = lines[i].split(",").map((c) => c.trim().replace(/^"|"$/g, ""));
+          if (cols.length >= 4) {
+            const title = cols[1] || cols[0];
+            const price = Number(cols[3]) || Number(cols[1]) || 50;
+            const mrp = Number(cols[4]) || price;
+            const stock = Number(cols[5]) || 20;
+            const unit = cols[7] || "1 pc";
+            await fetch(`${API}/api/products`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ title, price, mrp, stock, unit, isAvailable: true }),
+            });
+            imported++;
+          }
+        }
+        alert(`Successfully imported ${imported} products via CSV!`);
+        loadProducts();
+      } catch (err) {
+        alert("Failed to import CSV: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  }
+
   return (
     <div className="space-y-5">
       <Head>
@@ -379,6 +421,18 @@ export default function ProductsAdmin() {
           </p>
         </div>
         <div className="flex items-center gap-2.5">
+          <label className="flex items-center gap-1.5 px-3.5 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl text-xs font-semibold transition-all shadow-sm cursor-pointer">
+            <svg className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+            <span>Import CSV</span>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleImportCSV}
+              className="hidden"
+            />
+          </label>
           <button
             onClick={exportCSV}
             className="flex items-center gap-1.5 px-3.5 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl text-xs font-semibold transition-all shadow-sm cursor-pointer"

@@ -3,7 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/checkout": "pages/checkout.js",
   "/download": "pages/download.js",
-  "/auth/login": "pages/auth/login.js"
+  "/category/[slug]": "pages/category/[slug].js",
+  "/checkout": "pages/checkout.js"
 }
