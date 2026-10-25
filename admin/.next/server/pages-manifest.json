@@ -3,6 +3,9 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
+  "/revenue": "pages/revenue.js",
   "/products": "pages/products.js",
-  "/categories": "pages/categories.js"
+  "/orders": "pages/orders.js",
+  "/delivery-partners": "pages/delivery-partners.js",
+  "/stores": "pages/stores.js"
 }
