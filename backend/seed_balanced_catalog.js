@@ -914,7 +914,7 @@ async function run() {
   await mongoose.connect(MONGO_URI);
   console.log("Connected to MongoDB for catalog seeding...");
 
-  const defaultStore = await Store.findOne({ code: "STR-GUR-101" }) || await Store.findOne();
+  const defaultStore = await Store.findOne({ code: "STR-HMR-501" }) || await Store.findOne();
   const allStores = await Store.find({});
 
   // Wipe existing products to guarantee a perfectly clean, balanced 5 products per category

@@ -19,7 +19,7 @@ const INITIAL_CAMPAIGNS = [
     title: "🌧️ Rain Alert: Free Delivery on Hot Snacks",
     body: "Rainy evening cravings? Enjoy hot samosas, chai & snacks delivered in 9 mins with ZERO delivery fee.",
     channel: "WhatsApp & Push",
-    targetAudience: "Gurugram Hub Customers",
+    targetAudience: "Hamirpur Hub Customers",
     recipients: 8400,
     delivered: "98.9%",
     clicks: "24.5%",
@@ -139,9 +139,9 @@ export default function NotificationsBroadcast() {
                   onChange={(e) => setTargetAudience(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 text-xs text-gray-900 dark:text-white"
                 >
-                  <option value="All NCR Customers">All Customers (Delhi NCR - 25,400)</option>
-                  <option value="Gurugram Hub Customers">Gurugram Dark Stores (DLF Phase 1-5 & Cyber City)</option>
-                  <option value="South Delhi Customers">South Delhi Dark Stores (Hauz Khas & Saket)</option>
+                  <option value="All Hamirpur Customers">All Hamirpur District Customers (Gandhi Chowk & Localities)</option>
+                  <option value="Hamirpur Hub Customers">Hamirpur Central Hub (Gandhi Chowk, Anu & Salasi)</option>
+                  <option value="NIT Hamirpur Campus">NIT Hamirpur Student & Faculty Community</option>
                   <option value="Dormant Users (>14 days)">Dormant Accounts (Inactive for &gt; 14 days)</option>
                 </select>
               </div>

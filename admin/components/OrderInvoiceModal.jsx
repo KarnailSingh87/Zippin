@@ -88,14 +88,14 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
               <p className="font-extrabold text-gray-900 dark:text-white text-sm print:text-black">{order.customerName || "Customer"}</p>
               <p className="text-gray-700 dark:text-gray-300 font-medium mt-0.5 print:text-gray-600">{order.customerPhone || "+91 98765 43210"}</p>
               <p className="text-gray-600 dark:text-gray-400 mt-1 leading-relaxed print:text-gray-500">
-                {order.deliveryAddress?.addressLine || "Saket District Centre, Sector 43"}, {order.deliveryAddress?.city || "Gurugram"}, {order.deliveryAddress?.pincode || "122002"}
+                {order.deliveryAddress?.addressLine || "Main Bazaar, Near Gandhi Chowk"}, {order.deliveryAddress?.city || "Hamirpur"}, {order.deliveryAddress?.pincode || "177001"}
               </p>
             </div>
 
             <div className="text-right sm:text-left">
               <p className="text-[10px] uppercase font-bold text-gray-500 dark:text-gray-400 tracking-wider mb-1">Fulfillment Details</p>
               <p className="font-bold text-gray-800 dark:text-gray-200 print:text-black">
-                Fulfillment Hub: <span className="text-[#0C831F] dark:text-emerald-400">{order.store?.name || "Sector 43 Dark Store"}</span>
+                Fulfillment Hub: <span className="text-[#0C831F] dark:text-emerald-400">{order.store?.name || "Hamirpur District Dark Store"}</span>
               </p>
               <p className="text-gray-700 dark:text-gray-300 mt-0.5 print:text-gray-600">
                 Delivery Mode: <span className="font-semibold text-gray-900 dark:text-white print:text-black">Superfast (8-10 Mins)</span>

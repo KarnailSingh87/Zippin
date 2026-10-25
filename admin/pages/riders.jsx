@@ -38,7 +38,7 @@ export default function DeliveryRidersAdmin() {
     lastName: "",
     phone: "",
     email: "",
-    city: "Gurugram",
+    city: "Hamirpur",
     status: "available",
     vehicleType: "Bike",
     vehicleNumber: "",
@@ -79,7 +79,7 @@ export default function DeliveryRidersAdmin() {
       lastName: "",
       phone: "",
       email: "",
-      city: "Gurugram",
+      city: "Hamirpur",
       status: "available",
       vehicleType: "Bike",
       vehicleNumber: "",
@@ -599,7 +599,7 @@ export default function DeliveryRidersAdmin() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Gurugram"
+                    placeholder="e.g. Hamirpur"
                     value={form.city}
                     onChange={(e) => setForm({ ...form, city: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"

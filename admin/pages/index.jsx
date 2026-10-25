@@ -195,9 +195,9 @@ export default function Dashboard() {
     },
     {
       title: "Dark Store Hubs",
-      value: `${stats.stores} Hubs`,
+      value: `${stats.stores} Hub`,
       change: "99.2% SLA",
-      subtitle: "Gurugram, Delhi & BLR",
+      subtitle: "Hamirpur District Hub",
       link: "/stores",
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -367,7 +367,7 @@ export default function Dashboard() {
               </span>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              Instant grocery fulfillment across 6 Dark Store Hubs in Gurugram, Delhi & Bengaluru
+              Instant grocery fulfillment from Zippin Hamirpur District Dark Store Hub
             </p>
           </div>
         </div>

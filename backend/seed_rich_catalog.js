@@ -862,7 +862,7 @@ async function seed() {
   await mongoose.connect(MONGO_URI);
   console.log("Connected to MongoDB for rich catalog seeding...");
 
-  const defaultStore = await Store.findOne({ code: "STR-GUR-101" }) || await Store.findOne();
+  const defaultStore = await Store.findOne({ code: "STR-HMR-501" }) || await Store.findOne();
   if (!defaultStore) {
     console.error("No store found! Please run seed_operational_data.js first.");
     process.exit(1);

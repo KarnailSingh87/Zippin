@@ -1,0 +1,151 @@
+/* Motion Add to Basket Animation Styles */
+
+.add-to-basket {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: inherit;
+  user-select: none;
+}
+
+/* Cart basket receptacle that receives the flying item */
+.add-to-basket-cart {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #0c831f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(12, 131, 31, 0.18), 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+  z-index: 20;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.add-to-basket-cart:hover {
+  border-color: #0c831f;
+  background-color: #f7fff9;
+  box-shadow: 0 6px 20px rgba(12, 131, 31, 0.25);
+}
+
+/* Ripple ping effect triggered on basket arrival */
+.add-to-basket-ping {
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  background: rgba(12, 131, 31, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 10;
+}
+
+/* Product Card Area */
+.add-to-basket-product {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  max-width: 260px;
+  width: 100%;
+}
+
+/* Product Animated Tile (160px x 160px) */
+.add-to-basket-tile {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  background: #f4f6fb;
+  border: 1px solid #e5e7eb;
+  border-radius: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  z-index: 30;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.add-to-basket-emoji {
+  font-size: 4.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
+}
+
+.add-to-basket-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.75rem;
+}
+
+/* Product Metadata */
+.add-to-basket-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  text-align: center;
+}
+
+.add-to-basket-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+}
+
+.add-to-basket-price {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #0c831f;
+}
+
+/* Add to Basket Action Button */
+.add-to-basket-button {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  background: #0c831f;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 0.85rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(12, 131, 31, 0.28);
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.add-to-basket-button:hover:not(:disabled) {
+  background: #0a731b;
+  box-shadow: 0 6px 16px rgba(12, 131, 31, 0.36);
+}
+
+.add-to-basket-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Motion demo container */
+.motion-example {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}

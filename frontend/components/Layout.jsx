@@ -48,15 +48,16 @@ export default function Layout({ children }) {
     const isServiceable = stores.some((s) =>
       s.district.toLowerCase().includes((district || "").toLowerCase()) ||
       s.city.toLowerCase().includes((district || "").toLowerCase()) ||
-      ["hamirpur", "gurugram", "delhi", "noida", "bengaluru", "mumbai", "shimla"].some((c) =>
+      ["hamirpur", "himachal"].some((c) =>
         (currentLocation || "").toLowerCase().includes(c)
-      )
+      ) ||
+      distanceKm <= 20
     );
 
     if (isServiceable) {
       setLocationStatus({
         type: "success",
-        message: `Location detected successfully! ⚡ ${deliveryMinutes}-min delivery (${distanceKm} km from ${district} store)`,
+        message: `Location detected successfully! ⚡ ${deliveryMinutes}-min delivery (${distanceKm} km from Hamirpur store)`,
       });
       setTimeout(() => {
         setShowLocationModal(false);
@@ -64,7 +65,7 @@ export default function Layout({ children }) {
     } else {
       setLocationStatus({
         type: "error",
-        message: "Area is currently not serviceable. Coming soon to your city! ⚡",
+        message: "Area is currently not serviceable. Coming soon to your locality! ⚡",
       });
     }
   }
@@ -94,7 +95,7 @@ export default function Layout({ children }) {
 
   const POPULAR_HUBS = [
     {
-      name: "Hamirpur, Gandhi Chowk / District Center, HP, India",
+      name: "Hamirpur, Gandhi Chowk / Main Bazaar, HP",
       hub: "Zippin Dark Store #501 - Hamirpur District Hub",
       city: "Hamirpur",
       district: "Hamirpur",
@@ -104,7 +105,7 @@ export default function Layout({ children }) {
       eta: 8,
     },
     {
-      name: "Hamirpur, NIT Hamirpur Campus, HP, India",
+      name: "Hamirpur, NIT Hamirpur Campus, Anu, HP",
       hub: "Zippin Dark Store #501 - Hamirpur District Hub",
       city: "Hamirpur",
       district: "Hamirpur",
@@ -114,7 +115,7 @@ export default function Layout({ children }) {
       eta: 12,
     },
     {
-      name: "Hamirpur, Anu Chowk / Salasi, HP, India",
+      name: "Hamirpur, Anu Chowk & Salasi, HP",
       hub: "Zippin Dark Store #501 - Hamirpur District Hub",
       city: "Hamirpur",
       district: "Hamirpur",
@@ -123,16 +124,46 @@ export default function Layout({ children }) {
       defaultDist: 1.2,
       eta: 6,
     },
-    { name: "Gurugram, Sector 43, Haryana, India", hub: "Cyber City Hub #101", city: "Gurugram", district: "Gurugram", pin: "122002", defaultDist: 2.0, eta: 8 },
-    { name: "Gurugram, DLF Phase 2, Haryana, India", hub: "Golf Course Hub #102", city: "Gurugram", district: "Gurugram", pin: "122008", defaultDist: 1.8, eta: 8 },
-    { name: "New Delhi, Connaught Place, Delhi, India", hub: "CP Central Hub #201", city: "New Delhi", district: "New Delhi", pin: "110001", defaultDist: 2.0, eta: 8 },
-    { name: "New Delhi, Saket / South Delhi, Delhi, India", hub: "Saket Metro Hub #202", city: "New Delhi", district: "South Delhi", pin: "110017", defaultDist: 2.2, eta: 8 },
-    { name: "Noida, Sector 62, Uttar Pradesh, India", hub: "Electronic City Hub #301", city: "Noida", district: "Gautam Buddha Nagar", pin: "201309", defaultDist: 2.5, eta: 9 },
-    { name: "Noida, Sector 18, Uttar Pradesh, India", hub: "Atta Market Hub #302", city: "Noida", district: "Gautam Buddha Nagar", pin: "201301", defaultDist: 2.0, eta: 8 },
-    { name: "Bengaluru, Indiranagar, Karnataka, India", hub: "100ft Road Hub #401", city: "Bengaluru", district: "Bengaluru Urban", pin: "560038", defaultDist: 2.0, eta: 8 },
-    { name: "Bengaluru, Koramangala, Karnataka, India", hub: "Sony Signal Hub #402", city: "Bengaluru", district: "Bengaluru Urban", pin: "560034", defaultDist: 2.0, eta: 8 },
-    { name: "Mumbai, Bandra West, Maharashtra, India", hub: "Hill Road Hub #501", city: "Mumbai", district: "Mumbai Suburban", pin: "400050", defaultDist: 2.0, eta: 8 },
-    { name: "Mumbai, Andheri East, Maharashtra, India", hub: "MIDC Tech Hub #502", city: "Mumbai", district: "Mumbai Suburban", pin: "400093", defaultDist: 2.5, eta: 9 },
+    {
+      name: "Hamirpur, Mattan Sidh / Bypass Road, HP",
+      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      city: "Hamirpur",
+      district: "Hamirpur",
+      state: "Himachal Pradesh",
+      pin: "177001",
+      defaultDist: 2.8,
+      eta: 10,
+    },
+    {
+      name: "Hamirpur, Pucca Bharo & Nadaun Road, HP",
+      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      city: "Hamirpur",
+      district: "Hamirpur",
+      state: "Himachal Pradesh",
+      pin: "177001",
+      defaultDist: 3.0,
+      eta: 10,
+    },
+    {
+      name: "Hamirpur, Bhota Road & Outer Hub, HP",
+      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      city: "Hamirpur",
+      district: "Hamirpur",
+      state: "Himachal Pradesh",
+      pin: "177041",
+      defaultDist: 5.0,
+      eta: 15,
+    },
+    {
+      name: "Hamirpur, Dosarka Chowk & Entry Road, HP",
+      hub: "Zippin Dark Store #501 - Hamirpur District Hub",
+      city: "Hamirpur",
+      district: "Hamirpur",
+      state: "Himachal Pradesh",
+      pin: "177001",
+      defaultDist: 4.2,
+      eta: 13,
+    },
   ];
 
   return (
@@ -344,9 +375,14 @@ export default function Layout({ children }) {
                 </svg>
               </div>
               <div>
-                <h3 className="font-black text-gray-900 text-lg tracking-tight">Select Delivery Location</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-black text-gray-900 text-lg tracking-tight">Select Delivery Location</h3>
+                  <span className="text-[10px] font-black uppercase bg-emerald-100 text-[#0C831F] px-2 py-0.5 rounded-full border border-emerald-300">
+                    Hamirpur Hub • Single Branch
+                  </span>
+                </div>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Origin-calculated delivery time from your District Dark Store
+                  Exclusive Hamirpur District Dark Store — deliveries calculated dynamically from Gandhi Chowk
                 </p>
               </div>
             </div>
@@ -411,7 +447,7 @@ export default function Layout({ children }) {
                 type="text"
                 value={locationSearch}
                 onChange={(e) => setLocationSearch(e.target.value)}
-                placeholder="Type district, city, landmark or pincode (e.g. Hamirpur, Gurugram)..."
+                placeholder="Search Hamirpur localities (e.g. Gandhi Chowk, NIT, Anu, Salasi, Mattan Sidh)..."
                 className="w-full pl-9 pr-8 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0C831F]"
               />
               <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -433,16 +469,16 @@ export default function Layout({ children }) {
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-[#0C831F] text-[10px] font-black uppercase">
-                      <span>🏪</span> District Store Origin
+                      <span>🏪</span> Hamirpur Store Hub Origin
                     </div>
                     <div className="font-black text-gray-900 text-sm mt-1">
                       {locationSearch}
                     </div>
                     <div className="text-[11px] text-gray-600 font-medium mt-0.5">
-                      Origin: {matchedOriginStore?.name || "Zippin District Hub"}
+                      Origin: Zippin Dark Store #501 - Hamirpur District Hub
                     </div>
                     <div className="text-[10px] text-gray-400">
-                      {matchedOriginStore?.address || "District Fulfillment Center"}
+                      Near Main Bus Stand & Gandhi Chowk, Hamirpur (PIN: 177001)
                     </div>
                   </div>
                   <div className="text-right shrink-0">
@@ -458,7 +494,7 @@ export default function Layout({ children }) {
                 {/* Distance Selector Buttons */}
                 <div className="pt-2 border-t border-emerald-200/60">
                   <div className="text-[10px] font-bold text-gray-600 mb-1.5 flex items-center justify-between">
-                    <span>Distance from {matchedOriginStore?.district || "District"} Store:</span>
+                    <span>Distance from Hamirpur Hub (Gandhi Chowk):</span>
                     <span className="font-black text-[#0C831F]">{customDistance} km ({dynamicEta} mins delivery)</span>
                   </div>
                   <div className="flex items-center gap-1.5 flex-wrap">
@@ -537,7 +573,7 @@ export default function Layout({ children }) {
             {/* Popular / Saved Delivery Hubs */}
             <div>
               <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">
-                Fast Delivery Available In:
+                Fast Delivery Available Across Hamirpur Localities:
               </div>
               <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
                 {POPULAR_HUBS

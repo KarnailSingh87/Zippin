@@ -45,7 +45,7 @@ export default function StorePickersAdmin() {
     lastName: "",
     phone: "",
     email: "",
-    city: "Gurugram",
+    city: "Hamirpur",
     status: "available",
     shift: "Morning",
     pickingSpeedSec: 85,
@@ -85,7 +85,7 @@ export default function StorePickersAdmin() {
       lastName: "",
       phone: "",
       email: "",
-      city: "Gurugram",
+      city: "Hamirpur",
       status: "available",
       shift: "Morning",
       pickingSpeedSec: 85,
@@ -101,7 +101,7 @@ export default function StorePickersAdmin() {
       lastName: p.lastName || (p.name ? p.name.split(" ").slice(1).join(" ") : ""),
       phone: p.phone,
       email: p.email || "",
-      city: p.city || "Gurugram",
+      city: p.city || "Hamirpur",
       status: p.status || "available",
       shift: p.shift || "Morning",
       pickingSpeedSec: p.pickingSpeedSec || 85,
@@ -583,7 +583,7 @@ export default function StorePickersAdmin() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Gurugram"
+                    placeholder="e.g. Hamirpur"
                     value={form.city}
                     onChange={(e) => setForm({ ...form, city: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"

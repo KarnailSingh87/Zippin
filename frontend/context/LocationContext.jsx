@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 const LocationContext = createContext();
 
-// Known Dark Store Hubs per District/State serving as store origins
+// Single Dark Store Hub - Hamirpur District Hub (Sole Branch)
 export const DISTRICT_DARK_STORES = [
   {
     id: "str-hmr-501",
@@ -14,124 +14,7 @@ export const DISTRICT_DARK_STORES = [
     address: "Near Main Bus Stand & Gandhi Chowk, Hamirpur",
     pincode: "177001",
     coordinates: { lat: 31.6862, lng: 76.5213 },
-    deliveryRadiusKm: 12.0,
-    surgeMultiplier: 1.0,
-  },
-  {
-    id: "str-gur-102",
-    name: "Zippin Dark Store #102 - Sector 43 Hub",
-    district: "Gurugram",
-    city: "Gurugram",
-    state: "Haryana",
-    area: "Sector 43 / Golf Course Road",
-    address: "Near Golf Course Road, Sector 43, Gurugram",
-    pincode: "122009",
-    coordinates: { lat: 28.4595, lng: 77.0266 },
-    deliveryRadiusKm: 5.0,
-    surgeMultiplier: 1.0,
-  },
-  {
-    id: "str-gur-101",
-    name: "Zippin Dark Store #101 - Cyber Hub",
-    district: "Gurugram",
-    city: "Gurugram",
-    state: "Haryana",
-    area: "Cyber City Phase 2",
-    address: "Ground Floor, Tower B, DLF Cyber City",
-    pincode: "122002",
-    coordinates: { lat: 28.4952, lng: 77.0892 },
-    deliveryRadiusKm: 4.5,
-    surgeMultiplier: 1.0,
-  },
-  {
-    id: "str-del-201",
-    name: "Zippin Dark Store #201 - Saket District Hub",
-    district: "South Delhi",
-    city: "New Delhi",
-    state: "Delhi",
-    area: "Saket Community Centre",
-    address: "Community Centre, Saket, New Delhi",
-    pincode: "110017",
-    coordinates: { lat: 28.5244, lng: 77.2167 },
-    deliveryRadiusKm: 4.0,
-    surgeMultiplier: 1.0,
-  },
-  {
-    id: "str-del-202",
-    name: "Zippin Dark Store #202 - Hauz Khas Hub",
-    district: "New Delhi",
-    city: "New Delhi",
-    state: "Delhi",
-    area: "Hauz Khas / Aurobindo Marg",
-    address: "Aurobindo Marg, Hauz Khas, New Delhi",
-    pincode: "110016",
-    coordinates: { lat: 28.5494, lng: 77.2001 },
-    deliveryRadiusKm: 4.2,
-    surgeMultiplier: 1.0,
-  },
-  {
-    id: "str-noi-301",
-    name: "Zippin Dark Store #301 - Sector 18 Hub",
-    district: "Gautam Buddha Nagar",
-    city: "Noida",
-    state: "Uttar Pradesh",
-    area: "Atta Market Sector 18",
-    address: "Sector 18, Noida",
-    pincode: "201301",
-    coordinates: { lat: 28.5708, lng: 77.3271 },
-    deliveryRadiusKm: 5.0,
-    surgeMultiplier: 1.0,
-  },
-  {
-    id: "str-blr-301",
-    name: "Zippin Dark Store #301 - Indiranagar 100ft Hub",
-    district: "Bengaluru Urban",
-    city: "Bengaluru",
-    state: "Karnataka",
-    area: "100 Feet Road, HAL 2nd Stage",
-    address: "100 Feet Road, Indiranagar, Bengaluru",
-    pincode: "560038",
-    coordinates: { lat: 12.9716, lng: 77.6412 },
-    deliveryRadiusKm: 5.5,
-    surgeMultiplier: 1.0,
-  },
-  {
-    id: "str-blr-302",
-    name: "Zippin Dark Store #302 - Koramangala 4th Block",
-    district: "Bengaluru Urban",
-    city: "Bengaluru",
-    state: "Karnataka",
-    area: "80 Feet Road, Koramangala",
-    address: "4th Block, Koramangala, Bengaluru",
-    pincode: "560034",
-    coordinates: { lat: 12.9352, lng: 77.6245 },
-    deliveryRadiusKm: 4.8,
-    surgeMultiplier: 1.0,
-  },
-  {
-    id: "str-mum-501",
-    name: "Zippin Dark Store #501 - Bandra West Hub",
-    district: "Mumbai Suburban",
-    city: "Mumbai",
-    state: "Maharashtra",
-    area: "Hill Road, Bandra West",
-    address: "Hill Road, Bandra West, Mumbai",
-    pincode: "400050",
-    coordinates: { lat: 19.0596, lng: 72.8295 },
-    deliveryRadiusKm: 4.5,
-    surgeMultiplier: 1.0,
-  },
-  {
-    id: "str-shm-502",
-    name: "Zippin Dark Store #502 - Shimla Mall Road Hub",
-    district: "Shimla",
-    city: "Shimla",
-    state: "Himachal Pradesh",
-    area: "The Mall / Ridge",
-    address: "Near The Ridge, Mall Road, Shimla",
-    pincode: "171001",
-    coordinates: { lat: 31.1048, lng: 77.1734 },
-    deliveryRadiusKm: 8.0,
+    deliveryRadiusKm: 15.0,
     surgeMultiplier: 1.0,
   },
 ];
@@ -302,8 +185,25 @@ export function LocationProvider({ children }) {
         store.coordinates.lng
       );
     } else {
-      // Default distance for manually chosen district if not specified is 2.0 km
-      calculatedDist = 2.0;
+      // Auto-determine distance from Hamirpur Dark Store (Gandhi Chowk Hub)
+      const locLower = locationName.toLowerCase();
+      if (locLower.includes("nit")) {
+        calculatedDist = 3.5;
+      } else if (locLower.includes("anu") || locLower.includes("salasi")) {
+        calculatedDist = 1.2;
+      } else if (locLower.includes("gandhi") || locLower.includes("bazaar") || locLower.includes("bus stand")) {
+        calculatedDist = 0.8;
+      } else if (locLower.includes("mattan") || locLower.includes("sidh")) {
+        calculatedDist = 2.8;
+      } else if (locLower.includes("pucca") || locLower.includes("nadaun")) {
+        calculatedDist = 3.0;
+      } else if (locLower.includes("bhota")) {
+        calculatedDist = 5.0;
+      } else if (locLower.includes("dosarka")) {
+        calculatedDist = 4.2;
+      } else {
+        calculatedDist = 2.0;
+      }
     }
 
     const etaMins = calculateEstimatedDeliveryMinutes(calculatedDist);

@@ -253,7 +253,7 @@ export default function OrdersAdmin() {
             </span>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            Real-time quick-commerce fulfillment pipeline across 6 dark stores in Gurugram & Delhi NCR.
+            Real-time quick-commerce fulfillment pipeline for Hamirpur District Store Hub.
           </p>
         </div>
 

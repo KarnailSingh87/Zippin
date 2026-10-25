@@ -2,20 +2,22 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { useLocation } from "../context/LocationContext";
 
 const API = "";
 
 export default function CheckoutPage() {
   const { items, totalPrice, totalSavings, clearCart } = useCart();
   const { user, token, loading: authLoading } = useAuth();
+  const { deliveryMinutes, distanceKm } = useLocation();
   const router = useRouter();
 
   const [step, setStep] = useState(1);
   const [address, setAddress] = useState({
     label: "Home",
-    street: "",
-    city: "Gurugram",
-    pincode: "122001",
+    street: "Main Bazaar, Gandhi Chowk",
+    city: "Hamirpur",
+    pincode: "177001",
   });
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [loading, setLoading] = useState(false);
@@ -177,14 +179,14 @@ export default function CheckoutPage() {
             Order Placed!
           </h1>
           <p className="text-sm text-gray-500 mb-4">
-            Your groceries will be delivered in ~10 minutes
+            Your groceries will be delivered in ~{deliveryMinutes || 8} minutes ({distanceKm || 2.0} km from Hamirpur Store)
           </p>
           <div className="bg-blinkit-green-light rounded-xl p-4 mb-4">
             <p className="text-xs text-blinkit-green font-semibold">
               Estimated Delivery
             </p>
             <p className="text-lg font-bold text-blinkit-green">
-              10 minutes ⚡
+              {deliveryMinutes || 8} minutes ⚡
             </p>
           </div>
           <div className="flex gap-3">

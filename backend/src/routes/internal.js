@@ -906,33 +906,16 @@ router.post("/seed", async (req, res) => {
     let primaryStore = null;
     if (storeCount === 0) {
       primaryStore = await Store.create({
-        name: "Blinkit Dark Store #101 - Cyber Hub",
-        code: "STORE-GGN-101",
-        city: "Gurugram",
-        area: "DLF Cyber City",
-        address: "Building 10B, DLF Cyber Hub, Sector 24",
-        pincode: "122002",
-        phone: "0124-4112233",
-        isActive: true,
-      });
-      await Store.create({
-        name: "Blinkit Dark Store #102 - Sector 56",
-        code: "STORE-GGN-102",
-        city: "Gurugram",
-        area: "Golf Course Road",
-        address: "Shop 14-16, Huda Market, Sector 56",
-        pincode: "122011",
-        phone: "0124-4556677",
-        isActive: true,
-      });
-      await Store.create({
-        name: "Blinkit Dark Store #103 - Saket",
-        code: "STORE-DEL-103",
-        city: "New Delhi",
-        area: "Saket District Centre",
-        address: "Plot 3, Community Center, Saket",
-        pincode: "110017",
-        phone: "011-26554433",
+        name: "Zippin Dark Store - Hamirpur District Hub",
+        code: "STR-HMR-501",
+        city: "Hamirpur",
+        state: "Himachal Pradesh",
+        area: "Gandhi Chowk / District Center",
+        address: "Near Main Bus Stand & Gandhi Chowk, Hamirpur",
+        pincode: "177001",
+        phone: "+91 98110 09911",
+        deliveryRadiusKm: 15.0,
+        coordinates: { lat: 31.6862, lng: 76.5213 },
         isActive: true,
       });
     } else {

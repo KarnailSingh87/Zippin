@@ -13,7 +13,7 @@ export default function StoresAdmin() {
   const [form, setForm] = useState({
     name: "",
     code: "",
-    city: "Gurugram",
+    city: "Hamirpur",
     area: "",
     address: "",
     pincode: "",
@@ -46,7 +46,7 @@ export default function StoresAdmin() {
     setForm({
       name: "",
       code: `STORE-${Date.now().toString().slice(-4)}`,
-      city: "Gurugram",
+      city: "Hamirpur",
       area: "",
       address: "",
       pincode: "",
@@ -156,11 +156,16 @@ export default function StoresAdmin() {
               </svg>
             </div>
             <div>
-              <h1 className="text-xl font-black text-gray-900 dark:text-white font-outfit">
-                Dark Stores & Warehouses
-              </h1>
+              <div className="flex items-center gap-2.5">
+                <h1 className="text-xl font-black text-gray-900 dark:text-white font-outfit">
+                  Dark Stores & Warehouses
+                </h1>
+                <span className="text-[10px] font-black uppercase bg-emerald-100 dark:bg-emerald-950/60 text-[#0C831F] dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800/60 px-2.5 py-0.5 rounded-full">
+                  Hamirpur Hub • Single Branch
+                </span>
+              </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Hyperlocal micro-fulfillment centers, delivery radius zones & stock inventory hubs
+                Exclusive single fulfillment store hub for Hamirpur District (Gandhi Chowk), serving all local catchments
               </p>
             </div>
           </div>
@@ -447,7 +452,7 @@ export default function StoresAdmin() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Gurugram"
+                    placeholder="e.g. Hamirpur"
                     value={form.city}
                     onChange={(e) => setForm({ ...form, city: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1f2c] text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#0C831F]"

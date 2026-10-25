@@ -81,7 +81,7 @@ export async function placeOrder(req, res) {
       selectedStore = await Store.findById(storeId);
     }
     if (!selectedStore) {
-      const userCity = deliveryAddress?.city || "Gurugram";
+      const userCity = deliveryAddress?.city || "Hamirpur";
       selectedStore =
         (await Store.findOne({ city: new RegExp(userCity, "i"), isActive: true })) ||
         (await Store.findOne({ isActive: true }));
