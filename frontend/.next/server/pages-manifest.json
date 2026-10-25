@@ -3,16 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/category/[slug]": "pages/category/[slug].js",
   "/about": "pages/about.js",
-  "/careers": "pages/careers.js",
-  "/blog": "pages/blog.js",
-  "/press": "pages/press.js",
-  "/support": "pages/support.js",
-  "/lead": "pages/lead.js",
-  "/partner/franchise": "pages/partner/franchise.js",
-  "/partner/seller": "pages/partner/seller.js",
-  "/partner/warehouse": "pages/partner/warehouse.js",
-  "/partner/delivery": "pages/partner/delivery.js",
-  "/download": "pages/download.js"
+  "/category/[slug]": "pages/category/[slug].js"
 }

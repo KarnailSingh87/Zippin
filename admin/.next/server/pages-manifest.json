@@ -3,9 +3,11 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/revenue": "pages/revenue.js",
-  "/products": "pages/products.js",
-  "/orders": "pages/orders.js",
   "/delivery-partners": "pages/delivery-partners.js",
-  "/stores": "pages/stores.js"
+  "/inventory": "pages/inventory.js",
+  "/products": "pages/products.js",
+  "/hero-management": "pages/hero-management.js",
+  "/stores": "pages/stores.js",
+  "/orders": "pages/orders.js",
+  "/payments": "pages/payments.js"
 }

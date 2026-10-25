@@ -96,18 +96,44 @@ export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [heroSlides, setHeroSlides] = useState(HERO_SLIDES);
+  const [lifestyleTiles, setLifestyleTiles] = useState([
+    {
+      title: "Pharmacy in 10 mins",
+      image: "/images/pharmacy-promo.avif",
+      link: "/category/pharma-wellness",
+    },
+    {
+      title: "Pet Care Store",
+      image: "/images/petcare-promo.avif",
+      link: "/category/pet-care",
+    },
+    {
+      title: "Baby Care Essentials",
+      image: "/images/babycare-promo.avif",
+      link: "/category/baby-care",
+    },
+  ]);
 
   useEffect(() => {
     async function load() {
       try {
-        const [catRes, featRes, allRes] = await Promise.all([
+        const [catRes, featRes, allRes, bannerRes] = await Promise.all([
           fetch(`${API}/api/categories`),
           fetch(`${API}/api/products?featured=true&limit=30`),
           fetch(`${API}/api/products?limit=300`),
+          fetch(`${API}/api/banners?activeOnly=true`),
         ]);
         if (catRes.ok) setCategories(await catRes.json());
         if (featRes.ok) setFeatured(await featRes.json());
         if (allRes.ok) setAllProducts(await allRes.json());
+        if (bannerRes.ok) {
+          const fetchedBanners = await bannerRes.json();
+          const heroes = fetchedBanners.filter((b) => b.type === "hero");
+          const tiles = fetchedBanners.filter((b) => b.type === "promo_tile");
+          if (heroes.length > 0) setHeroSlides(heroes);
+          if (tiles.length > 0) setLifestyleTiles(tiles);
+        }
       } catch (e) {
         console.error("Failed to load Zippin store data", e);
       }
@@ -119,10 +145,10 @@ export default function Home() {
   // Auto advance banner slide
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+      setActiveSlide((prev) => (prev + 1) % (heroSlides.length || 1));
     }, 4500);
     return () => clearInterval(timer);
-  }, []);
+  }, [heroSlides.length]);
 
   // Filter products by slug or keyword
   const getProductsByCatSlug = (slugKeywords) => {
@@ -176,15 +202,15 @@ export default function Home() {
             className="flex transition-transform duration-500 ease-out"
             style={{ transform: `translateX(-${activeSlide * 100}%)` }}
           >
-            {HERO_SLIDES.map((slide) => (
-              <div key={slide.id} className="min-w-full">
-                <Link href={slide.link} className="block group">
+            {heroSlides.map((slide, idx) => (
+              <div key={slide._id || slide.id || idx} className="min-w-full">
+                <Link href={slide.link || "/category/vegetables-fruits"} className="block group">
                   <img
                     src={slide.image}
                     alt={slide.title}
                     className="w-full h-auto max-h-[220px] md:max-h-[280px] object-cover transition-transform duration-300 group-hover:scale-[1.01]"
                     onError={(e) => {
-                      e.currentTarget.src = slide.fallback;
+                      e.currentTarget.src = slide.fallback || "/images/banner-hero.jpg";
                     }}
                   />
                 </Link>
@@ -193,55 +219,38 @@ export default function Home() {
           </div>
 
           {/* Dots Indicator */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
-            {HERO_SLIDES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveSlide(i)}
-                className={`h-2 rounded-full transition-all ${
-                  i === activeSlide ? "w-6 bg-white shadow-sm" : "w-2 bg-white/60 hover:bg-white/80"
-                }`}
-                aria-label={`Slide ${i + 1}`}
-              />
-            ))}
-          </div>
+          {heroSlides.length > 1 && (
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
+              {heroSlides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveSlide(i)}
+                  className={`h-2 rounded-full transition-all ${
+                    i === activeSlide ? "w-6 bg-white shadow-sm" : "w-2 bg-white/60 hover:bg-white/80"
+                  }`}
+                  aria-label={`Slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* 2. Three Lifestyle Promo Tiles: Pharmacy, Pet Care, Baby Care */}
       <div className="px-4 mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-        <Link
-          href="/category/pharma-wellness"
-          className="rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 group border border-gray-200/80 bg-white"
-        >
-          <img
-            src="/images/pharmacy-promo.avif"
-            alt="Pharmacy in 10 mins"
-            className="w-full h-auto object-cover group-hover:scale-102 transition-transform"
-          />
-        </Link>
-
-        <Link
-          href="/category/pet-care"
-          className="rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 group border border-gray-200/80 bg-white"
-        >
-          <img
-            src="/images/petcare-promo.avif"
-            alt="Pet Care Store"
-            className="w-full h-auto object-cover group-hover:scale-102 transition-transform"
-          />
-        </Link>
-
-        <Link
-          href="/category/baby-care"
-          className="rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 group border border-gray-200/80 bg-white"
-        >
-          <img
-            src="/images/babycare-promo.avif"
-            alt="Baby Care Essentials"
-            className="w-full h-auto object-cover group-hover:scale-102 transition-transform"
-          />
-        </Link>
+        {lifestyleTiles.map((tile, idx) => (
+          <Link
+            key={tile._id || idx}
+            href={tile.link || "/category/pharma-wellness"}
+            className="rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 group border border-gray-200/80 bg-white"
+          >
+            <img
+              src={tile.image}
+              alt={tile.title}
+              className="w-full h-auto object-cover group-hover:scale-102 transition-transform"
+            />
+          </Link>
+        ))}
       </div>
 
       {/* 3. Category Matrix: The Iconic Zippin Category Tiles */}
