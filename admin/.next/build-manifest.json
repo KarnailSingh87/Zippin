@@ -27,20 +27,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/delivery-partners": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/delivery-partners.js"
-    ],
     "/hero-management": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/hero-management.js"
-    ],
-    "/inventory": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/inventory.js"
     ],
     "/orders": [
       "static/chunks/webpack.js",
@@ -52,10 +42,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/payments.js"
     ],
-    "/products": [
+    "/revenue": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/products.js"
+      "static/chunks/pages/revenue.js"
     ],
     "/stores": [
       "static/chunks/webpack.js",

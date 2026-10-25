@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import OrderInvoiceModal from "../components/OrderInvoiceModal";
 
 const API = "";
 
@@ -18,6 +19,7 @@ export default function Dashboard() {
   const [recentOrders, setRecentOrders] = useState([]);
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [invoiceOrder, setInvoiceOrder] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("admin_token");
@@ -142,7 +144,10 @@ export default function Dashboard() {
       {/* Row 1: Core Financial & Catalog Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {/* Total Revenue */}
-        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 flex items-center justify-between">
+        <Link
+          href="/revenue"
+          className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 hover:border-[#0C831F] flex items-center justify-between transition-all group block"
+        >
           <div>
             <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Gross Merchandise Value</p>
             <p className="text-2xl font-black text-gray-900 mt-1">
@@ -153,15 +158,18 @@ export default function Dashboard() {
               <span className="font-normal text-gray-400">vs yesterday</span>
             </span>
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+          <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-        </div>
+        </Link>
 
         {/* Total Orders */}
-        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 flex items-center justify-between">
+        <Link
+          href="/orders"
+          className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 hover:border-blue-500 flex items-center justify-between transition-all group block"
+        >
           <div>
             <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Completed Orders</p>
             <p className="text-2xl font-black text-gray-900 mt-1">
@@ -172,15 +180,18 @@ export default function Dashboard() {
               <span className="font-normal text-gray-400">• 100% verified</span>
             </span>
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+          <div className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
           </div>
-        </div>
+        </Link>
 
         {/* Active Products */}
-        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 flex items-center justify-between">
+        <Link
+          href="/products"
+          className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 hover:border-purple-500 flex items-center justify-between transition-all group block"
+        >
           <div>
             <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Live Catalog SKUs</p>
             <p className="text-2xl font-black text-gray-900 mt-1">
@@ -190,15 +201,18 @@ export default function Dashboard() {
               <span>Across {stats.categories} Categories</span>
             </span>
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+          <div className="w-11 h-11 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
           </div>
-        </div>
+        </Link>
 
         {/* Categories */}
-        <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 flex items-center justify-between">
+        <Link
+          href="/categories"
+          className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 hover:border-amber-500 flex items-center justify-between transition-all group block"
+        >
           <div>
             <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Active Categories</p>
             <p className="text-2xl font-black text-gray-900 mt-1">
@@ -208,20 +222,64 @@ export default function Dashboard() {
               <span>Fresh, Dairy, Snacks & Drinks</span>
             </span>
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+          <div className="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
             </svg>
           </div>
-        </div>
+        </Link>
       </div>
 
-      {/* Row 2: Hyperlocal Fulfillment Operations (ER Relational Hubs) */}
+      {/* Row 2: Hyperlocal Fulfillment & Content Controls */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Hero & Banners Card */}
+        <Link
+          href="/hero-management"
+          className="bg-white hover:border-pink-500 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 transition-all group block"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Hero & Banners</p>
+              <p className="text-xl font-black text-gray-900 mt-1">
+                Homepage
+              </p>
+            </div>
+            <div className="w-10 h-10 bg-pink-50 text-pink-600 rounded-xl flex items-center justify-center font-bold">
+              🖼️
+            </div>
+          </div>
+          <p className="text-[11px] text-pink-600 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+            <span>Edit Promo Posters</span>
+            <span>→</span>
+          </p>
+        </Link>
+
+        {/* Revenue & Settlements Card */}
+        <Link
+          href="/revenue"
+          className="bg-white hover:border-[#0C831F] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 transition-all group block"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Revenue Analytics</p>
+              <p className="text-xl font-black text-emerald-700 mt-1">
+                Settlements
+              </p>
+            </div>
+            <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center font-bold">
+              💰
+            </div>
+          </div>
+          <p className="text-[11px] text-[#0C831F] font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+            <span>Financial Audit Ledger</span>
+            <span>→</span>
+          </p>
+        </Link>
+
         {/* Dark Stores Card */}
         <Link
           href="/stores"
-          className="bg-white hover:border-[#0C831F] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 transition-all group block"
+          className="bg-white hover:border-indigo-500 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 transition-all group block"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -234,7 +292,7 @@ export default function Dashboard() {
               🏬
             </div>
           </div>
-          <p className="text-[11px] text-[#0C831F] font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <p className="text-[11px] text-indigo-600 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
             <span>Manage Warehouses</span>
             <span>→</span>
           </p>
@@ -243,68 +301,21 @@ export default function Dashboard() {
         {/* Delivery Fleet Card */}
         <Link
           href="/delivery-partners"
-          className="bg-white hover:border-[#0C831F] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 transition-all group block"
+          className="bg-white hover:border-amber-500 rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 transition-all group block"
         >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Delivery Fleet</p>
               <p className="text-xl font-black text-gray-900 mt-1">
-                {stats.activePartners}{" "}
-                <span className="text-xs font-normal text-gray-400">
-                  / {stats.partners} Active
-                </span>
+                {stats.activePartners} Active
               </p>
             </div>
             <div className="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center font-bold">
               🛵
             </div>
           </div>
-          <p className="text-[11px] text-[#0C831F] font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+          <p className="text-[11px] text-amber-600 font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
             <span>Track Fleet Riders</span>
-            <span>→</span>
-          </p>
-        </Link>
-
-        {/* Inventory Matrix Card */}
-        <Link
-          href="/inventory"
-          className="bg-white hover:border-[#0C831F] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 transition-all group block"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Inventory Health</p>
-              <p className="text-xl font-black text-emerald-600 mt-1">
-                300 SKUs
-              </p>
-            </div>
-            <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center font-bold">
-              📋
-            </div>
-          </div>
-          <p className="text-[11px] text-[#0C831F] font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Stock Allocations</span>
-            <span>→</span>
-          </p>
-        </Link>
-
-        {/* Financial Settlements Card */}
-        <Link
-          href="/payments"
-          className="bg-white hover:border-[#0C831F] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] border border-gray-100 transition-all group block"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider">Payment Settlements</p>
-              <p className="text-xl font-black text-gray-900 mt-1">
-                {stats.paymentsCount} Txns
-              </p>
-            </div>
-            <div className="w-10 h-10 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center font-bold">
-              💳
-            </div>
-          </div>
-          <p className="text-[11px] text-[#0C831F] font-bold mt-3 group-hover:translate-x-1 transition-transform flex items-center gap-1">
-            <span>Audit Ledger & Gateway</span>
             <span>→</span>
           </p>
         </Link>
@@ -341,7 +352,8 @@ export default function Dashboard() {
                   <th className="pb-3">Fleet Rider</th>
                   <th className="pb-3">Total Amount</th>
                   <th className="pb-3">Status</th>
-                  <th className="pb-3 text-right">Placed At</th>
+                  <th className="pb-3">Placed At</th>
+                  <th className="pb-3 text-right">Invoice</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -386,11 +398,19 @@ export default function Dashboard() {
                           {o.status.replace(/_/g, " ")}
                         </span>
                       </td>
-                      <td className="py-3 text-right text-gray-400 text-[11px]">
+                      <td className="py-3 text-gray-400 text-[11px]">
                         {new Date(o.createdAt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
                         })}
+                      </td>
+                      <td className="py-3 text-right">
+                        <button
+                          onClick={() => setInvoiceOrder(o)}
+                          className="px-2.5 py-1 text-[11px] font-bold text-[#0C831F] hover:bg-emerald-50 rounded-lg border border-emerald-200/70 transition-colors"
+                        >
+                          Invoice 🧾
+                        </button>
                       </td>
                     </tr>
                   );
@@ -436,6 +456,13 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* Invoice Modal */}
+      <OrderInvoiceModal
+        order={invoiceOrder}
+        isOpen={Boolean(invoiceOrder)}
+        onClose={() => setInvoiceOrder(null)}
+      />
     </div>
   );
 }
