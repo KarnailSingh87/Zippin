@@ -9,7 +9,11 @@ router.get("/", async (req, res) => {
   const q = req.query.q || "";
   const category = req.query.category;
   const featured = req.query.featured;
-  const filter = { isAvailable: true };
+  const filter = {};
+
+  if (req.query.includeInactive !== "true" && req.query.all !== "true") {
+    filter.isAvailable = true;
+  }
 
   if (q) {
     filter.$or = [{ title: new RegExp(q, "i") }, { tags: new RegExp(q, "i") }];
@@ -18,13 +22,48 @@ router.get("/", async (req, res) => {
   if (req.query.store) filter.storeId = req.query.store;
   if (featured === "true") filter.isFeatured = true;
 
-  const limit = parseInt(req.query.limit) || 50;
+  const limit = parseInt(req.query.limit) || 1000;
+  const sortField = req.query.sortBy || "createdAt";
+  const sortOrder = req.query.order === "asc" ? 1 : -1;
+
   const products = await Product.find(filter)
     .populate("category", "name slug")
     .populate("storeId", "name code city area")
-    .sort({ sortOrder: 1 })
+    .sort({ [sortField]: sortOrder })
     .limit(limit);
   res.json(products);
+});
+
+// quick stats for admin
+router.get("/stats/summary", authenticate, requireAdmin, async (req, res) => {
+  const total = await Product.countDocuments();
+  const active = await Product.countDocuments({ isAvailable: true });
+  const inactive = await Product.countDocuments({ isAvailable: false });
+  const featured = await Product.countDocuments({ isFeatured: true });
+  const lowStock = await Product.countDocuments({ stock: { $lte: 10, $gt: 0 } });
+  const outOfStock = await Product.countDocuments({ stock: 0 });
+  res.json({ total, active, inactive, featured, lowStock, outOfStock });
+});
+
+// quick toggle availability
+router.patch("/:id/toggle", authenticate, requireAdmin, async (req, res) => {
+  const p = await Product.findById(req.params.id);
+  if (!p) return res.status(404).json({ message: "Not found" });
+  p.isAvailable = !p.isAvailable;
+  await p.save();
+  res.json(p);
+});
+
+// quick stock adjustment
+router.patch("/:id/stock", authenticate, requireAdmin, async (req, res) => {
+  const { stock } = req.body;
+  const p = await Product.findByIdAndUpdate(
+    req.params.id,
+    { stock: Number(stock) },
+    { new: true }
+  );
+  if (!p) return res.status(404).json({ message: "Not found" });
+  res.json(p);
 });
 
 // get by slug
