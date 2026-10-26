@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zippin Rider Partner App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -35,13 +35,33 @@
     .stat-lbl { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
 
     /* Alert Banner / Modal */
-    .alert-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
+    .alert-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
     .alert-content { background: #1a222d; border: 2px solid #10b981; border-radius: 20px; max-width: 400px; width: 100%; padding: 24px; text-align: center; box-shadow: 0 0 50px rgba(16,185,129,0.3); animation: pulseGlow 1.5s infinite alternate; }
     @keyframes pulseGlow { from { border-color: #10b981; } to { border-color: #34d399; } }
     .countdown-timer { font-size: 3rem; font-weight: 900; color: #10b981; margin: 12px 0; font-variant-numeric: tabular-nums; }
     
     .nav-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 12px; background: #2563eb; color: #fff; font-weight: 700; text-decoration: none; font-size: 0.95rem; margin-top: 10px; }
     .sos-btn { background: #dc2626; color: white; border: none; border-radius: 12px; padding: 14px; font-weight: 800; font-size: 0.9rem; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; box-shadow: 0 4px 14px rgba(220,38,38,0.4); }
+
+    /* Helper Classes replacing inline styles */
+    .waiting-msg { text-align: center; padding: 20px; color: #94a3b8; font-size: 0.9rem; }
+    .btn-full-mt { margin-top: 10px; width: 100%; }
+    .alert-icon { font-size: 2rem; }
+    .alert-title { font-size: 1.3rem; font-weight: 800; margin-top: 8px; }
+    .alert-subtitle { font-size: 0.85rem; color: #94a3b8; margin-top: 4px; }
+    .alert-earning { font-size: 1.1rem; font-weight: 700; color: #f8fafc; margin-bottom: 16px; }
+    .alert-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .alert-btn { font-size: 1rem; padding: 14px; }
+
+    .active-order-box { background: #1f2733; padding: 14px; border-radius: 12px; margin-bottom: 12px; }
+    .order-header { display: flex; justify-content: space-between; align-items: center; }
+    .order-tag { font-weight: 800; color: #10b981; }
+    .order-badge { font-size: 0.75rem; background: #064e3b; color: #34d399; padding: 2px 8px; border-radius: 4px; }
+    .order-drop { font-size: 0.85rem; margin-top: 8px; color: #f1f5f9; }
+    .otp-container { margin-top: 12px; }
+    .otp-label { font-size: 0.75rem; color: #94a3b8; font-weight: 700; }
+    .otp-row { display: flex; gap: 8px; margin-top: 6px; }
+    .otp-input { flex: 1; padding: 10px; border-radius: 8px; background: #0c0f14; border: 1px solid #334155; color: #fff; font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -67,11 +87,11 @@
     <div class="card" id="activeOrderCard">
       <div class="card-title">Current Delivery Assignment</div>
       <div id="activeOrderContent">
-        <div style="text-align: center; padding: 20px; color: #94a3b8; font-size: 0.9rem;">
+        <div class="waiting-msg">
           🛵 You are online. Waiting for order dispatch from dark store...
         </div>
       </div>
-      <button id="btnSimulateOrder" class="btn btn-dark" style="margin-top: 10px; width: 100%;">
+      <button id="btnSimulateOrder" class="btn btn-dark btn-full-mt">
         🔔 Simulate Incoming Order Alert
       </button>
     </div>
@@ -103,15 +123,15 @@
   <!-- 45-Second Countdown Order Alert Modal -->
   <div id="alertModal" class="alert-modal">
     <div class="alert-content">
-      <div style="font-size: 2rem;">🔔</div>
-      <h2 style="font-size: 1.3rem; font-weight: 800; margin-top: 8px;">New Order Assigned!</h2>
-      <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">Sector 43 Dark Store → Sushant Lok Phase 1</p>
+      <div class="alert-icon">🔔</div>
+      <h2 class="alert-title">New Order Assigned!</h2>
+      <p class="alert-subtitle">Sector 43 Dark Store → Sushant Lok Phase 1</p>
       <div class="countdown-timer" id="countdownTimer">45s</div>
-      <div style="font-size: 1.1rem; font-weight: 700; color: #f8fafc; margin-bottom: 16px;">Earning: ₹65 (₹50 base + ₹15 surge)</div>
+      <div class="alert-earning">Earning: ₹65 (₹50 base + ₹15 surge)</div>
       
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <button id="btnRejectOrder" class="btn btn-red" style="font-size: 1rem; padding: 14px;">Reject</button>
-        <button id="btnAcceptOrder" class="btn btn-green" style="font-size: 1rem; padding: 14px;">Accept</button>
+      <div class="alert-actions">
+        <button id="btnRejectOrder" class="btn btn-red alert-btn">Reject</button>
+        <button id="btnAcceptOrder" class="btn btn-green alert-btn">Accept</button>
       </div>
     </div>
   </div>
@@ -132,10 +152,12 @@
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + 0.3);
-      } catch (e) {}
+      } catch (e) {
+        console.log("Audio not allowed yet");
+      }
     }
 
-    // Status management
+    // Shift status management
     const statusBadge = document.getElementById('statusBadge');
     document.getElementById('btnOnline').onclick = () => {
       statusBadge.className = 'status-badge status-online';
@@ -143,7 +165,7 @@
     };
     document.getElementById('btnBreak').onclick = () => {
       statusBadge.className = 'status-badge status-break';
-      statusBadge.textContent = '☕ ON BREAK (15m)';
+      statusBadge.textContent = '☕ ON BREAK';
     };
     document.getElementById('btnOffline').onclick = () => {
       statusBadge.className = 'status-badge status-offline';
@@ -192,20 +214,20 @@
       const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}`;
 
       document.getElementById('activeOrderContent').innerHTML = `
-        <div style="background: #1f2733; padding: 14px; border-radius: 12px; margin-bottom: 12px;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-weight: 800; color: #10b981;">ORDER #ZP-8924</span>
-            <span style="font-size: 0.75rem; background: #064e3b; color: #34d399; padding: 2px 8px; border-radius: 4px;">PICKUP COMPLETE</span>
+        <div class="active-order-box">
+          <div class="order-header">
+            <span class="order-tag">ORDER #ZP-8924</span>
+            <span class="order-badge">PICKUP COMPLETE</span>
           </div>
-          <p style="font-size: 0.85rem; margin-top: 8px; color: #f1f5f9;">Drop: B-402, DLF Phase 2, Gurugram</p>
+          <p class="order-drop">Drop: B-402, DLF Phase 2, Gurugram</p>
           <a href="${googleMapsUrl}" target="_blank" class="nav-btn">
             <span>🗺️</span> Open Google Maps Navigation
           </a>
         </div>
-        <div style="margin-top: 12px;">
-          <label style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">PROOF OF DELIVERY (4-DIGIT OTP)</label>
-          <div style="display: flex; gap: 8px; margin-top: 6px;">
-            <input type="text" maxlength="4" placeholder="Enter 4-digit OTP" style="flex: 1; padding: 10px; border-radius: 8px; background: #0c0f14; border: 1px solid #334155; color: #fff; font-size: 0.9rem;" />
+        <div class="otp-container">
+          <label class="otp-label">PROOF OF DELIVERY (4-DIGIT OTP)</label>
+          <div class="otp-row">
+            <input type="text" maxlength="4" placeholder="Enter 4-digit OTP" class="otp-input" />
             <button class="btn btn-green" onclick="alert('Delivery Confirmed! ₹65 added to your wallet.')">Verify</button>
           </div>
         </div>
