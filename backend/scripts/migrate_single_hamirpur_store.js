@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = "mongodb://127.0.0.1:27017/blinkit";
+const MONGO_URI = "mongodb://127.0.0.1:27017/zippin";
 
 async function migrate() {
   await mongoose.connect(MONGO_URI);

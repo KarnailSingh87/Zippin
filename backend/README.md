@@ -1,6 +1,6 @@
-# Blinkit Backend (scaffold)
+# Zippin Backend (scaffold)
 
-This is a minimal TypeScript Express backend scaffold for a Blinkit-like app.
+This is a minimal TypeScript Express backend scaffold for a Zippin-like app.
 
 Features included:
 - TypeScript + Express

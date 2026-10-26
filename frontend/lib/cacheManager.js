@@ -97,7 +97,7 @@ export const cacheManager = {
             .keys()
             .then((names) => {
               names.forEach((name) => {
-                if (name.includes("zippin") || name.includes("blinkit") || name.includes("temp") || name.includes("catalog")) {
+                if (name.includes("zippin") || name.includes("temp") || name.includes("catalog")) {
                   window.caches.delete(name);
                 }
               });

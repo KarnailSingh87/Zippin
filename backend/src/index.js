@@ -131,7 +131,7 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 4000;
 
 async function start() {
-  const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/blinkit";
+  const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/zippin";
   await mongoose.connect(mongoUri);
   console.log("Connected to MongoDB");
 

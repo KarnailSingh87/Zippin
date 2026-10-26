@@ -1,6 +1,6 @@
-# Blinkit Database Design & ER Model (DBMS)
+# Zippin Database Design & ER Model (DBMS)
 
-This documentation specifies the comprehensive Database Management System (DBMS) relational model for the **Blinkit Instant Grocery Delivery Platform**, structured in alignment with the repository [Tanya534580/Blinkit-Database-Design-ER-Model](https://github.com/Tanya534580/Blinkit-Database-Design-ER-Model).
+This documentation specifies the comprehensive Database Management System (DBMS) relational model for the **Zippin Instant Grocery Delivery Platform**, structured in alignment with the repository [Tanya534580/Zippin-Database-Design-ER-Model](https://github.com/Tanya534580/Zippin-Database-Design-ER-Model).
 
 ---
 

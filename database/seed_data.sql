@@ -1,16 +1,16 @@
 -- ====================================================================
--- Blinkit DBMS Seed Data
+-- Zippin DBMS Seed Data
 -- ====================================================================
 
-USE blinkit_db;
+USE zippin_db;
 
 -- 1. Insert Stores (Dark Stores / Fulfillment Warehouses)
 INSERT INTO store (store_name, store_code, city, area, pincode, contact_phone) VALUES
-('Blinkit Dark Store #101 - Cyber Hub', 'STORE-GGN-101', 'Gurugram', 'DLF Cyber City', '122002', '0124-4112233'),
-('Blinkit Dark Store #102 - Sector 56', 'STORE-GGN-102', 'Gurugram', 'Golf Course Road', '122011', '0124-4556677'),
-('Blinkit Dark Store #103 - Saket', 'STORE-DEL-103', 'New Delhi', 'Saket District Centre', '110017', '011-26554433'),
-('Blinkit Dark Store #104 - Indiranagar', 'STORE-BLR-104', 'Bengaluru', 'Indiranagar 100ft Road', '560038', '080-4998877'),
-('Blinkit Dark Store #105 - Koramangala', 'STORE-BLR-105', 'Bengaluru', 'Koramangala 4th Block', '560034', '080-4112345');
+('Zippin Dark Store #101 - Cyber Hub', 'STORE-GGN-101', 'Gurugram', 'DLF Cyber City', '122002', '0124-4112233'),
+('Zippin Dark Store #102 - Sector 56', 'STORE-GGN-102', 'Gurugram', 'Golf Course Road', '122011', '0124-4556677'),
+('Zippin Dark Store #103 - Saket', 'STORE-DEL-103', 'New Delhi', 'Saket District Centre', '110017', '011-26554433'),
+('Zippin Dark Store #104 - Indiranagar', 'STORE-BLR-104', 'Bengaluru', 'Indiranagar 100ft Road', '560038', '080-4998877'),
+('Zippin Dark Store #105 - Koramangala', 'STORE-BLR-105', 'Bengaluru', 'Koramangala 4th Block', '560034', '080-4112345');
 
 -- 2. Insert Customers
 INSERT INTO customer (first_name, last_name, phone, email, city, address) VALUES

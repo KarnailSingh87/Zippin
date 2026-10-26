@@ -18,7 +18,7 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("zippin_cart") || localStorage.getItem("blinkit_cart");
+      const saved = localStorage.getItem("zippin_cart");
       if (saved) setItems(JSON.parse(saved));
     } catch {}
   }, []);

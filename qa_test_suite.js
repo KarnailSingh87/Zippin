@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * BLINKIT CLONE - PHASE 2 BACKEND & API AUTOMATED QA TEST SUITE
+ * ZIPPIN CLONE - PHASE 2 BACKEND & API AUTOMATED QA TEST SUITE
  * ============================================================================
  * Covers:
  *  2.1 Endpoint Catalog (59 Endpoints)
@@ -82,7 +82,7 @@ async function runTestSuite() {
   console.log("  Target Base URL: " + BASE_URL);
   console.log("==================================================================\n");
 
-  await mongoose.connect("mongodb://127.0.0.1:27017/blinkit");
+  await mongoose.connect("mongodb://127.0.0.1:27017/zippin");
   const db = mongoose.connection.db;
 
   // Verify Admin Account

@@ -14,18 +14,14 @@ function setSessionToken(val) {
 }
 function getSessionToken() {
   if (typeof window === "undefined") return null;
-  const match =
-    document.cookie.match(new RegExp('(^| )zippin_secure_session=([^;]+)')) ||
-    document.cookie.match(new RegExp('(^| )blinkit_secure_session=([^;]+)'));
+  const match = document.cookie.match(new RegExp('(^| )zippin_secure_session=([^;]+)'));
   if (match) return match[2];
-  return sessionStorage.getItem("zippin_secure_token") || sessionStorage.getItem("blinkit_secure_token");
+  return sessionStorage.getItem("zippin_secure_token");
 }
 function removeSessionToken() {
   if (typeof window !== "undefined") {
     document.cookie = "zippin_secure_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "blinkit_secure_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     sessionStorage.removeItem("zippin_secure_token");
-    sessionStorage.removeItem("blinkit_secure_token");
   }
 }
 

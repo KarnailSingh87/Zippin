@@ -1,5 +1,5 @@
 {
-  "name": "blinkit-monorepo",
+  "name": "zippin-monorepo",
   "private": true,
   "scripts": {
     "dev:all": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\" \"cd admin && npm run dev\"",

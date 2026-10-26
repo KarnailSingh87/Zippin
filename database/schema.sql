@@ -1,11 +1,11 @@
 -- ====================================================================
--- Blinkit Instant Grocery Delivery Platform - Database Schema (DBMS)
--- Inspired by and compatible with: Tanya534580/Blinkit-Database-Design-ER-Model
+-- Zippin Instant Grocery Delivery Platform - Database Schema (DBMS)
+-- Inspired by and compatible with: Tanya534580/Zippin-Database-Design-ER-Model
 -- Dialect: MySQL 8.0+ / MariaDB / Relational ANSI SQL
 -- ====================================================================
 
-CREATE DATABASE IF NOT EXISTS blinkit_db;
-USE blinkit_db;
+CREATE DATABASE IF NOT EXISTS zippin_db;
+USE zippin_db;
 
 -- --------------------------------------------------------------------
 -- 1. Table: customer

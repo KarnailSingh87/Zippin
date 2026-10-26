@@ -63,7 +63,7 @@ async function run() {
   console.log("Target: " + BASE_URL);
   console.log("=================================================\n");
 
-  await mongoose.connect("mongodb://127.0.0.1:27017/blinkit");
+  await mongoose.connect("mongodb://127.0.0.1:27017/zippin");
   const db = mongoose.connection.db;
 
   // 1. Setup Test Users

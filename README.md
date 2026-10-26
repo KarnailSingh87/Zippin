@@ -32,7 +32,7 @@ Notes:
 
 ## 🗄️ Database Design & Relational ER Model (DBMS)
 
-This repository incorporates a complete DBMS relational architecture modeled after [Tanya534580/Blinkit-Database-Design-ER-Model](https://github.com/Tanya534580/Blinkit-Database-Design-ER-Model):
+This repository incorporates a complete DBMS relational architecture modeled after [Tanya534580/Zippin-Database-Design-ER-Model](https://github.com/Tanya534580/Zippin-Database-Design-ER-Model):
 
 - **Entities Covered**:
   - `customer` (First Name, Last Name, Phone, Email, City)
@@ -46,16 +46,16 @@ This repository incorporates a complete DBMS relational architecture modeled aft
   - `delivery` (Real-time dispatch and delivery lifecycle tracking)
 
 - **Database Files**:
-  - [`database/schema.sql`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/database/schema.sql) — Full MySQL / ANSI SQL DDL schema with primary keys, foreign key constraints, cascade rules, and indexes.
-  - [`database/seed_data.sql`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/database/seed_data.sql) — Realistic sample seed data for relational databases.
-  - [`database/ER_DIAGRAM.md`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/database/ER_DIAGRAM.md) — Mermaid ER diagram, normalization analysis (1NF, 2NF, 3NF, BCNF), relationship cardinalities, and sample analytical queries.
+  - [`database/schema.sql`](file:///Users/harsh/Desktop/Harsh/PROJECTS/zippin/database/schema.sql) — Full MySQL / ANSI SQL DDL schema with primary keys, foreign key constraints, cascade rules, and indexes.
+  - [`database/seed_data.sql`](file:///Users/harsh/Desktop/Harsh/PROJECTS/zippin/database/seed_data.sql) — Realistic sample seed data for relational databases.
+  - [`database/ER_DIAGRAM.md`](file:///Users/harsh/Desktop/Harsh/PROJECTS/zippin/database/ER_DIAGRAM.md) — Mermaid ER diagram, normalization analysis (1NF, 2NF, 3NF, BCNF), relationship cardinalities, and sample analytical queries.
 
 - **Admin Management Pages**:
-  - Dark Stores: [`/stores`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/stores.jsx)
-  - Delivery Fleet: [`/delivery-partners`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/delivery-partners.jsx)
-  - Dark Store Inventory: [`/inventory`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/inventory.jsx)
-  - Orders & Dispatch Assignment: [`/orders`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/orders.jsx)
-  - Payments & Settlements: [`/payments`](file:///Users/harsh/Desktop/Harsh/PROJECTS/blinkit/admin/pages/payments.jsx)
+  - Dark Stores: [`/stores`](file:///Users/harsh/Desktop/Harsh/PROJECTS/zippin/admin/pages/stores.jsx)
+  - Delivery Fleet: [`/delivery-partners`](file:///Users/harsh/Desktop/Harsh/PROJECTS/zippin/admin/pages/delivery-partners.jsx)
+  - Dark Store Inventory: [`/inventory`](file:///Users/harsh/Desktop/Harsh/PROJECTS/zippin/admin/pages/inventory.jsx)
+  - Orders & Dispatch Assignment: [`/orders`](file:///Users/harsh/Desktop/Harsh/PROJECTS/zippin/admin/pages/orders.jsx)
+  - Payments & Settlements: [`/payments`](file:///Users/harsh/Desktop/Harsh/PROJECTS/zippin/admin/pages/payments.jsx)
 
 ---
 

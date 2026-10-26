@@ -1,7 +1,7 @@
 services:
-  # 1. Blinkit Backend API (Independent Web Service)
+  # 1. Zippin Backend API (Independent Web Service)
   - type: web
-    name: blinkit-backend
+    name: zippin-backend
     env: node
     plan: free
     rootDir: backend
@@ -33,9 +33,9 @@ services:
       - key: FIREBASE_SERVICE_ACCOUNT
         sync: false
 
-  # 2. Blinkit Customer Storefront (Independent Next.js Web Service)
+  # 2. Zippin Customer Storefront (Independent Next.js Web Service)
   - type: web
-    name: blinkit-frontend
+    name: zippin-frontend
     env: node
     plan: free
     rootDir: frontend
@@ -48,7 +48,7 @@ services:
       - key: NEXT_PUBLIC_API_URL
         fromService:
           type: web
-          name: blinkit-backend
+          name: zippin-backend
           property: host
       # Firebase Web Configuration for Customer Login & Notifications
       - key: NEXT_PUBLIC_FIREBASE_API_KEY
@@ -64,9 +64,9 @@ services:
       - key: NEXT_PUBLIC_FIREBASE_APP_ID
         sync: false
 
-  # 3. Blinkit Operations Admin Console (Independent Next.js Web Service)
+  # 3. Zippin Operations Admin Console (Independent Next.js Web Service)
   - type: web
-    name: blinkit-admin
+    name: zippin-admin
     env: node
     plan: free
     rootDir: admin
@@ -79,12 +79,12 @@ services:
       - key: NEXT_PUBLIC_API_URL
         fromService:
           type: web
-          name: blinkit-backend
+          name: zippin-backend
           property: host
 
-  # 4. Blinkit Rider / Delivery Partner App (Independent Static Site / Mobile Web App)
+  # 4. Zippin Rider / Delivery Partner App (Independent Static Site / Mobile Web App)
   - type: static
-    name: blinkit-rider
+    name: zippin-rider
     rootDir: rider
     buildCommand: echo "Rider app ready"
     publishPath: .

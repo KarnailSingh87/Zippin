@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import https from "https";
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/blinkit";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/zippin";
 
 function fetchText(url) {
   return new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ function slugify(text) {
 
 async function seed() {
   await mongoose.connect(MONGO_URI);
-  console.log("Connected to MongoDB for Blinkit seeding...");
+  console.log("Connected to MongoDB for Zippin seeding...");
   const db = mongoose.connection.db;
 
   const CATEGORIES = [
@@ -177,7 +177,7 @@ async function seed() {
       catMap[c.slug] = res.insertedId;
     }
   }
-  console.log(`Synced ${Object.keys(catMap).length} categories with Blinkit layout images!`);
+  console.log(`Synced ${Object.keys(catMap).length} categories with Zippin layout images!`);
 
   // Download and parse data.js
   const rawData = await fetchText("https://raw.githubusercontent.com/jibi966/blinkit_clone/main/scripts/data.js");
@@ -236,7 +236,7 @@ async function seed() {
     });
   }
 
-  // Also add iconic Blinkit Dairy, Snacks, Sweets, and Paan products
+  // Also add iconic Zippin Dairy, Snacks, Sweets, and Paan products
   const curatedProducts = [
     {
       title: "Amul Gold Full Cream Fresh Milk",
@@ -434,7 +434,7 @@ async function seed() {
       discount,
       unit: cp.unit,
       stock: 120,
-      tags: [cp.cat, "blinkit-signature", "best-seller"],
+      tags: [cp.cat, "zippin-signature", "best-seller"],
       isAvailable: true,
       isFeatured: cp.featured || true,
       sortOrder: 1,
@@ -473,7 +473,7 @@ async function seed() {
       lastName: "Yadav",
       name: "Ramesh Yadav",
       phone: "9876543210",
-      email: "ramesh.yadav@blinkitdelivery.com",
+      email: "ramesh.yadav@zippindelivery.in",
       city: "Gurugram",
       status: "available",
       vehicleType: "Bike",
@@ -489,7 +489,7 @@ async function seed() {
       lastName: "Verma",
       name: "Suresh Verma",
       phone: "9876543211",
-      email: "suresh.v@blinkitdelivery.com",
+      email: "suresh.v@zippindelivery.in",
       city: "Gurugram",
       status: "busy",
       vehicleType: "EV Scooter",
@@ -505,7 +505,7 @@ async function seed() {
       lastName: "Kumar",
       name: "Vikas Kumar",
       phone: "9876543212",
-      email: "vikas.k@blinkitdelivery.com",
+      email: "vikas.k@zippindelivery.in",
       city: "New Delhi",
       status: "available",
       vehicleType: "Bike",
@@ -521,7 +521,7 @@ async function seed() {
       lastName: "Gowda",
       name: "Anil Gowda",
       phone: "9876543213",
-      email: "anil.g@blinkitdelivery.com",
+      email: "anil.g@zippindelivery.in",
       city: "Bengaluru",
       status: "available",
       vehicleType: "Bike",
@@ -537,7 +537,7 @@ async function seed() {
       lastName: "Singh",
       name: "Deepak Singh",
       phone: "9876543214",
-      email: "deepak.s@blinkitdelivery.com",
+      email: "deepak.s@zippindelivery.in",
       city: "Bengaluru",
       status: "offline",
       vehicleType: "EV Scooter",
@@ -552,7 +552,7 @@ async function seed() {
 
   await db.collection("deliverypartners").deleteMany({});
   const partnerResult = await db.collection("deliverypartners").insertMany(partnersToInsert);
-  console.log(`Successfully seeded ${partnerResult.insertedCount} Blinkit Delivery Partners!`);
+  console.log(`Successfully seeded ${partnerResult.insertedCount} Zippin Delivery Partners!`);
 
   // Assign primaryStoreId to products
   for (const p of productsToInsert) {
@@ -562,7 +562,7 @@ async function seed() {
   // Clear existing products and reseed
   await db.collection("products").deleteMany({});
   const result = await db.collection("products").insertMany(productsToInsert);
-  console.log(`Successfully seeded ${result.insertedCount} authentic Blinkit products!`);
+  console.log(`Successfully seeded ${result.insertedCount} authentic Zippin products!`);
 
   // Seed inventory records per store (ER Model: inventory)
   const inventoryToInsert = [];
