@@ -1,8 +1,28 @@
-node_modules
-dist
-.env
-env.local
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Next.js Build Outputs & Caches
+.next/
+*/.next/
+dist/
+build/
+.cache/
+
+# Local MongoDB Storage & Logs (Collaborators run their own DB)
+backend/data/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operating System Files
 .DS_Store
-npm-debug.log
-yarn-error.log
-coverage
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# NOTE: .env files are intentionally tracked so collaborators can clone & run immediately
