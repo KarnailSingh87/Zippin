@@ -1,27 +1,7 @@
 import { useEffect, useState } from "react";
+import { PICKER_STATUS_CONFIG as STATUS_CONFIG } from "../lib/constants";
 
 const API = "";
-
-const STATUS_CONFIG = {
-  available: {
-    bg: "bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/40",
-    text: "text-emerald-700 dark:text-emerald-400",
-    dot: "bg-emerald-500",
-    label: "Idle / Ready",
-  },
-  busy: {
-    bg: "bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40",
-    text: "text-amber-700 dark:text-amber-400",
-    dot: "bg-amber-500",
-    label: "Picking Bag",
-  },
-  offline: {
-    bg: "bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
-    text: "text-gray-600 dark:text-gray-400",
-    dot: "bg-gray-400",
-    label: "Off Shift",
-  },
-};
 
 const SHIFT_BADGES = {
   Morning: "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40",

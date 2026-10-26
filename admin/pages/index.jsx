@@ -3,6 +3,7 @@ import Link from "next/link";
 import Head from "next/head";
 import OrderInvoiceModal from "../components/OrderInvoiceModal";
 import { getValidAdminToken } from "../lib/adminAuth";
+import { ORDER_STATUS_CONFIG } from "../lib/constants";
 
 const API = "";
 
@@ -119,14 +120,6 @@ export default function Dashboard() {
     document.body.removeChild(link);
   }
 
-  const statusColors = {
-    placed: "bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800",
-    confirmed: "bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800",
-    picking: "bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800",
-    out_for_delivery: "bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800",
-    delivered: "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800",
-    cancelled: "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800",
-  };
 
   const filteredRecentOrders = recentOrders.filter((o) => {
     if (!searchQuery) return true;
@@ -618,7 +611,7 @@ export default function Dashboard() {
                       <td className="py-3">
                         <span
                           className={`text-[10px] font-bold px-2 py-0.5 rounded-full border capitalize inline-flex items-center gap-1 ${
-                            statusColors[o.status] || "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+                            (ORDER_STATUS_CONFIG[o.status] || ORDER_STATUS_CONFIG.placed).color
                           }`}
                         >
                           <span className="w-1.5 h-1.5 rounded-full bg-current"></span>

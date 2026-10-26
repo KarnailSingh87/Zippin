@@ -1,18 +1,9 @@
 import { useEffect, useState } from "react";
 import OrderInvoiceModal from "../components/OrderInvoiceModal";
 import { getValidAdminToken } from "../lib/adminAuth";
+import { ORDER_STATUS_CONFIG as STATUS_CONFIG } from "../lib/constants";
 
 const API = "";
-
-const STATUS_CONFIG = {
-  all: { label: "All Orders", color: "bg-gray-100 text-gray-700" },
-  placed: { label: "Order Placed", color: "bg-blue-100 text-blue-800 border-blue-200" },
-  confirmed: { label: "Confirmed", color: "bg-purple-100 text-purple-800 border-purple-200" },
-  picking: { label: "Picking / Packing", color: "bg-amber-100 text-amber-800 border-amber-200" },
-  out_for_delivery: { label: "Out for Delivery", color: "bg-orange-100 text-orange-800 border-orange-200" },
-  delivered: { label: "Delivered", color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
-  cancelled: { label: "Cancelled", color: "bg-rose-100 text-rose-800 border-rose-200" },
-};
 
 export default function OrdersAdmin() {
   const [orders, setOrders] = useState([]);
