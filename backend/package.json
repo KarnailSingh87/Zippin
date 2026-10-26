@@ -21,7 +21,8 @@
     "nodemailer": "^10.2.1",
     "razorpay": "^2.9.2",
     "socket.io": "^4.7.5",
-    "twilio": "^4.23.0"
+    "twilio": "^4.23.0",
+    "zippin-monorepo": "file:.."
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

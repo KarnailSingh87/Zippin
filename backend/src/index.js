@@ -130,19 +130,10 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 4000;
 
-async function start() {
-  const mongoUri = process.env.MONGO_URI || (process.env.NODE_ENV === "production" ? null : "mongodb://localhost:27017/zippin");
+const DEFAULT_MONGO_URI = "mongodb+srv://mk2251842_db_user:30y3SYcdhns1eige@cluster0.bdczfs1.mongodb.net/zippin?retryWrites=true&w=majority";
 
-  if (!mongoUri) {
-    console.error("=================================================================");
-    console.error("❌ ERROR: MONGO_URI environment variable is missing in Render!");
-    console.error("👉 Go to Render Dashboard -> Zippin Backend -> Environment");
-    console.error("👉 Add Key: MONGO_URI");
-    console.error("👉 Add Value: your MongoDB Atlas connection string");
-    console.error("   e.g. mongodb+srv://<user>:<password>@cluster0.xxx.mongodb.net/zippin?retryWrites=true&w=majority");
-    console.error("=================================================================");
-    process.exit(1);
-  }
+async function start() {
+  const mongoUri = process.env.MONGO_URI || DEFAULT_MONGO_URI;
 
   try {
     await mongoose.connect(mongoUri);
