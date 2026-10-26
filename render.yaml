@@ -1,0 +1,83 @@
+services:
+  # 1. Blinkit Backend API Service
+  - type: web
+    name: blinkit-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/products?limit=1
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 4000
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: harshvardhan2005.12.16@gmail.com
+      - key: ADMIN_PASSWORD
+        value: K@rnail0011
+      - key: MONGO_URI
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        value: dbfchlmcw
+      - key: CLOUDINARY_API_KEY
+        value: 827889721687563
+      - key: CLOUDINARY_API_SECRET
+        value: b3NQNKSNNGLpcnLXqDKEI8q3d3Q
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
+
+  # 2. Blinkit Customer Storefront
+  - type: web
+    name: blinkit-frontend
+    env: node
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: blinkit-backend
+          property: host
+      # Firebase Web Configuration for Customer Login & Push
+      - key: NEXT_PUBLIC_FIREBASE_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+        sync: false
+      - key: NEXT_PUBLIC_FIREBASE_APP_ID
+        sync: false
+
+  # 3. Blinkit Operations Admin Console
+  - type: web
+    name: blinkit-admin
+    env: node
+    plan: free
+    rootDir: admin
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: blinkit-backend
+          property: host
