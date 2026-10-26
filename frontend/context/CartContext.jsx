@@ -18,13 +18,13 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("blinkit_cart");
+      const saved = localStorage.getItem("zippin_cart") || localStorage.getItem("blinkit_cart");
       if (saved) setItems(JSON.parse(saved));
     } catch {}
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("blinkit_cart", JSON.stringify(items));
+    localStorage.setItem("zippin_cart", JSON.stringify(items));
   }, [items]);
 
   const totalItems = items.reduce((s, i) => s + (i.qty || i.quantity || 0), 0);

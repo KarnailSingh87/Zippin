@@ -615,7 +615,7 @@ export default function OrdersAdmin() {
                 </p>
               </div>
 
-              {/* Order items with Genuine Blinkit Photos */}
+              {/* Order items with High-Resolution Photos */}
               <div>
                 <p className="text-[10px] font-extrabold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
                   Ordered Items ({selectedOrder.items?.length || 0})

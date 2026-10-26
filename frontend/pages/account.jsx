@@ -41,7 +41,7 @@ export default function AccountPage() {
   if (authLoading || !user) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-3 border-blinkit-green border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-zippin-green border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -91,7 +91,7 @@ export default function AccountPage() {
       <div className="bg-white rounded-2xl shadow-card p-5 mb-4">
         <div className="flex items-start gap-4 mb-4">
           <div className="relative group shrink-0">
-            <div className="w-16 h-16 rounded-full bg-blinkit-green text-white text-xl font-bold flex items-center justify-center overflow-hidden border-2 border-emerald-500 shadow-xs">
+            <div className="w-16 h-16 rounded-full bg-zippin-green text-white text-xl font-bold flex items-center justify-center overflow-hidden border-2 border-emerald-500 shadow-xs">
               {avatar ? (
                 <img src={avatar} alt={user.name} className="w-full h-full object-cover" />
               ) : (
@@ -119,7 +119,7 @@ export default function AccountPage() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-zippin-green"
                   />
                 </div>
                 <div>
@@ -128,7 +128,7 @@ export default function AccountPage() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-zippin-green"
                   />
                 </div>
                 <div>
@@ -137,7 +137,7 @@ export default function AccountPage() {
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-zippin-green"
                   />
                 </div>
                 <div className="flex gap-2 pt-1">
@@ -167,7 +167,7 @@ export default function AccountPage() {
                   <h2 className="text-lg font-bold text-gray-800">{user.name}</h2>
                   <button
                     onClick={() => setEditing(true)}
-                    className="text-xs font-bold text-blinkit-green hover:underline"
+                    className="text-xs font-bold text-zippin-green hover:underline"
                   >
                     Edit Profile
                   </button>
@@ -278,7 +278,7 @@ export default function AccountPage() {
                   onClick={() => setNewAddress({ ...newAddress, label })}
                   className={`px-3 py-1 rounded-lg text-xs font-semibold ${
                     newAddress.label === label
-                      ? "bg-blinkit-green text-white"
+                      ? "bg-zippin-green text-white"
                       : "bg-gray-100 text-gray-600"
                   }`}
                 >
@@ -293,7 +293,7 @@ export default function AccountPage() {
               onChange={(e) =>
                 setNewAddress({ ...newAddress, street: e.target.value })
               }
-              className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+              className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-zippin-green"
             />
             <div className="grid grid-cols-2 gap-2">
               <input
@@ -303,7 +303,7 @@ export default function AccountPage() {
                 onChange={(e) =>
                   setNewAddress({ ...newAddress, city: e.target.value })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-zippin-green"
               />
               <input
                 type="text"
@@ -312,7 +312,7 @@ export default function AccountPage() {
                 onChange={(e) =>
                   setNewAddress({ ...newAddress, pincode: e.target.value })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-zippin-green"
               />
             </div>
             <div className="flex gap-2">

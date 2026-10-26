@@ -49,7 +49,7 @@ export default function AdminLogin() {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
               <img
-                src="/images/zippin_logo_blinkit_colours.png"
+                src="/images/zippin_logo.png"
                 alt="Zippin"
                 className="h-10 object-contain"
               />

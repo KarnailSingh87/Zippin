@@ -156,7 +156,7 @@ export default function CheckoutPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-3 border-blinkit-green border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-zippin-green border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -192,11 +192,11 @@ export default function CheckoutPage() {
           <p className="text-sm text-gray-500 mb-4">
             Your groceries will be delivered in ~{deliveryMinutes || 8} minutes ({distanceKm || 2.0} km from Hamirpur Store)
           </p>
-          <div className="bg-blinkit-green-light rounded-xl p-4 mb-4">
-            <p className="text-xs text-blinkit-green font-semibold">
+          <div className="bg-zippin-green-light rounded-xl p-4 mb-4">
+            <p className="text-xs text-zippin-green font-semibold">
               Estimated Delivery
             </p>
-            <p className="text-lg font-bold text-blinkit-green">
+            <p className="text-lg font-bold text-zippin-green">
               {deliveryMinutes || 8} minutes ⚡
             </p>
           </div>
@@ -230,7 +230,7 @@ export default function CheckoutPage() {
             <div
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
                 step >= s
-                  ? "bg-blinkit-green text-white"
+                  ? "bg-zippin-green text-white"
                   : "bg-gray-200 text-gray-500"
               }`}
             >
@@ -243,7 +243,7 @@ export default function CheckoutPage() {
             </span>
             {s < 3 && (
               <div
-                className={`flex-1 h-0.5 ${step > s ? "bg-blinkit-green" : "bg-gray-200"}`}
+                className={`flex-1 h-0.5 ${step > s ? "bg-zippin-green" : "bg-gray-200"}`}
               />
             )}
           </div>
@@ -269,7 +269,7 @@ export default function CheckoutPage() {
                       onClick={() => setAddress({ ...address, label: l })}
                       className={`px-4 py-2 rounded-lg text-xs font-medium transition-colors ${
                         address.label === l
-                          ? "bg-blinkit-green text-white"
+                          ? "bg-zippin-green text-white"
                           : "bg-gray-100 text-gray-600"
                       }`}
                     >
@@ -289,7 +289,7 @@ export default function CheckoutPage() {
                     setAddress({ ...address, street: e.target.value })
                   }
                   placeholder="e.g. 123, MG Road, Sector 18"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-zippin-green"
                   required
                 />
               </div>
@@ -304,7 +304,7 @@ export default function CheckoutPage() {
                     onChange={(e) =>
                       setAddress({ ...address, city: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-zippin-green"
                   />
                 </div>
                 <div>
@@ -317,7 +317,7 @@ export default function CheckoutPage() {
                     onChange={(e) =>
                       setAddress({ ...address, pincode: e.target.value })
                     }
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-zippin-green"
                   />
                 </div>
               </div>
@@ -383,7 +383,7 @@ export default function CheckoutPage() {
                   onClick={() => setPaymentMethod(pm.id)}
                   className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left ${
                     paymentMethod === pm.id
-                      ? "border-blinkit-green bg-blinkit-green-light"
+                      ? "border-zippin-green bg-zippin-green-light"
                       : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
@@ -396,7 +396,7 @@ export default function CheckoutPage() {
                   </div>
                   {paymentMethod === pm.id && (
                     <svg
-                      className="w-5 h-5 text-blinkit-green ml-auto"
+                      className="w-5 h-5 text-zippin-green ml-auto"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -500,14 +500,14 @@ export default function CheckoutPage() {
                 <span>Delivery fee</span>
                 <span
                   className={
-                    deliveryFee === 0 ? "text-blinkit-green font-medium" : ""
+                    deliveryFee === 0 ? "text-zippin-green font-medium" : ""
                   }
                 >
                   {deliveryFee === 0 ? "FREE" : `₹${deliveryFee}`}
                 </span>
               </div>
               {totalSavings > 0 && (
-                <div className="flex justify-between text-blinkit-green font-medium">
+                <div className="flex justify-between text-zippin-green font-medium">
                   <span>Savings</span>
                   <span>-₹{totalSavings}</span>
                 </div>

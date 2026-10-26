@@ -7,43 +7,23 @@ async function fix() {
   console.log('Connected to MongoDB');
   const db = mongoose.connection.db;
 
-  // Fix the original admin user - set roles and rehash password
+  // Fix the admin user - set roles and password
   const adminHash = await bcrypt.hash('ZippinAdmin@2026', 10);
   await db.collection('users').updateOne(
     { email: 'admin@zippin.in' },
-    { $set: { roles: ['admin'], passwordHash: adminHash } }
+    { $set: { roles: ['admin'], passwordHash: adminHash } },
+    { upsert: true }
   );
-  console.log('Fixed original admin user (admin@zippin.in)');
+  console.log('Fixed admin user (admin@zippin.in)');
 
-  // Create or fix admin@blinkit.com
-  const blinkitAdminHash = await bcrypt.hash('admin123', 10);
-  const exists = await db.collection('users').findOne({ email: 'admin@blinkit.com' });
-  if (!exists) {
-    await db.collection('users').insertOne({
-      name: 'Admin',
-      email: 'admin@blinkit.com',
-      phone: '1111111111',
-      passwordHash: blinkitAdminHash,
-      roles: ['admin'],
-      addresses: [],
-      createdAt: new Date()
-    });
-    console.log('Created admin@blinkit.com');
-  } else {
-    await db.collection('users').updateOne(
-      { email: 'admin@blinkit.com' },
-      { $set: { roles: ['admin'], passwordHash: blinkitAdminHash } }
-    );
-    console.log('Fixed admin@blinkit.com');
-  }
-
-  // Fix demo user
+  // Fix demo customer
   const demoHash = await bcrypt.hash('demo123', 10);
   await db.collection('users').updateOne(
-    { email: 'demo@blinkit.com' },
-    { $set: { passwordHash: demoHash, roles: ['customer'] } }
+    { email: 'demo@zippin.in' },
+    { $set: { passwordHash: demoHash, roles: ['customer'] } },
+    { upsert: true }
   );
-  console.log('Fixed demo user');
+  console.log('Fixed demo user (demo@zippin.in)');
 
   // Fix any products that don't have images
   const productsWithoutImages = await db.collection('products').find({
@@ -62,7 +42,7 @@ async function fix() {
   // Verify all users
   const users = await db.collection('users').find({}).project({ name: 1, email: 1, roles: 1 }).toArray();
   console.log('\n=== All Users ===');
-  users.forEach(u => console.log(`  ${u.name} | ${u.email} | roles: ${JSON.stringify(u.roles)}`));
+  users.forEach(u => console.log(`  ${u.name || 'User'} | ${u.email} | roles: ${JSON.stringify(u.roles)}`));
 
   await mongoose.disconnect();
   console.log('\nDone!');

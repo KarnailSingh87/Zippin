@@ -5,7 +5,7 @@
  * - Enforces Time-To-Live (TTL) on cached product data & searches
  */
 
-const CACHE_PREFIX = "blinkit_cache_";
+const CACHE_PREFIX = "zippin_cache_";
 const DEFAULT_TTL_SECONDS = 30 * 60; // 30 minutes
 
 export const cacheManager = {
@@ -93,13 +93,16 @@ export const cacheManager = {
         }
         sessionStorage.clear();
         if (typeof window !== "undefined" && "caches" in window) {
-          window.caches.keys().then((names) => {
-            names.forEach((name) => {
-              if (name.includes("blinkit") || name.includes("temp") || name.includes("catalog")) {
-                window.caches.delete(name);
-              }
-            });
-          }).catch(() => {});
+          window.caches
+            .keys()
+            .then((names) => {
+              names.forEach((name) => {
+                if (name.includes("zippin") || name.includes("blinkit") || name.includes("temp") || name.includes("catalog")) {
+                  window.caches.delete(name);
+                }
+              });
+            })
+            .catch(() => {});
         }
         console.log("⚡ Website refreshed: Transient cache memory successfully evicted.");
       }

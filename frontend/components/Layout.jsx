@@ -40,11 +40,11 @@ export default function Layout({ children }) {
       {/* Main Header */}
       <header className="bg-white sticky top-0 z-50 border-b border-gray-200/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3 md:gap-6">
-          {/* Left: Official Blinkit Logo & Location */}
+          {/* Left: Official Zippin Logo & Location */}
           <div className="flex items-center gap-3 shrink-0">
             <Link href="/" className="flex items-center group shrink-0">
               <img
-                src="/images/zippin_logo_blinkit_colours.png"
+                src="/images/zippin_logo.png"
                 alt="Zippin"
                 className="h-9 md:h-11 w-auto object-contain transition-transform group-hover:scale-105"
               />
@@ -264,7 +264,7 @@ export default function Layout({ children }) {
         </div>
       )}
 
-      {/* Official Blinkit Footer */}
+      {/* Official Zippin Footer */}
       <Footer />
     </div>
   );

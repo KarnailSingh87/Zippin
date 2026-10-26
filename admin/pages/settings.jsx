@@ -24,7 +24,7 @@ export default function PlatformSettings() {
   const [settings, setSettings] = useState({
     appName: "Zippin",
     tagline: "India's Last Minute App - 10 Min Delivery",
-    logoUrl: "/images/zippin_logo_blinkit_colours.png",
+    logoUrl: "/images/zippin_logo.png",
     supportEmail: "support@zippin.com",
     supportPhone: "+91 8000 123 456",
     freeDeliveryThreshold: 199,

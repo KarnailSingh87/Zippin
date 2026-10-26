@@ -62,7 +62,7 @@ export default function SearchPage() {
               { shallow: true },
             );
           }}
-          className="w-full py-3 pl-11 pr-4 rounded-xl bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green focus:border-transparent"
+          className="w-full py-3 pl-11 pr-4 rounded-xl bg-white border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-zippin-green focus:border-transparent"
           autoFocus
         />
 

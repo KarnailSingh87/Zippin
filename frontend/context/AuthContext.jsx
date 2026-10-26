@@ -8,19 +8,23 @@ const AuthContext = createContext({});
 // Secure Session Token Helper (HttpOnly / Secure Cookie & memory storage)
 function setSessionToken(val) {
   if (typeof window !== "undefined") {
-    document.cookie = `blinkit_secure_session=${val}; path=/; SameSite=Strict; Secure`;
-    sessionStorage.setItem("blinkit_secure_token", val);
+    document.cookie = `zippin_secure_session=${val}; path=/; SameSite=Strict; Secure`;
+    sessionStorage.setItem("zippin_secure_token", val);
   }
 }
 function getSessionToken() {
   if (typeof window === "undefined") return null;
-  const match = document.cookie.match(new RegExp('(^| )blinkit_secure_session=([^;]+)'));
+  const match =
+    document.cookie.match(new RegExp('(^| )zippin_secure_session=([^;]+)')) ||
+    document.cookie.match(new RegExp('(^| )blinkit_secure_session=([^;]+)'));
   if (match) return match[2];
-  return sessionStorage.getItem("blinkit_secure_token");
+  return sessionStorage.getItem("zippin_secure_token") || sessionStorage.getItem("blinkit_secure_token");
 }
 function removeSessionToken() {
   if (typeof window !== "undefined") {
+    document.cookie = "zippin_secure_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     document.cookie = "blinkit_secure_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    sessionStorage.removeItem("zippin_secure_token");
     sessionStorage.removeItem("blinkit_secure_token");
   }
 }
@@ -124,7 +128,7 @@ export function AuthProvider({ children }) {
 
     if (!googleUser || !googleUser.email) return;
 
-    // Send Google profile to Blinkit backend
+    // Send Google profile to Zippin backend
     const res = await fetch(`${API}/api/auth/google`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

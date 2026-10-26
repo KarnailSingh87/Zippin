@@ -45,7 +45,7 @@ export default function LoginPage() {
           {/* Header */}
           <div className="text-center mb-6">
             <img
-              src="/images/zippin_logo_blinkit_colours.png"
+              src="/images/zippin_logo.png"
               alt="Zippin"
               className="h-10 mx-auto mb-3 object-contain"
             />
@@ -106,7 +106,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green focus:border-transparent transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-zippin-green focus:border-transparent transition-all"
                 required
               />
             </div>
@@ -119,7 +119,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blinkit-green focus:border-transparent transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-zippin-green focus:border-transparent transition-all"
                 required
               />
             </div>
@@ -127,7 +127,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading || googleLoading}
-              className="w-full bg-blinkit-green text-white py-3 rounded-xl font-bold text-sm hover:bg-blinkit-green-dark transition-colors disabled:opacity-50"
+              className="w-full bg-zippin-green text-white py-3 rounded-xl font-bold text-sm hover:bg-zippin-green-dark transition-colors disabled:opacity-50"
             >
               {loading ? "Logging in..." : "Login"}
             </button>
@@ -140,13 +140,13 @@ export default function LoginPage() {
             </p>
             <p>
               Email:{" "}
-              <span className="font-mono text-blinkit-green">
+              <span className="font-mono text-zippin-green">
                 demo@zippin.com
               </span>
             </p>
             <p>
               Password:{" "}
-              <span className="font-mono text-blinkit-green">demo123</span>
+              <span className="font-mono text-zippin-green">demo123</span>
             </p>
           </div>
 
@@ -154,7 +154,7 @@ export default function LoginPage() {
             Don't have an account?{" "}
             <Link
               href="/auth/register"
-              className="text-blinkit-green font-semibold hover:underline"
+              className="text-zippin-green font-semibold hover:underline"
             >
               Register
             </Link>

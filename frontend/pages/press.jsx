@@ -111,7 +111,7 @@ export default function PressPage() {
               </p>
             </div>
             <a
-              href="/images/zippin_logo_blinkit_colours.png"
+              href="/images/zippin_logo.png"
               download="zippin_brand_logo.png"
               className="bg-[#FFE141] text-black font-black text-xs px-6 py-3 rounded-xl hover:bg-yellow-400 transition-all shrink-0"
             >

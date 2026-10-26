@@ -8,6 +8,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        zippin: {
+          green: '#0C831F',
+          'green-dark': '#0a6e1a',
+          'green-light': '#e8f5e9',
+          yellow: '#F8CB46',
+          'yellow-light': '#FFF8E1',
+          orange: '#FF6B2C',
+          bg: '#F7F7F7',
+          card: '#FFFFFF',
+          text: '#1F1F1F',
+          'text-light': '#666666',
+          'text-lighter': '#999999',
+          border: '#e8e8e8',
+        },
         blinkit: {
           green: '#0C831F',
           'green-dark': '#0a6e1a',

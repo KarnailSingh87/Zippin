@@ -12,7 +12,7 @@ const router = Router();
 router.post("/seed-admin", async (req, res) => {
   const secret = req.query.secret;
   const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
-  const adminEmail = process.env.ADMIN_EMAIL || "admin@blinkit.com";
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@zippin.in";
   if (secret && secret !== adminPassword)
     return res.status(403).json({ message: "Forbidden" });
 
@@ -878,24 +878,24 @@ router.post("/seed", async (req, res) => {
     }
 
     // Create demo user
-    const demoUser = await User.findOne({ email: "demo@blinkit.com" });
+    const demoUser = await User.findOne({ email: "demo@zippin.in" });
     if (!demoUser) {
       const passwordHash = await bcrypt.hash("demo123", 10);
       await new User({
         name: "Demo Customer",
         firstName: "Demo",
         lastName: "Customer",
-        email: "demo@blinkit.com",
+        email: "demo@zippin.in",
         phone: "9876543210",
-        city: "Gurugram",
+        city: "Hamirpur",
         passwordHash,
         roles: ["customer"],
         addresses: [
           {
             label: "Home",
-            street: "123, MG Road, Sector 18",
-            city: "Gurugram",
-            pincode: "122001",
+            street: "Gandhi Chowk, Main Bazaar",
+            city: "Hamirpur",
+            pincode: "177001",
           },
         ],
       }).save();
@@ -930,11 +930,11 @@ router.post("/seed", async (req, res) => {
         lastName: "Yadav",
         name: "Ramesh Yadav",
         phone: "9876543210",
-        email: "ramesh.yadav@blinkitdelivery.com",
-        city: "Gurugram",
+        email: "ramesh.yadav@zippindelivery.in",
+        city: "Hamirpur",
         status: "available",
         vehicleType: "Bike",
-        vehicleNumber: "HR-26-BR-1234",
+        vehicleNumber: "HP-22-BR-1234",
         rating: 4.9,
         currentStore: primaryStore?._id,
         isActive: true,
@@ -944,11 +944,11 @@ router.post("/seed", async (req, res) => {
         lastName: "Verma",
         name: "Suresh Verma",
         phone: "9876543211",
-        email: "suresh.v@blinkitdelivery.com",
-        city: "Gurugram",
+        email: "suresh.v@zippindelivery.in",
+        city: "Hamirpur",
         status: "available",
         vehicleType: "EV Scooter",
-        vehicleNumber: "HR-26-EV-5678",
+        vehicleNumber: "HP-22-EV-5678",
         rating: 4.8,
         currentStore: primaryStore?._id,
         isActive: true,

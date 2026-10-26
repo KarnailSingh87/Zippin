@@ -180,11 +180,11 @@ export default function OrderDetailPage() {
     <div className="px-4 py-4 pb-20 md:pb-6 max-w-3xl mx-auto min-h-screen">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1 text-xs text-gray-400 mb-4">
-        <Link href="/" className="hover:text-blinkit-green">
+        <Link href="/" className="hover:text-zippin-green">
           Home
         </Link>
         <span>/</span>
-        <Link href="/orders" className="hover:text-blinkit-green">
+        <Link href="/orders" className="hover:text-zippin-green">
           Orders
         </Link>
         <span>/</span>
@@ -224,11 +224,11 @@ export default function OrderDetailPage() {
             </p>
           </div>
           {order.status !== "delivered" && order.status !== "cancelled" && (
-            <div className="bg-blinkit-green-light rounded-lg px-3 py-1.5 text-center">
-              <p className="text-[10px] text-blinkit-green font-medium">
+            <div className="bg-zippin-green-light rounded-lg px-3 py-1.5 text-center">
+              <p className="text-[10px] text-zippin-green font-medium">
                 Dynamic ETA
               </p>
-              <p className="text-sm font-bold text-blinkit-green">{dynamicEta} min ⚡</p>
+              <p className="text-sm font-bold text-zippin-green">{dynamicEta} min ⚡</p>
             </div>
           )}
         </div>
@@ -244,23 +244,23 @@ export default function OrderDetailPage() {
                 {/* Line */}
                 {idx < STATUSES.length - 1 && (
                   <div
-                    className={`absolute left-[7px] top-5 w-0.5 h-full ${idx < currentStatusIdx ? "bg-blinkit-green" : "bg-gray-200"}`}
+                    className={`absolute left-[7px] top-5 w-0.5 h-full ${idx < currentStatusIdx ? "bg-zippin-green" : "bg-gray-200"}`}
                   />
                 )}
                 {/* Dot */}
                 <div
                   className={`w-4 h-4 rounded-full shrink-0 mt-0.5 border-2 z-10 ${
                     isCurrent
-                      ? "bg-blinkit-green border-blinkit-green animate-pulse-green"
+                      ? "bg-zippin-green border-zippin-green animate-pulse-green"
                       : isActive
-                        ? "bg-blinkit-green border-blinkit-green"
+                        ? "bg-zippin-green border-zippin-green"
                         : "bg-white border-gray-300"
                   }`}
                 />
                 {/* Content */}
                 <div className={`pb-6 ${isActive ? "" : "opacity-40"}`}>
                   <p
-                    className={`text-sm font-semibold ${isCurrent ? "text-blinkit-green" : "text-gray-800"}`}
+                    className={`text-sm font-semibold ${isCurrent ? "text-zippin-green" : "text-gray-800"}`}
                   >
                     {info.label}
                   </p>
