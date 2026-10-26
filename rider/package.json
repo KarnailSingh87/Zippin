@@ -4,7 +4,11 @@
   "description": "Zippin Delivery Partner Mobile Web Application",
   "main": "index.html",
   "scripts": {
-    "start": "npx serve -l 3002 ."
+    "start": "npx serve -l ${PORT:-3002} .",
+    "build": "echo 'Static build ready'"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
   },
   "keywords": ["delivery", "rider", "courier", "gps"],
   "author": "Zippin Engineering",

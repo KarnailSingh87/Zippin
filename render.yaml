@@ -1,5 +1,5 @@
 services:
-  # 1. Blinkit Backend API Service
+  # 1. Blinkit Backend API (Independent Web Service)
   - type: web
     name: blinkit-backend
     env: node
@@ -33,7 +33,7 @@ services:
       - key: FIREBASE_SERVICE_ACCOUNT
         sync: false
 
-  # 2. Blinkit Customer Storefront
+  # 2. Blinkit Customer Storefront (Independent Next.js Web Service)
   - type: web
     name: blinkit-frontend
     env: node
@@ -50,7 +50,7 @@ services:
           type: web
           name: blinkit-backend
           property: host
-      # Firebase Web Configuration for Customer Login & Push
+      # Firebase Web Configuration for Customer Login & Notifications
       - key: NEXT_PUBLIC_FIREBASE_API_KEY
         sync: false
       - key: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
@@ -64,7 +64,7 @@ services:
       - key: NEXT_PUBLIC_FIREBASE_APP_ID
         sync: false
 
-  # 3. Blinkit Operations Admin Console
+  # 3. Blinkit Operations Admin Console (Independent Next.js Web Service)
   - type: web
     name: blinkit-admin
     env: node
@@ -81,3 +81,15 @@ services:
           type: web
           name: blinkit-backend
           property: host
+
+  # 4. Blinkit Rider / Delivery Partner App (Independent Static Site / Mobile Web App)
+  - type: static
+    name: blinkit-rider
+    rootDir: rider
+    buildCommand: echo "Rider app ready"
+    publishPath: .
+    autoDeploy: true
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

@@ -219,11 +219,16 @@
       }
     };
 
+    // Dynamic backend API URL for local or separate Render deployment
+    const API_BASE = window.location.origin.includes('localhost')
+      ? 'http://localhost:4000'
+      : (localStorage.getItem('zippin_api_url') || window.API_URL || '');
+
     // Telemetry ping
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition((pos) => {
         // Telemetry GPS broadcast
-        fetch('/api/delivery-partners/telemetry', {
+        fetch(`${API_BASE}/api/delivery-partners/telemetry`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ lat: pos.coords.latitude, lng: pos.coords.longitude })
