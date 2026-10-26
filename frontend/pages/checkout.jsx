@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useLocation } from "../context/LocationContext";
+import { getProductFallbackImage } from "../lib/productImage";
 
 const API = "";
 
@@ -441,8 +442,14 @@ export default function CheckoutPage() {
                   className="flex items-center gap-3 py-2"
                 >
                   <img
-                    src={item.image || `https://placehold.co/40x40`}
-                    alt=""
+                    src={item.image || getProductFallbackImage(item)}
+                    alt={item.name || ""}
+                    referrerPolicy="no-referrer"
+                    crossOrigin="anonymous"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = getProductFallbackImage(item);
+                    }}
                     className="w-10 h-10 rounded-lg object-contain bg-gray-50"
                   />
                   <div className="flex-1 min-w-0">

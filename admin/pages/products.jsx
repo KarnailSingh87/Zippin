@@ -738,9 +738,12 @@ export default function ProductsAdmin() {
                               <img
                                 src={p.images[0].url}
                                 alt={p.title}
+                                referrerPolicy="no-referrer"
+                                crossOrigin="anonymous"
                                 className="w-full h-full object-contain"
                                 onError={(e) => {
-                                  e.currentTarget.style.display = "none";
+                                  e.currentTarget.onerror = null;
+                                  e.currentTarget.src = "/favicon.svg";
                                 }}
                               />
                             ) : (
@@ -879,7 +882,17 @@ export default function ProductsAdmin() {
               <div>
                 <div className="aspect-square bg-gray-50 dark:bg-[#1a1f2c] rounded-xl overflow-hidden mb-2 relative flex items-center justify-center p-2">
                   {p.images?.[0]?.url ? (
-                    <img src={p.images[0].url} alt={p.title} className="w-full h-full object-contain" />
+                    <img
+                      src={p.images[0].url}
+                      alt={p.title}
+                      referrerPolicy="no-referrer"
+                      crossOrigin="anonymous"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/favicon.svg";
+                      }}
+                      className="w-full h-full object-contain"
+                    />
                   ) : (
                     <span className="text-xl font-bold text-gray-300 dark:text-gray-600">{p.title.charAt(0)}</span>
                   )}

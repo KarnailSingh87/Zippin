@@ -83,7 +83,7 @@ router.get("/", async (req, res) => {
     const sortOrder = req.query.order === "desc" ? -1 : 1;
 
     let products = await Product.find(filter)
-      .populate("category", "name slug")
+      .populate("category", "name slug icon image color")
       .populate("storeId", "name code city area")
       .sort({ [sortField]: sortOrder, createdAt: -1 })
       .limit(limit);
@@ -94,7 +94,7 @@ router.get("/", async (req, res) => {
       const fallbackFilter = { ...filter };
       fallbackFilter.$or = [{ title: new RegExp(reducedQ, "i") }, { tags: new RegExp(reducedQ, "i") }];
       products = await Product.find(fallbackFilter)
-        .populate("category", "name slug")
+        .populate("category", "name slug icon image color")
         .populate("storeId", "name code city area")
         .sort({ [sortField]: sortOrder, createdAt: -1 })
         .limit(limit);
@@ -111,7 +111,7 @@ router.get("/", async (req, res) => {
 router.get("/buy-again", async (req, res) => {
   try {
     const popularStaples = await Product.find({ isAvailable: true })
-      .populate("category", "name slug")
+      .populate("category", "name slug icon image color")
       .sort({ stock: -1, createdAt: -1 })
       .limit(10);
     res.json(popularStaples);
@@ -177,7 +177,7 @@ router.post("/bulk", authenticate, requireAdmin, async (req, res) => {
 // get by slug
 router.get("/slug/:slug", async (req, res) => {
   const p = await Product.findOne({ slug: req.params.slug })
-    .populate("category", "name slug")
+    .populate("category", "name slug icon image color")
     .populate("storeId", "name code city area");
   if (!p) return res.status(404).json({ message: "Not found" });
   res.json(p);
@@ -186,7 +186,7 @@ router.get("/slug/:slug", async (req, res) => {
 // get by id
 router.get("/:id", async (req, res) => {
   const p = await Product.findById(req.params.id)
-    .populate("category", "name slug")
+    .populate("category", "name slug icon image color")
     .populate("storeId", "name code city area");
   if (!p) return res.status(404).json({ message: "Not found" });
   res.json(p);

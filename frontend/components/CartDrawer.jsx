@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { getProductFallbackImage } from "../lib/productImage";
 
 export default function CartDrawer() {
   const {
@@ -163,13 +164,19 @@ export default function CartDrawer() {
                   const unit = prod.unit || item.unit || "1 pack";
                   const price = Number(prod.price ?? item.price ?? 0);
                   const qty = Number(item.quantity || item.qty || 1);
-                  const imgUrl = prod.images?.[0]?.url || item.image || (item.images && item.images[0]?.url) || "/favicon.svg";
+                  const imgUrl = prod.images?.[0]?.url || item.image || (item.images && item.images[0]?.url) || getProductFallbackImage(prod || item);
 
                   return (
                     <div key={pId} className="py-3 first:pt-0 last:pb-0 flex items-center gap-3">
                       <img
                         src={imgUrl}
                         alt={title}
+                        referrerPolicy="no-referrer"
+                        crossOrigin="anonymous"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = getProductFallbackImage(prod || item);
+                        }}
                         className="w-12 h-12 object-contain rounded-xl bg-gray-50 p-1 shrink-0"
                       />
                       <div className="flex-1 min-w-0">

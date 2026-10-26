@@ -245,6 +245,87 @@ export default function OrdersAdmin() {
     cancelled: orders.filter((o) => o.status === "cancelled").length,
   };
 
+  // CSV Export for orders
+  function handleExportOrdersCSV() {
+    const listToExport = filteredOrders.length > 0 ? filteredOrders : orders;
+    if (listToExport.length === 0) {
+      showToast("No orders available to export.");
+      return;
+    }
+
+    const headers = [
+      "Order Number",
+      "Date",
+      "Customer Name",
+      "Customer Phone",
+      "Delivery Address",
+      "City",
+      "Pincode",
+      "Items Count",
+      "Items Summary",
+      "Subtotal (INR)",
+      "Delivery Fee (INR)",
+      "Taxes (INR)",
+      "Total Amount (INR)",
+      "Payment Method",
+      "Payment Status",
+      "Order Status",
+      "Store Facility",
+      "Store Picker",
+      "Delivery Rider",
+    ];
+
+    const rows = listToExport.map((o) => {
+      const itemsSummary = (o.items || [])
+        .map((it) => `${it.title || it.name} (x${it.quantity || it.qty || 1})`)
+        .join("; ");
+      const custName = o.customerName || o.user?.name || "Customer";
+      const custPhone = o.customerPhone || "";
+      const address = `"${(o.deliveryAddress?.addressLine || o.deliveryAddress?.street || "").replace(/"/g, '""')}"`;
+      const city = o.deliveryAddress?.city || "Hamirpur";
+      const pincode = o.deliveryAddress?.pincode || "177001";
+      const storeName = o.store?.name || "Hamirpur Hub";
+      const pickerName = o.picker?.name || "Pending";
+      const riderName = o.partner?.name || o.rider?.name || "Pending";
+      const orderDate = new Date(o.createdAt || Date.now()).toISOString();
+
+      return [
+        o.orderNumber || o._id,
+        orderDate,
+        `"${custName.replace(/"/g, '""')}"`,
+        `"${custPhone}"`,
+        address,
+        city,
+        pincode,
+        (o.items || []).length,
+        `"${itemsSummary.replace(/"/g, '""')}"`,
+        o.subtotal || o.total,
+        o.deliveryFee || 0,
+        o.tax || 0,
+        o.total || 0,
+        o.paymentMethod || "UPI",
+        o.paymentStatus || "COMPLETED",
+        o.status,
+        `"${storeName.replace(/"/g, '""')}"`,
+        `"${pickerName.replace(/"/g, '""')}"`,
+        `"${riderName.replace(/"/g, '""')}"`,
+      ].join(",");
+    });
+
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute(
+      "download",
+      `Zippin_Orders_${activeTab}_${new Date().toISOString().slice(0, 10)}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast(`Exported ${listToExport.length} orders to CSV successfully!`);
+  }
+
   return (
     <div className="space-y-6">
       {/* Toast Notification */}
@@ -279,6 +360,17 @@ export default function OrdersAdmin() {
         </div>
 
         <div className="flex items-center gap-2.5">
+          {/* CSV Export Button */}
+          <button
+            onClick={handleExportOrdersCSV}
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#0C831F] hover:bg-[#096618] text-white text-xs font-bold rounded-xl shadow-xs transition-all cursor-pointer"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>Export CSV</span>
+          </button>
+
           <button
             onClick={loadData}
             className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold rounded-xl transition-colors cursor-pointer"
@@ -545,6 +637,12 @@ export default function OrdersAdmin() {
                           <img
                             src={it.image}
                             alt=""
+                            referrerPolicy="no-referrer"
+                            crossOrigin="anonymous"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = "/favicon.svg";
+                            }}
                             className="w-10 h-10 rounded-lg object-contain bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-0.5"
                           />
                         )}

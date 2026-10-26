@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
+import { getProductFallbackImage } from "../lib/productImage";
 
 const PLACEHOLDERS = [
   'Search "milk"',
@@ -236,9 +237,16 @@ export default function SearchTypeahead({ mobile = false, onClose, className = "
                     <img
                       src={
                         p.images?.[0]?.url ||
-                        `https://placehold.co/48x48/f0f0f0/666?text=Zippin`
+                        p.image ||
+                        getProductFallbackImage(p)
                       }
                       alt={p.title}
+                      referrerPolicy="no-referrer"
+                      crossOrigin="anonymous"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = getProductFallbackImage(p);
+                      }}
                       className="w-10 h-10 object-contain rounded-lg bg-gray-50 p-1 shrink-0"
                     />
                     <div

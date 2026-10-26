@@ -161,6 +161,12 @@ export default function OrderInvoiceModal({ order, isOpen, onClose }) {
                           <img
                             src={item.image}
                             alt=""
+                            referrerPolicy="no-referrer"
+                            crossOrigin="anonymous"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = "/favicon.svg";
+                            }}
                             className="w-6 h-6 rounded object-contain bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shrink-0"
                           />
                         )}

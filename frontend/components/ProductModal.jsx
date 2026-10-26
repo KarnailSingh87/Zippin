@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
+import { getProductFallbackImage } from "../lib/productImage";
 
 export default function ProductModal({ product, onClose }) {
   const { addItem, removeItem, getQty } = useCart();
   const { showToast } = useToast();
+  const [imgError, setImgError] = useState(false);
 
   if (!product) return null;
 
@@ -18,7 +20,8 @@ export default function ProductModal({ product, onClose }) {
   const discountPercent = hasDiscount
     ? Math.round(((product.mrp - product.price) / product.mrp) * 100)
     : 0;
-  const imageUrl = product.images?.[0]?.url;
+  const rawImageUrl = product.images?.[0]?.url || product.image;
+  const displayImage = (!imgError && rawImageUrl) ? rawImageUrl : getProductFallbackImage(product);
 
   const handleIncrement = () => {
     if (qty >= stock) {
@@ -73,17 +76,18 @@ export default function ProductModal({ product, onClose }) {
           </div>
 
           <div className="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center p-4 relative">
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt={product.title}
-                className={`w-full h-full object-contain drop-shadow-sm select-none transition-opacity ${
-                  isOutOfStock ? "opacity-40 grayscale-[50%]" : ""
-                }`}
-              />
-            ) : (
-              <span className={`text-6xl ${isOutOfStock ? "opacity-40" : ""}`}>🛍️</span>
-            )}
+            <img
+              src={displayImage}
+              alt={product.title}
+              referrerPolicy="no-referrer"
+              crossOrigin="anonymous"
+              className={`w-full h-full object-contain drop-shadow-sm select-none transition-opacity ${
+                isOutOfStock ? "opacity-40 grayscale-[50%]" : ""
+              }`}
+              onError={() => {
+                if (!imgError) setImgError(true);
+              }}
+            />
 
             {isOutOfStock && (
               <div className="absolute inset-0 flex items-center justify-center p-2 pointer-events-none select-none">

@@ -5,6 +5,7 @@ import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import ProductModal from "./ProductModal";
 import { createArcMixer, BasketIcon } from "./ui/motion-add-to-basket";
+import { getProductFallbackImage, getProductImageUrl } from "../lib/productImage";
 
 export default function ProductCard({ product }) {
   const { addItem, removeItem, getQty } = useCart();
@@ -20,7 +21,9 @@ export default function ProductCard({ product }) {
     ? Math.round(((product.mrp - product.price) / product.mrp) * 100)
     : 0;
   const [imgError, setImgError] = useState(false);
-  const imageUrl = product.images?.[0]?.url;
+  const rawImageUrl = product.images?.[0]?.url || product.image;
+  const displayImage = (!imgError && rawImageUrl) ? rawImageUrl : getProductFallbackImage(product);
+  const imageUrl = displayImage;
 
   // Motion Add to Basket Animation State & Refs
   const [scope, animateElement] = useAnimate();
@@ -180,27 +183,20 @@ export default function ProductCard({ product }) {
 
         {/* Product Image Area */}
         <div className="relative w-full aspect-square flex items-center justify-center p-2 overflow-hidden my-1">
-          {imageUrl && !imgError ? (
-            <img
-              ref={imgRef}
-              src={imageUrl}
-              alt={product.title}
-              className={`w-full h-full object-contain group-hover:scale-108 transition-transform duration-300 select-none ${
-                isOutOfStock ? "opacity-40 grayscale-[50%]" : ""
-              }`}
-              loading="lazy"
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <div
-              ref={imgRef}
-              className={`w-full h-full flex items-center justify-center bg-gray-50 rounded-xl text-3xl ${
-                isOutOfStock ? "opacity-40" : ""
-              }`}
-            >
-              🛍️
-            </div>
-          )}
+          <img
+            ref={imgRef}
+            src={displayImage}
+            alt={product.title}
+            referrerPolicy="no-referrer"
+            crossOrigin="anonymous"
+            className={`w-full h-full object-contain group-hover:scale-108 transition-transform duration-300 select-none ${
+              isOutOfStock ? "opacity-40 grayscale-[50%]" : ""
+            }`}
+            loading="lazy"
+            onError={() => {
+              if (!imgError) setImgError(true);
+            }}
+          />
 
           {/* Coming Soon / Out of Stock Frosted Glass Overlay */}
           {isOutOfStock && (
@@ -222,11 +218,13 @@ export default function ProductCard({ product }) {
               opacity: flyOpacity,
             }}
           >
-            {imageUrl && !imgError ? (
-              <img src={imageUrl} alt="" className="w-full h-full object-contain" />
-            ) : (
-              <span className="text-2xl">🛍️</span>
-            )}
+            <img
+              src={displayImage}
+              alt=""
+              referrerPolicy="no-referrer"
+              crossOrigin="anonymous"
+              className="w-full h-full object-contain"
+            />
           </motion.div>
         </div>
 
