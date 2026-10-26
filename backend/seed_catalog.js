@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import https from "https";
+import { VERIFIED_CATALOG } from "./verify_catalog_images.js";
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/zippin";
 
@@ -388,7 +389,7 @@ async function seed() {
       price: 549,
       mrp: 699,
       cat: "baby-care",
-      img: "/images/babycare-promo.avif",
+      img: "https://cdn.grofers.com/da/cms-assets/cms/product/dc34b8ea-8e50-4d51-a364-cc23a25118eb.jpg",
       featured: true,
     },
     {
@@ -397,7 +398,7 @@ async function seed() {
       price: 310,
       mrp: 340,
       cat: "pet-care",
-      img: "/images/petcare-promo.avif",
+      img: "https://cdn.grofers.com/da/cms-assets/cms/product/rc-upload-1786420113452-1114.jpg",
       featured: true,
     },
     {
@@ -406,16 +407,97 @@ async function seed() {
       price: 32,
       mrp: 34,
       cat: "pharma-wellness",
-      img: "/images/pharmacy-promo.avif",
+      img: "https://cdn.grofers.com/da/cms-assets/cms/product/9350739d-6d9a-4fdc-863f-cd2e49dd15a1.jpg",
       featured: true,
     },
     {
-      title: "Premium Sweet Meetha Paan",
-      unit: "1 pc",
-      price: 30,
-      mrp: 35,
+      title: "Pass Pass Chaman Bahar Sweet Mint Saunf Mixture",
+      unit: "100g pouch",
+      price: 35,
+      mrp: 40,
       cat: "paan-corner",
-      img: "/images/category-paan.avif",
+      img: "https://cdn.grofers.com/da/cms-assets/cms/product/0f96c6b3-4fb6-4a7e-a6b4-de6be1f894ee.jpg",
+      featured: true,
+    },
+    {
+      title: "Sunfeast Dark Fantasy Choco Fills Biscuits",
+      unit: "300 g",
+      price: 120,
+      mrp: 140,
+      cat: "bakery-biscuits",
+      img: "https://cdn.grofers.com/app/images/products/sliding_image/421586a.jpg?ts=1645088495",
+      featured: true,
+    },
+    {
+      title: "Britannia Bourbon Chocolate Cream Biscuits",
+      unit: "150 g",
+      price: 35,
+      mrp: 40,
+      cat: "bakery-biscuits",
+      img: "https://cdn.grofers.com/app/images/products/sliding_image/429789a.jpg?ts=1640154655",
+      featured: true,
+    },
+    {
+      title: "Lizol Disinfectant Surface Floor Cleaner (Citrus)",
+      unit: "500 ml",
+      price: 99,
+      mrp: 110,
+      cat: "cleaning-essentials",
+      img: "https://cdn.grofers.com/da/cms-assets/cms/product/b6198376-3e45-408d-82f2-e1328427b653.jpg?ts=1747747090",
+      featured: true,
+    },
+    {
+      title: "Colin Glass and Surface Cleaner Spray",
+      unit: "500 ml",
+      price: 105,
+      mrp: 115,
+      cat: "cleaning-essentials",
+      img: "https://cdn.grofers.com/da/cms-assets/cms/product/aa365737-083d-4212-bc63-c5a4a8f40859.jpg?ts=1732867034",
+      featured: true,
+    },
+    {
+      title: "Casio Pocket Basic Desktop Calculator",
+      unit: "1 pc",
+      price: 249,
+      mrp: 295,
+      cat: "home-office",
+      img: "https://cdn.grofers.com/da/cms-assets/cms/product/57354140-72c7-4c9a-8b29-8276f1759ba7.jpg",
+      featured: true,
+    },
+    {
+      title: "Syska 4-Socket Surge Protector Extension Board",
+      unit: "2 meter cord",
+      price: 399,
+      mrp: 599,
+      cat: "electronics",
+      img: "https://cdn.grofers.com/da/cms-assets/cms/product/a6066cf5-a138-4bde-9cfe-df6bf0e123a5.jpg",
+      featured: true,
+    },
+    {
+      title: "Portronics Konnect Core Type-C Fast Cable",
+      unit: "1 meter",
+      price: 199,
+      mrp: 399,
+      cat: "electronics",
+      img: "https://cdn.grofers.com/da/cms-assets/cms/product/8ee93cf0-ef2b-4040-9162-8f794bc32993.jpg",
+      featured: true,
+    },
+    {
+      title: "Sunfeast YiPPee! Magic Masala Instant Noodles",
+      unit: "4 x 60 g",
+      price: 48,
+      mrp: 55,
+      cat: "instant-frozen-food",
+      img: "https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=85,metadata=none,w=250,h=250/app/images/products/sliding_image/11516a.jpg",
+      featured: true,
+    },
+    {
+      title: "Ferrero Rocher Premium Hazelnut Chocolates",
+      unit: "4 pcs pack",
+      price: 149,
+      mrp: 165,
+      cat: "sweet-tooth",
+      img: "https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=85,metadata=none,w=250,h=250/app/images/products/sliding_image/160823a.jpg",
       featured: true,
     }
   ];
@@ -426,7 +508,7 @@ async function seed() {
     const discount = Math.round(((mrp - cp.price) / mrp) * 100);
     productsToInsert.push({
       title: cp.title,
-      slug: slugify(cp.title) + "-" + Math.floor(Math.random() * 1000),
+      slug: slugify(cp.title) + "-" + Math.floor(Math.random() * 10000),
       category: catId,
       images: [{ url: cp.img, publicId: "" }],
       price: cp.price,
@@ -442,6 +524,33 @@ async function seed() {
       ratingCount: 3400,
       createdAt: new Date(),
     });
+  }
+
+  // Insert all verified products covering all 17 categories (no poster images)
+  for (const [catSlug, items] of Object.entries(VERIFIED_CATALOG)) {
+    const catId = catMap[catSlug] || catMap["vegetables-fruits"];
+    for (const item of items) {
+      const mrp = item.mrp || Math.round(item.price * 1.25);
+      const discount = Math.round(((mrp - item.price) / mrp) * 100);
+      productsToInsert.push({
+        title: item.title,
+        slug: slugify(item.title) + "-" + Math.floor(Math.random() * 10000),
+        category: catId,
+        images: [{ url: item.image, publicId: "" }],
+        price: item.price,
+        mrp,
+        discount,
+        unit: item.unit,
+        stock: 120,
+        tags: [...(item.tags || []), catSlug, "zippin-verified"],
+        isAvailable: true,
+        isFeatured: Math.random() > 0.5,
+        sortOrder: 1,
+        rating: item.rating || 4.8,
+        ratingCount: item.ratingCount || 4200,
+        createdAt: new Date(),
+      });
+    }
   }
 
   // Seed Store Facility (Single Hamirpur Branch)

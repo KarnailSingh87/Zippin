@@ -1,16 +1,16 @@
 import https from "https";
 
-const CATALOG = {
+export const VERIFIED_CATALOG = {
   "paan-corner": [
     {
-      title: "Calcutta Meetha Sweet Paan (Freshly Handcrafted)",
+      title: "Pass Pass Chaman Bahar Sweet Mint Saunf Mixture",
       price: 35,
       mrp: 40,
-      unit: "1 pc",
+      unit: "100g pouch",
       tags: ["paan", "paan-corner", "sweet-paan", "mouth-freshener"],
       rating: 4.9,
       ratingCount: 5210,
-      image: "/images/category-paan.avif",
+      image: "https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=85,metadata=none,w=250,h=250/app/images/products/sliding_image/240092a.jpg",
     },
     {
       title: "Rajnigandha Silver Pearl Elaichi & Pass Pass Combo",
@@ -904,13 +904,13 @@ const CATALOG = {
 };
 
 async function verifyAll() {
-  const cats = Object.keys(CATALOG);
+  const cats = Object.keys(VERIFIED_CATALOG);
   console.log(`Checking ${cats.length} categories (expecting 17)...`);
   let totalProducts = 0;
   let allValid = true;
 
   for (const cat of cats) {
-    const prods = CATALOG[cat];
+    const prods = VERIFIED_CATALOG[cat];
     totalProducts += prods.length;
     if (prods.length !== 5) {
       console.error(`ERROR: Category ${cat} has ${prods.length} products, expected 5!`);
@@ -951,4 +951,6 @@ async function verifyAll() {
   console.log(`========================================`);
 }
 
-verifyAll();
+if (process.argv[1] && process.argv[1].endsWith("verify_catalog_images.js")) {
+  verifyAll();
+}
