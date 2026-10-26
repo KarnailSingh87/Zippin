@@ -1,10 +1,10 @@
-node_modules
-.git
-.github
+**/node_modules
+**/.git
+**/.github
 frontend
 admin
 rider
 database
-.env
-.env.*
-*.md
+**/.env
+**/.env.*
+**/*.md
