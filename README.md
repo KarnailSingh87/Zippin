@@ -1,5 +1,4 @@
 # Apps workspace
-
 This repository contains three apps under `apps/`:
 
 - `backend` — existing Node/Express/TypeScript API (runs on port 4000 by default)

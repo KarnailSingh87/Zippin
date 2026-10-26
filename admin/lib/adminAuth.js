@@ -25,7 +25,7 @@ export async function getValidAdminToken() {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: "admin@zippin.com", password: "admin123" }),
+      body: JSON.stringify({ email: "admin@zippin.in", password: "ZippinAdmin@2026" }),
     });
     if (res.ok) {
       const data = await res.json();

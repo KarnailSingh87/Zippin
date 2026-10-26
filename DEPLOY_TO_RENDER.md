@@ -42,8 +42,8 @@ If you prefer creating them one by one in the Render UI:
   - `PORT`: `4000`
   - `MONGO_URI`: `mongodb+srv://<username>:<password>@cluster0.snxrq5b.mongodb.net/blinkit?retryWrites=true&w=majority`
   - `JWT_SECRET`: `your_secure_secret_key`
-  - `ADMIN_EMAIL`: `harshvardhan2005.12.16@gmail.com`
-  - `ADMIN_PASSWORD`: `K@rnail0011`
+  - `ADMIN_EMAIL`: `admin@zippin.in`
+  - `ADMIN_PASSWORD`: `ZippinAdmin@2026`
 
 ### 2. Customer Frontend (`blinkit-frontend`)
 - Click **New +** → **Web Service**

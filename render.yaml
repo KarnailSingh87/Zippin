@@ -17,9 +17,9 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: ADMIN_EMAIL
-        value: harshvardhan2005.12.16@gmail.com
+        value: admin@zippin.in
       - key: ADMIN_PASSWORD
-        value: K@rnail0011
+        value: ZippinAdmin@2026
       - key: MONGO_URI
         sync: false
       - key: CLOUDINARY_CLOUD_NAME
