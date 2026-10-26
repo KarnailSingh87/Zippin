@@ -8,12 +8,12 @@ async function fix() {
   const db = mongoose.connection.db;
 
   // Fix the original admin user - set roles and rehash password
-  const adminHash = await bcrypt.hash('K@rnail0011', 10);
+  const adminHash = await bcrypt.hash('ZippinAdmin@2026', 10);
   await db.collection('users').updateOne(
-    { email: 'harshvardhan2005.12.16@gmail.com' },
+    { email: 'admin@zippin.in' },
     { $set: { roles: ['admin'], passwordHash: adminHash } }
   );
-  console.log('Fixed original admin user (harshvardhan2005.12.16@gmail.com)');
+  console.log('Fixed original admin user (admin@zippin.in)');
 
   // Create or fix admin@blinkit.com
   const blinkitAdminHash = await bcrypt.hash('admin123', 10);
