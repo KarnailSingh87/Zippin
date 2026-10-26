@@ -1,6 +1,7 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+import "dotenv/config";
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+
 
 async function fix() {
   await mongoose.connect(process.env.MONGO_URI);
