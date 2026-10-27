@@ -108,6 +108,25 @@ app.post("/api/cache/purge", (req, res) => {
   res.json({ message: "Server cache cleared successfully", purgedItems: purged });
 });
 
+// Root status endpoint (Prevents Express "Cannot GET /" 404 message)
+app.get("/", (req, res) => {
+  const state = mongoose.connection && mongoose.connection.readyState;
+  const stateNames = { 0: "disconnected", 1: "connected", 2: "connecting", 3: "disconnecting" };
+  res.status(200).json({
+    status: "ok",
+    service: "Zippin Backend API",
+    message: "🚀 Zippin Backend is live and running on Render!",
+    mongoStatus: stateNames[state] || "unknown",
+    endpoints: {
+      health: "/health",
+      products: "/api/products",
+      categories: "/api/categories",
+      auth: "/api/auth"
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
 // simple health check
 app.get("/health", (req, res) => {
   const state = mongoose.connection && mongoose.connection.readyState;
