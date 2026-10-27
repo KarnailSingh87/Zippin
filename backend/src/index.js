@@ -111,7 +111,12 @@ app.post("/api/cache/purge", (req, res) => {
 // simple health check
 app.get("/health", (req, res) => {
   const state = mongoose.connection && mongoose.connection.readyState;
-  res.json({ status: "ok", mongoState: state });
+  const stateNames = { 0: "disconnected", 1: "connected", 2: "connecting", 3: "disconnecting" };
+  res.status(200).json({
+    status: "ok",
+    mongoStatus: stateNames[state] || "unknown",
+    timestamp: new Date().toISOString()
+  });
 });
 
 app.use("/api", routes);
@@ -132,24 +137,31 @@ const PORT = process.env.PORT || 4000;
 
 const DEFAULT_MONGO_URI = "mongodb+srv://mk2251842_db_user:30y3SYcdhns1eige@cluster0.bdczfs1.mongodb.net/zippin?retryWrites=true&w=majority";
 
-async function start() {
+async function connectMongo() {
   const mongoUri = process.env.MONGO_URI || DEFAULT_MONGO_URI;
-
   try {
-    await mongoose.connect(mongoUri);
+    console.log("⏳ Connecting to MongoDB...");
+    await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 5000,
+    });
     console.log("✅ Connected to MongoDB successfully!");
   } catch (dbErr) {
     console.error("❌ MongoDB connection error:", dbErr.message);
-    console.error("👉 Please verify your MONGO_URI, database user credentials, and that Network Access allows 0.0.0.0/0 in MongoDB Atlas.");
-    process.exit(1);
+    console.error("👉 Please verify your MONGO_URI in Render Environment Variables, check your database user & password in MongoDB Atlas (Database Access), and verify Network Access allows 0.0.0.0/0.");
+    console.warn("⚠️ Server will keep running. Retrying MongoDB connection in 15 seconds...");
+    setTimeout(connectMongo, 15000);
   }
-
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`🚀 Server listening on port ${PORT}`);
-  });
 }
 
-start().catch((err) => {
-  console.error("Failed to start server", err);
-  process.exit(1);
+mongoose.connection.on("disconnected", () => {
+  console.warn("⚠️ MongoDB disconnected. Attempting to reconnect in 10s...");
+  setTimeout(connectMongo, 10000);
 });
+
+// Start Express server first so Render port binding succeeds and deploys don't crash-exit
+const server = app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server listening on port ${PORT}`);
+  connectMongo();
+});
+
+export default server;

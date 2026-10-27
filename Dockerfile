@@ -15,8 +15,7 @@ COPY backend/ ./
 EXPOSE 4000
 
 ENV NODE_ENV=production
-ENV MONGO_URI="mongodb+srv://mk2251842_db_user:30y3SYcdhns1eige@cluster0.bdczfs1.mongodb.net/zippin?retryWrites=true&w=majority"
-
+ENV PORT=4000
 
 # Start backend server
 CMD ["node", "src/index.js"]
